@@ -1,0 +1,7 @@
+---
+import ToolCard from './ToolCard.astro';
+import {toolByPath} from '../lib/catalog.mjs';
+const {paths=[]}=Astro.props;
+const selected=paths.map(p=>toolByPath.get(p)).filter(Boolean);
+---
+<section class="section"><h2>Siguiente cálculo útil</h2><div class="grid">{selected.map(tool=><ToolCard tool={tool}/>)}</div></section>

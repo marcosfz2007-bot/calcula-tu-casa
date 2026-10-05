@@ -1,6 +1,0 @@
----
-import Base from '../../layouts/Base.astro';
-import ToolCard from '../../components/ToolCard.astro';
-import {tools} from '../../lib/catalog.mjs';
----
-<Base title="Todas las calculadoras" description="Herramientas gratuitas para entender el consumo eléctrico de tu casa."><section class="hero"><p class="eyebrow">HERRAMIENTAS PARA TU HOGAR</p><h1>Empieza por una pregunta.</h1><p class="lead">¿Cuánto cuesta enfriar tu salón? ¿Y encender el radiador? Elige una herramienta y haz tus cuentas.</p><div class="flex gap-5"><a href="/calculadoras/energia/">Energía</a><a href="/calculadoras/climatizacion/">Climatización</a></div></section><div class="grid">{tools.map(tool=><ToolCard tool={tool}/>)}</div></Base>
