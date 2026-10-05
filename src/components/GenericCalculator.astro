@@ -1,6 +1,0 @@
----
-const {tool}=Astro.props;
----
-<noscript><p class="no-js">Activa JavaScript para utilizar la calculadora. La metodología permanece visible sin JavaScript.</p></noscript>
-<div class="calculator" data-calculator data-kind={tool.kind}><form class="card" novalidate><h2>Introduce tus datos</h2><fieldset><legend class="sr-only">Variables del cálculo</legend><div class="fields">{tool.fields.map(([key,label,unit,value])=><div><label for={key}>{label}</label><div class="input-wrap"><input id={key} name={key} type="text" inputmode="decimal" value={value} autocomplete="off" aria-describedby={`${key}-error format-help`}/><span>{unit}</span></div><span class="error" id={`${key}-error`}></span></div>)}</div></fieldset><p class="help mt-5" id="format-help">Admite coma o punto decimal. Los valores iniciales son ejemplos editables, no recomendaciones universales.</p><div class="actions"><button class="button" type="submit">Calcular</button><button class="button secondary" type="reset">Restablecer</button></div></form><section class="card result" aria-labelledby="result-title"><p class="eyebrow">TU ESTIMACIÓN</p><h2 id="result-title">Resultado</h2><div id="result-output" aria-live="polite" aria-atomic="true"><p>Revisa los datos y pulsa «Calcular».</p></div></section></div>
-<script>import '../lib/calculator-ui.mjs';</script>
