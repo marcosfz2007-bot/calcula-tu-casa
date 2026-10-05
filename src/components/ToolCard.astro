@@ -1,0 +1,4 @@
+---
+const { tool } = Astro.props;
+---
+<a class="card tool-card" href={`/${tool.path}/`}><span class="tool-icon" aria-hidden="true">{tool.icon}</span><p class="eyebrow">{tool.category}</p><h3>{tool.short}</h3><p class="muted">{tool.description}</p><span class="link">Calcular mi consumo →</span></a>
