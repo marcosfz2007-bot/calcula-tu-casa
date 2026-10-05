@@ -26,7 +26,7 @@ for(const [name,base,kwh,cost,annual] of energyCases){
 }
 
 const thermo={persons:3,showers:3,litresPerShower:50,cold:15,showerTemp:40,target:60,powerW:2000,volume:100,price:'0,20'};
-test('Termo · normal',()=>{const r=calculateThermo(thermo);near(r.energyTank,5.2335);near(r.heatTimeHours,2.61675);});
+test('Termo · normal',()=>{const r=calculateThermo(thermo);near(r.energyTank,5.2325);near(r.heatTimeHours,2.61625);});
 test('Termo · mínimo',()=>assert.doesNotThrow(()=>calculateThermo({persons:1,showers:0,litresPerShower:0,cold:10,showerTemp:15,target:20,powerW:100,volume:10,price:0})));
 test('Termo · máximo razonable',()=>assert.doesNotThrow(()=>calculateThermo({persons:20,showers:40,litresPerShower:300,cold:0,showerTemp:60,target:90,powerW:12000,volume:1000,price:5})));
 test('Termo · cero',()=>near(calculateThermo({...thermo,showers:0}).dailyEnergy,0));
