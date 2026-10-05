@@ -1,0 +1,9 @@
+---
+import ToolCard from './ToolCard.astro';
+const {tools}=Astro.props;
+---
+<div class="search-tools"><label for="tool-search">Buscar calculadora</label><input id="tool-search" type="search" autocomplete="off" placeholder="Ej.: termo, aislamiento, frigorías…" aria-describedby="search-count"/><p class="help" id="search-count" aria-live="polite">{tools.length} herramientas disponibles</p><div class="grid" data-tool-grid>{tools.map(tool=><ToolCard tool={tool}/>)}</div></div>
+<script>
+const input=document.querySelector('#tool-search');const cards=[...document.querySelectorAll('[data-tool-card]')];const count=document.querySelector('#search-count');
+if(input){input.addEventListener('input',()=>{const q=input.value.trim().toLocaleLowerCase('es');let visible=0;cards.forEach(card=>{const show=!q||card.dataset.search.includes(q);card.hidden=!show;if(show)visible++;});count.textContent=visible+' herramienta'+(visible===1?'':'s')+' encontrada'+(visible===1?'':'s');});}
+</script>

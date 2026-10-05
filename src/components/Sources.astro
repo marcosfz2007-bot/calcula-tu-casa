@@ -1,0 +1,4 @@
+---
+const {sources=[],methodology='1.0'}=Astro.props;
+---
+<section><h2>Fuentes e hipótesis</h2><ul>{sources.map(([label,url])=><li><a href={url}>{label}</a></li>)}</ul><p class="help">Metodología {methodology} · Última revisión: 5 de octubre de 2026. Las hipótesis propias se identifican expresamente en la metodología y en cada resultado.</p></section>
