@@ -1,13 +1,14 @@
 ---
 import CalculatorLayout from '../layouts/CalculatorLayout.astro';
 import GenericCalculator from '../components/GenericCalculator.astro';
+import CoolingCalculator from '../components/CoolingCalculator.astro';
 import TransmittanceCalculator from '../components/TransmittanceCalculator.astro';
 import PowerCalculator from '../components/PowerCalculator.astro';
 import AppliancesCalculator from '../components/AppliancesCalculator.astro';
 import {tools} from '../lib/catalog.mjs';
 export function getStaticPaths(){return tools.map(tool=>({params:{path:tool.path},props:{tool}}));}
 const {tool}=Astro.props;
-const specialized={transmittance:TransmittanceCalculator,power:PowerCalculator,appliances:AppliancesCalculator};
+const specialized={cooling:CoolingCalculator,transmittance:TransmittanceCalculator,power:PowerCalculator,appliances:AppliancesCalculator};
 const Calculator=specialized[tool.kind]||GenericCalculator;
 ---
 <CalculatorLayout tool={tool}><Calculator tool={tool}/></CalculatorLayout>
