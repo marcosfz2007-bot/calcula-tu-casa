@@ -67,6 +67,10 @@ Pendiente de navegador real. La CI no sustituye una auditoría visual, WCAG ni C
 - posiciones reservadas para anuncios;
 - canonical/Schema en el dominio final.
 
+## Despliegue provisional
+
+La V1 está desplegada provisionalmente en Cloudflare Pages en `https://calcula-tu-casa.pages.dev`. Se ha verificado visualmente la carga en escritorio y móvil. Mientras se valida el sitio y antes de un dominio definitivo, esta URL se utiliza como entorno de producción temporal.
+
 ## Placeholders y tareas dependientes del lanzamiento
 
 - `[NOMBRE_TITULAR]`
