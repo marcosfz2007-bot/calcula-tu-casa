@@ -8,7 +8,7 @@ La V1 contiene ocho calculadoras funcionales, cinco hubs canónicos, directorio 
 
 ## Tests definidos
 
-`tests/calculators.test.mjs` incluye 8 casos por cada calculadora:
+`tests/calculators.test.mjs` mantiene los 8 casos base por cada calculadora:
 
 1. normal;
 2. mínimo;
@@ -19,9 +19,9 @@ La V1 contiene ocho calculadoras funcionales, cinco hubs canónicos, directorio 
 7. decimal con coma;
 8. caso manual verificable.
 
-Son 64 pruebas de calculadoras.
+Son 64 pruebas base. El hardening añade 8 regresiones específicas en el mismo archivo: mezcla térmica del termo, precio opcional, coherencia de temperaturas, acristalamiento mayor que suelo, varios aparatos de potencia, sensibilidad ±20 % en aire acondicionado, sensibilidad ±20 % en radiador y límite superior de 24 h/día.
 
-`tests/consistency.test.mjs` añade 8 comprobaciones:
+`tests/consistency.test.mjs` contiene 10 comprobaciones:
 
 - exactamente ocho rutas canónicas;
 - ausencia de duplicidades;
@@ -29,17 +29,30 @@ Son 64 pruebas de calculadoras.
 - metadatos obligatorios y 5–7 FAQ;
 - enlaces internos a herramientas existentes;
 - categorías válidas y ausencia de ratings/reviews inventados;
-- keywords presentes para el buscador local.
+- keywords presentes para el buscador local;
+- hubs Energía/Climatización/Aislamiento indexables frente a Solar/Reformas noindex y fuera de sitemap;
+- normalización de tildes/diacríticos del buscador.
 
-El hardening añade regresiones específicas para mezcla del termo, precio opcional, temperaturas, acristalamiento, potencia mínima individual, sensibilidad de horas, normalización del buscador y hubs noindex/sitemap. El total final se registra tras la ejecución de CI del nuevo HEAD.
+`tests/ui-contract.test.mjs` añade 4 contratos de integración: Hub aplica `noindex`, reset de filas dinámicas, etiqueta/escape del menú móvil y enlace al sitemap condicionado a `Astro.site`.
+
+Total definido tras hardening: **86 tests**.
 
 ## Verificación de ejecución
 
-Pendiente de actualizar con la ejecución real del HEAD de hardening. Los comandos obligatorios siguen siendo `npm ci`, `npm test`, `npm run build` y `SITE_URL=https://example.com npm run build`.
+El workflow `Verify` del PR ejecuta obligatoriamente, sobre el HEAD de `fase-2-final`:
 
-## Build real
+```bash
+npm ci
+npm test
+npm run build
+SITE_URL=https://example.com npm run build
+```
 
-Pendiente de actualizar con el HEAD de hardening. El número de páginas HTML no cambia: 24; con `SITE_URL` el sitemap debe excluir páginas legales pendientes y los hubs `/solar/` y `/reformas/`.
+El resultado del HEAD final se comprueba en GitHub Actions antes de fusionar.
+
+## Build
+
+El hardening no añade ni elimina páginas HTML: se mantienen 24 rutas generadas. Con `SITE_URL`, el sitemap excluye páginas legales pendientes y los hubs `/solar/` y `/reformas/`; sin `SITE_URL` no se enlaza ni genera sitemap de producción.
 
 ## Revisión visual
 
