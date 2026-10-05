@@ -1,0 +1,4 @@
+---
+const {items=[]}=Astro.props;
+---
+<section><h2>Preguntas frecuentes</h2>{items.map(([q,a])=><details><summary>{q}</summary><p>{a}</p></details>)}</section>
