@@ -21,35 +21,43 @@ La V1 contiene ocho calculadoras funcionales, cinco hubs canónicos, directorio 
 
 Son 64 pruebas de calculadoras.
 
-`tests/consistency.test.mjs` añade 6 comprobaciones:
+`tests/consistency.test.mjs` añade 8 comprobaciones:
 
 - exactamente ocho rutas canónicas;
 - ausencia de duplicidades;
 - retirada de la URL antigua del radiador;
 - metadatos obligatorios y 5–7 FAQ;
 - enlaces internos a herramientas existentes;
-- categorías válidas y ausencia de ratings/reviews inventados.
+- categorías válidas y ausencia de ratings/reviews inventados;
+- keywords presentes para el buscador local.
 
-Total definido: **70 tests**.
+Total ejecutado: **72 tests**.
 
 ## Verificación de ejecución
 
-Pendiente de registrar el resultado del workflow final del Pull Request. Este apartado se actualizará únicamente con resultados realmente ejecutados.
-
-Comandos configurados en CI:
+GitHub Actions, workflow `Verify`, ejecución del HEAD `1224fd27794a5d8ea95497cd4f307771619c11dd`:
 
 ```bash
 npm ci
+# correcto
+
 npm test
+# 72 tests · 72 aprobados · 0 fallidos
+
 npm run build
+# correcto · 24 páginas generadas
+
 SITE_URL=https://example.com npm run build
+# correcto · 24 páginas generadas · sitemap-index.xml creado
 ```
 
-## Build esperado
+`npm ci` instaló correctamente las dependencias y la auditoría reportó 0 vulnerabilidades en esa ejecución.
 
-Astro estático, salida `dist/`. Con `SITE_URL`, `@astrojs/sitemap` debe generar `sitemap-index.xml` y `sitemap-0.xml`. Sin `SITE_URL`, Astro puede omitir el sitemap y las páginas llevan `noindex` por diseño.
+## Build real
 
-La V1 define 24 páginas HTML esperadas: portada, directorio, cinco hubs, ocho calculadoras, ocho páginas institucionales/legales y 404.
+Astro estático, salida `dist/`. El build sin `SITE_URL` terminó correctamente y omitió el sitemap, tal como advierte la integración oficial cuando no existe `site`. El build de producción de prueba con `SITE_URL=https://example.com` terminó correctamente y creó `dist/sitemap-index.xml`.
+
+Ambos builds generaron **24 páginas**: portada, directorio, cinco hubs, ocho calculadoras, ocho páginas institucionales/legales y 404.
 
 ## Revisión visual
 
