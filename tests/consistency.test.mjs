@@ -39,3 +39,5 @@ test('No hay ratings ni reviews declarados en catálogo',()=>{
  const text=JSON.stringify(tools);
  assert.ok(!/AggregateRating|ratingValue|Review/.test(text));
 });
+
+test('Todas las herramientas tienen keywords para el buscador',()=>{for(const t of tools) assert.ok(Array.isArray(t.keywords)&&t.keywords.length>0,t.path+' sin keywords');});
