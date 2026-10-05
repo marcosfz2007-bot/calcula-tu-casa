@@ -1,10 +1,10 @@
 # QA — V1
 
-Fecha de cierre técnico: 5 de octubre de 2026.
+Fecha de cierre técnico/hardening: 5 de octubre de 2026.
 
 ## Alcance
 
-La V1 contiene ocho calculadoras funcionales, cinco hubs canónicos, directorio global con buscador local, navegación responsive, páginas institucionales, legales con placeholders, Schema, interlinking, placeholders AdSense, sitemap oficial y CI.
+La V1 contiene ocho calculadoras funcionales, cinco hubs canónicos, directorio global con buscador local normalizado sin tildes, navegación responsive, páginas institucionales, legales con placeholders, Schema, interlinking, placeholders AdSense, sitemap oficial y CI. Solar y Reformas permanecen `noindex, follow` y fuera del sitemap hasta publicar herramientas reales.
 
 ## Tests definidos
 
@@ -31,33 +31,15 @@ Son 64 pruebas de calculadoras.
 - categorías válidas y ausencia de ratings/reviews inventados;
 - keywords presentes para el buscador local.
 
-Total ejecutado: **72 tests**.
+El hardening añade regresiones específicas para mezcla del termo, precio opcional, temperaturas, acristalamiento, potencia mínima individual, sensibilidad de horas, normalización del buscador y hubs noindex/sitemap. El total final se registra tras la ejecución de CI del nuevo HEAD.
 
 ## Verificación de ejecución
 
-GitHub Actions, workflow `Verify`, ejecución del HEAD `1224fd27794a5d8ea95497cd4f307771619c11dd`:
-
-```bash
-npm ci
-# correcto
-
-npm test
-# 72 tests · 72 aprobados · 0 fallidos
-
-npm run build
-# correcto · 24 páginas generadas
-
-SITE_URL=https://example.com npm run build
-# correcto · 24 páginas generadas · sitemap-index.xml creado
-```
-
-`npm ci` instaló correctamente las dependencias y la auditoría reportó 0 vulnerabilidades en esa ejecución.
+Pendiente de actualizar con la ejecución real del HEAD de hardening. Los comandos obligatorios siguen siendo `npm ci`, `npm test`, `npm run build` y `SITE_URL=https://example.com npm run build`.
 
 ## Build real
 
-Astro estático, salida `dist/`. El build sin `SITE_URL` terminó correctamente y omitió el sitemap, tal como advierte la integración oficial cuando no existe `site`. El build de producción de prueba con `SITE_URL=https://example.com` terminó correctamente y creó `dist/sitemap-index.xml`.
-
-Ambos builds generaron **24 páginas**: portada, directorio, cinco hubs, ocho calculadoras, ocho páginas institucionales/legales y 404.
+Pendiente de actualizar con el HEAD de hardening. El número de páginas HTML no cambia: 24; con `SITE_URL` el sitemap debe excluir páginas legales pendientes y los hubs `/solar/` y `/reformas/`.
 
 ## Revisión visual
 

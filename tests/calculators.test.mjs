@@ -25,15 +25,15 @@ for(const [name,base,kwh,cost,annual] of energyCases){
  test(name+' · manual 1 kWh',()=>{const r=calculateEnergy({...base,watts:1000,hours:1,days:1,price:'0,20',factor:100,units:1,months:1});near(r.monthlyKwh,1);near(r.monthlyCost,0.2);});
 }
 
-const thermo={persons:3,showers:3,litresPerShower:50,cold:15,target:60,powerW:2000,volume:100,price:'0,20'};
+const thermo={persons:3,showers:3,litresPerShower:50,cold:15,showerTemp:40,target:60,powerW:2000,volume:100,price:'0,20'};
 test('Termo · normal',()=>{const r=calculateThermo(thermo);near(r.energyTank,5.2335);near(r.heatTimeHours,2.61675);});
-test('Termo · mínimo',()=>assert.doesNotThrow(()=>calculateThermo({persons:1,showers:0,litresPerShower:0,cold:19,target:20,powerW:100,volume:10,price:0})));
-test('Termo · máximo razonable',()=>assert.doesNotThrow(()=>calculateThermo({persons:20,showers:40,litresPerShower:300,cold:0,target:90,powerW:12000,volume:1000,price:5})));
+test('Termo · mínimo',()=>assert.doesNotThrow(()=>calculateThermo({persons:1,showers:0,litresPerShower:0,cold:10,showerTemp:15,target:20,powerW:100,volume:10,price:0})));
+test('Termo · máximo razonable',()=>assert.doesNotThrow(()=>calculateThermo({persons:20,showers:40,litresPerShower:300,cold:0,showerTemp:60,target:90,powerW:12000,volume:1000,price:5})));
 test('Termo · cero',()=>near(calculateThermo({...thermo,showers:0}).dailyEnergy,0));
 test('Termo · negativo',()=>assert.throws(()=>calculateThermo({...thermo,volume:-1}),RangeError));
 test('Termo · vacío',()=>assert.throws(()=>calculateThermo({...thermo,powerW:''}),RangeError));
 test('Termo · decimal con coma',()=>near(calculateThermo({...thermo,price:'0,25'}).tankCost,calculateThermo({...thermo,price:0.25}).tankCost));
-test('Termo · manual 10 L y ΔT 1',()=>near(calculateThermo({...thermo,cold:19,target:20,volume:10}).energyTank,0.01163));
+test('Termo · manual 10 L y ΔT 1',()=>near(calculateThermo({...thermo,cold:19,showerTemp:19.5,target:20,volume:10}).energyTank,10*(4.186/3600)));
 
 const dew={temperature:20,humidity:60,surface:11,exterior:5};
 test('Punto de rocío · normal',()=>{const r=calculateDewPoint(dew);assert.ok(r.dewPoint>11.9&&r.dewPoint<12.1);assert.equal(r.condensationPossible,true);});
@@ -66,14 +66,14 @@ test('Frigorías · decimal con coma',()=>near(calculateCooling({...cooling,heig
 test('Frigorías · manual base simple',()=>near(calculateCooling({area:10,height:2.5,climate:'mild',orientation:'N',insulation:'average',glass:0,people:0,internalW:0}).centralW,1104.85));
 
 const power={items:[{name:'A',selected:true,watts:2000},{name:'B',selected:true,watts:1000}]};
-test('Potencia · normal',()=>{const r=calculatePower(power);near(r.nominalW,3000);near(r.scenarios.habitual,1950);});
+test('Potencia · normal',()=>{const r=calculatePower(power);near(r.nominalW,3000);near(r.maxIndividualW,2000);near(r.scenarios.habitual,2000);});
 test('Potencia · mínimo',()=>near(calculatePower({items:[{name:'A',selected:true,watts:1}]}).nominalW,1));
 test('Potencia · máximo razonable',()=>near(calculatePower({items:Array.from({length:12},(_,i)=>({name:String(i),selected:true,watts:30000}))}).nominalW,360000));
 test('Potencia · cero',()=>assert.throws(()=>calculatePower({items:[{name:'A',selected:true,watts:0}]}),RangeError));
 test('Potencia · negativo',()=>assert.throws(()=>calculatePower({items:[{name:'A',selected:true,watts:-1}]}),RangeError));
 test('Potencia · vacío',()=>assert.throws(()=>calculatePower({items:[{name:'A',selected:true,watts:''}]}),RangeError));
 test('Potencia · decimal con coma',()=>near(calculatePower({items:[{name:'A',selected:true,watts:'1000,5'}]}).nominalW,1000.5));
-test('Potencia · manual 65 %',()=>near(calculatePower({items:[{name:'A',selected:true,watts:8000}]}).scenarios.habitual,5200));
+test('Potencia · único aparato de 8 kW nunca baja de 8 kW',()=>{const r=calculatePower({items:[{name:'A',selected:true,watts:8000}]});near(r.scenarios.moderate,8000);near(r.scenarios.habitual,8000);near(r.scenarios.intensive,8000);});
 
 const appliances={price:'0,20',items:[{name:'A',mode:'hours',watts:100,hoursDay:5}]};
 test('Electrodomésticos · normal',()=>{const r=calculateAppliances(appliances);near(r.annualKwh,182.5);near(r.annualCost,36.5);});
@@ -84,3 +84,56 @@ test('Electrodomésticos · negativo',()=>assert.throws(()=>calculateAppliances(
 test('Electrodomésticos · vacío',()=>assert.throws(()=>calculateAppliances({price:0.2,items:[{name:'A',mode:'hours',watts:'',hoursDay:1}]}),RangeError));
 test('Electrodomésticos · decimal con coma',()=>near(calculateAppliances({price:'0,20',items:[{name:'A',mode:'hours',watts:'100,5',hoursDay:1}]}).annualKwh,calculateAppliances({price:0.2,items:[{name:'A',mode:'hours',watts:100.5,hoursDay:1}]}).annualKwh));
 test('Electrodomésticos · manual por ciclo',()=>near(calculateAppliances({price:0.2,items:[{name:'A',mode:'cycle',kwhCycle:1,cyclesWeek:4}]}).annualKwh,208));
+
+test('Termo · mezcla térmica y energía coherentes',()=>{
+ const r=calculateThermo(thermo);
+ near(r.mixedDailyLitres,150);
+ near(r.hotFraction,25/45);
+ near(r.hotDailyLitres,150*(25/45));
+ near(r.mixedAvailableLitres,100*(45/25));
+ near(r.minimumTheoreticalVolumeLitres,r.hotDailyLitres);
+ near(r.dailyEnergy,150*(4.186/3600)*25);
+ near(r.hotDailyLitres*(4.186/3600)*(60-15),r.dailyEnergy);
+ near(r.mixedLitresPerPerson,50);
+});
+test('Termo · precio vacío mantiene cálculo energético y omite costes',()=>{
+ const r=calculateThermo({...thermo,price:''});
+ assert.equal(r.price,null);
+ assert.equal(r.tankCost,null);
+ assert.equal(r.dailyCost,null);
+ assert.ok(r.dailyEnergy>0);
+});
+test('Termo · exige temperatura fría < ducha < termo',()=>{
+ assert.throws(()=>calculateThermo({...thermo,showerTemp:15}),RangeError);
+ assert.throws(()=>calculateThermo({...thermo,showerTemp:60}),RangeError);
+ assert.throws(()=>calculateThermo({...thermo,showerTemp:70}),RangeError);
+});
+test('Frigorías · admite más m² acristalados que m² de suelo',()=>{
+ assert.doesNotThrow(()=>calculateCooling({...cooling,area:10,glass:12}));
+});
+test('Potencia · varios aparatos conserva factores cuando superan carga máxima',()=>{
+ const r=calculatePower({items:[{name:'A',selected:true,watts:3000},{name:'B',selected:true,watts:3000},{name:'C',selected:true,watts:3000}]});
+ near(r.scenarios.moderate,4050);
+ near(r.scenarios.habitual,5850);
+ near(r.scenarios.intensive,7650);
+});
+test('Aire acondicionado · sensibilidad ±20 % de horas',()=>{
+ const r=calculateEnergy(energyCases[0][1]);
+ near(r.sensitivity.lowHours,6.4);
+ near(r.sensitivity.centralHours,8);
+ near(r.sensitivity.highHours,9.6);
+ near(r.sensitivity.lowMonthlyKwh,115.2);
+ near(r.sensitivity.highMonthlyKwh,172.8);
+});
+test('Radiador · sensibilidad ±20 % de horas',()=>{
+ const r=calculateEnergy(energyCases[1][1]);
+ near(r.sensitivity.lowHours,4);
+ near(r.sensitivity.centralHours,5);
+ near(r.sensitivity.highHours,6);
+ near(r.sensitivity.lowMonthlyKwh,126);
+ near(r.sensitivity.highMonthlyKwh,189);
+});
+test('Energía · sensibilidad alta se limita a 24 h/día',()=>{
+ const r=calculateEnergy({...energyCases[0][1],hours:23});
+ near(r.sensitivity.highHours,24);
+});

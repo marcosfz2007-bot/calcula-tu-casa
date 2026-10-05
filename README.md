@@ -13,7 +13,7 @@ V1 del proyecto de calculadoras para hogar, energía, climatización, aislamient
 7. `/energia/potencia-electrica/`
 8. `/energia/consumo-electrodomesticos/`
 
-Los hubs canónicos son `/energia/`, `/climatizacion/`, `/aislamiento/`, `/solar/` y `/reformas/`. `/calculadoras/` funciona como directorio global con buscador local.
+Los hubs canónicos son `/energia/`, `/climatizacion/`, `/aislamiento/`, `/solar/` y `/reformas/`. `/calculadoras/` funciona como directorio global con buscador local sin sensibilidad a tildes. Mientras Solar y Reformas no tengan calculadoras publicadas se mantienen `noindex, follow` y fuera del sitemap.
 
 ## Desarrollo
 
@@ -57,9 +57,9 @@ La salida estática se genera en `dist/`.
 
 ## SEO y sitemap
 
-Cada calculadora incluye title, description, canonical cuando existe `SITE_URL`, breadcrumbs, H1, metodología, fórmula, ejemplo, limitaciones, fuentes, fecha de revisión, FAQ visible y herramientas relacionadas.
+Cada calculadora incluye title, description, canonical cuando existe `SITE_URL`, breadcrumbs, H1, metodología, fórmula, ejemplo, limitaciones, fuentes, fecha de revisión, FAQ visible y herramientas relacionadas. El termo modela mezcla de agua y precio opcional; AC/radiador incluyen sensibilidad ±20 % de horas; la potencia eléctrica impone como suelo la mayor carga individual.
 
-Se utiliza la integración oficial `@astrojs/sitemap`, que genera `sitemap-index.xml` y `sitemap-0.xml` cuando se construye con `SITE_URL`. `robots.txt` apunta al índice.
+Se utiliza la integración oficial `@astrojs/sitemap`, que genera `sitemap-index.xml` y `sitemap-0.xml` cuando se construye con `SITE_URL`. `robots.txt` apunta al índice. Páginas legales pendientes y hubs sin herramientas (`/solar/`, `/reformas/`) se excluyen del sitemap.
 
 ## Variables de entorno
 

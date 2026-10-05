@@ -1,6 +1,6 @@
 import {numberIn} from './common.mjs';
 export const COOLING_META=Object.freeze({
- version:'1.0',checkedAt:'2026-10-05',wPerFrigoria:1.163,btuPerWh:3.412142,referenceHeight:2.5,
+ version:'1.1',checkedAt:'2026-10-05',wPerFrigoria:1.163,btuPerWh:3.412142,referenceHeight:2.5,
  baseFrigoriaPerM2:{mild:100,warm:125,hot:150},
  orientationFactor:{N:0.95,E:1,S:1.175,O:1.10},
  insulationFactor:{good:0.90,average:1,poor:1.15},
@@ -13,7 +13,6 @@ export function calculateCooling(raw){
  const glass=numberIn(raw.glass,{name:'glass',min:0,max:500});
  const people=numberIn(raw.people,{name:'people',min:0,max:30,integer:true});
  const internalW=numberIn(raw.internalW,{name:'internalW',min:0,max:20000});
- if(glass>area) throw Object.assign(new RangeError('glass: la superficie acristalada no puede superar la superficie de la estancia en este modelo simplificado.'),{field:'glass'});
  const climate=COOLING_META.baseFrigoriaPerM2[raw.climate];
  const orientation=COOLING_META.orientationFactor[raw.orientation];
  const insulation=COOLING_META.insulationFactor[raw.insulation];

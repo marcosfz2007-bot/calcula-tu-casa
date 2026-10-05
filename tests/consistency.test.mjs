@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {tools,categories} from '../src/lib/catalog.mjs';
+import {SITEMAP_EXCLUDED_PATHS,isSitemapPage} from '../src/lib/seo.mjs';
+import {normalizeSearchText} from '../src/lib/search.mjs';
 
 const expected=[
  'climatizacion/consumo-aire-acondicionado',
@@ -41,3 +43,24 @@ test('No hay ratings ni reviews declarados en catálogo',()=>{
 });
 
 test('Todas las herramientas tienen keywords para el buscador',()=>{for(const t of tools) assert.ok(Array.isArray(t.keywords)&&t.keywords.length>0,t.path+' sin keywords');});
+
+test('Hubs sin herramientas quedan noindex y fuera de sitemap',()=>{
+ const indexable=new Map(categories.map(c=>[c.slug,c.indexable]));
+ assert.equal(indexable.get('energia'),true);
+ assert.equal(indexable.get('climatizacion'),true);
+ assert.equal(indexable.get('aislamiento'),true);
+ assert.equal(indexable.get('solar'),false);
+ assert.equal(indexable.get('reformas'),false);
+ assert.equal(isSitemapPage('https://example.com/energia/'),true);
+ assert.equal(isSitemapPage('https://example.com/climatizacion/'),true);
+ assert.equal(isSitemapPage('https://example.com/aislamiento/'),true);
+ assert.equal(isSitemapPage('https://example.com/solar/'),false);
+ assert.equal(isSitemapPage('https://example.com/reformas/'),false);
+ assert.ok(SITEMAP_EXCLUDED_PATHS.includes('/solar/'));
+ assert.ok(SITEMAP_EXCLUDED_PATHS.includes('/reformas/'));
+});
+test('Buscador normaliza tildes y diacríticos',()=>{
+ assert.equal(normalizeSearchText('Frigorías'),'frigorias');
+ assert.equal(normalizeSearchText('aislamiento térmico'),'aislamiento termico');
+ assert.ok(normalizeSearchText('Calculadora de frigorías').includes(normalizeSearchText('frigorias')));
+});
