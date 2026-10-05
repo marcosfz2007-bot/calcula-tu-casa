@@ -1,40 +1,78 @@
-# QA — entrega inicial, 5 de octubre de 2026
+# QA — V1
+
+Fecha de cierre técnico: 5 de octubre de 2026.
 
 ## Alcance
 
-Sprints 0 y 1: dos calculadoras, portada, catálogo, dos hubs y contenido de metodología. Las páginas de contacto y legales son borradores expresamente identificados y no indexables. Las demás calculadoras del roadmap quedan pendientes.
+La V1 contiene ocho calculadoras funcionales, cinco hubs canónicos, directorio global con buscador local, navegación responsive, páginas institucionales, legales con placeholders, Schema, interlinking, placeholders AdSense, sitemap oficial y CI.
 
-## Verificado
+## Tests definidos
 
-- `npm test`: 23 pruebas aprobadas. Casos normales, mínimos, máximos, cero, negativos, vacío, coma y punto decimal, referencia manual y ramas de validación/sensibilidad.
-- `npm run build`: 15 páginas HTML generadas, robots y sitemap.
-- Compilación con SITE_URL de prueba: canonical absoluta en las páginas y JSON-LD válido en las dos calculadoras. Sin SITE_URL: noindex y sin URL ficticia.
-- La interfaz usa etiquetas, unidades, errores asociados, foco en el primer error, aria-live y restablecimiento.
-- No hay código de publicidad, analítica, cookies, localStorage ni envío de valores.
+`tests/calculators.test.mjs` incluye 8 casos por cada calculadora:
 
-## Casos con resultados esperados
+1. normal;
+2. mínimo;
+3. máximo razonable;
+4. cero;
+5. negativo;
+6. vacío;
+7. decimal con coma;
+8. caso manual verificable.
 
-| Caso | Esperado |
-| --- | --- |
-| AC: 1000 W, 8 h, 30 días, 60 %, 1 equipo, 0,20 €/kWh | 144 kWh/mes; 28,80 €/mes |
-| AC anterior durante 3 meses | 432 kWh; 86,40 € |
-| Radiador: 1500 W, 5 h, 30 días, 70 %, 0,20 €/kWh | 157,5 kWh/mes; 31,50 €/mes |
-| Radiador anterior durante 4 meses | 630 kWh; 126 € |
-| 1000 W, 1 h, 1 día, 100 %, 0,20 €/kWh | 1 kWh; 0,20 € |
-| Potencia, horas o utilización cero | Consumo y coste cero |
-| Negativo, vacío, NaN o Infinity | Error de validación; no se calcula |
-| Precio 0,25 y 0.25 | Mismo resultado |
-| 31 días/mes × 12 meses | Error: excede 365 días |
-| Máximo: 30000 W, 24 h, 30 días, 100 %, 20 equipos, 5 €/kWh, 12 meses | 25.920.000 €/año; escenario superior limitado a 24 h |
+Son 64 pruebas de calculadoras.
 
-## Pendiente de verificación visual
+`tests/consistency.test.mjs` añade 6 comprobaciones:
 
-La compilación y las pruebas matemáticas no acreditan una auditoría WCAG o Core Web Vitals. La descarga de Chromium en el entorno de trabajo no se pudo completar. Revisar en navegador real a 360 y 1280 px: ausencia de desbordamiento, teclado, mensajes, cálculos con coma y restablecimiento. Medir rendimiento en el alojamiento final.
+- exactamente ocho rutas canónicas;
+- ausencia de duplicidades;
+- retirada de la URL antigua del radiador;
+- metadatos obligatorios y 5–7 FAQ;
+- enlaces internos a herramientas existentes;
+- categorías válidas y ausencia de ratings/reviews inventados.
 
-## Antes del lanzamiento
+Total definido: **70 tests**.
 
-1. Configurar dominio y contacto real.
-2. Completar y revisar textos legales según titular y tratamiento real. Retirar noindex solo de las páginas terminadas.
-3. Conectar Cloudflare Pages y comprobar producción, HTTPS, 404, sitemap y encabezados.
-4. Completar más herramientas antes de solicitar monetización según el quality gate del documento.
-5. Si se activa AdSense, integrar CMP y ads.txt reales y verificar aceptar, rechazar y revocar. No insertar identificadores ficticios.
+## Verificación de ejecución
+
+Pendiente de registrar el resultado del workflow final del Pull Request. Este apartado se actualizará únicamente con resultados realmente ejecutados.
+
+Comandos configurados en CI:
+
+```bash
+npm ci
+npm test
+npm run build
+SITE_URL=https://example.com npm run build
+```
+
+## Build esperado
+
+Astro estático, salida `dist/`. Con `SITE_URL`, `@astrojs/sitemap` debe generar `sitemap-index.xml` y `sitemap-0.xml`. Sin `SITE_URL`, Astro puede omitir el sitemap y las páginas llevan `noindex` por diseño.
+
+La V1 define 24 páginas HTML esperadas: portada, directorio, cinco hubs, ocho calculadoras, ocho páginas institucionales/legales y 404.
+
+## Revisión visual
+
+Pendiente de navegador real. La CI no sustituye una auditoría visual, WCAG ni Core Web Vitals. Antes del lanzamiento revisar al menos:
+
+- 360 px y escritorio;
+- menú hamburguesa, Escape y foco;
+- inputs dinámicos de capas/aparatos;
+- buscador con teclado;
+- mensajes de error;
+- ausencia de desbordamiento;
+- posiciones reservadas para anuncios;
+- canonical/Schema en el dominio final.
+
+## Placeholders y tareas dependientes del lanzamiento
+
+- `[NOMBRE_TITULAR]`
+- `[NIF]`
+- `[DOMICILIO]`
+- `[EMAIL_CONTACTO]`
+- `[DOMINIO]`
+- dominio real para `SITE_URL`;
+- CMP certificada cuando se active publicidad en el EEE;
+- cuenta AdSense y entrada real de `ads.txt`;
+- publisher ID real, nunca ficticio;
+- validación final en Search Console/Schema/Rich Results cuando el dominio esté publicado.
