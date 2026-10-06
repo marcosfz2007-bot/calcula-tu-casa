@@ -19,7 +19,7 @@ const walk=(dir)=>{
 };
 
 test('Sincronización main · catálogo e indexación se conservan',()=>{
-  assert.equal(tools.length,21);
+  assert.equal(tools.length,31);
   assert.equal(categories.find(c=>c.slug==='solar')?.indexable,true);
   assert.equal(categories.find(c=>c.slug==='reformas')?.indexable,true);
 });
@@ -56,4 +56,9 @@ test('Sincronización main · no se activan scripts AdSense Analytics ni CMP',()
   assert.doesNotMatch(source,/pagead2\.googlesyndication\.com|adsbygoogle/i);
   assert.doesNotMatch(source,/googletagmanager\.com\/gtag\/js|google-analytics\.com/i);
   assert.doesNotMatch(source,/quantcast\.mgr|didomi|consentmanager|cookiebot/i);
+});
+
+test('Sincronización main · ads.txt y verificación Search Console permanecen',()=>{
+  assert.match(read('public/ads.txt'),/^google\.com, pub-[0-9]+, DIRECT, f08c47fec0942fa0/m);
+  assert.match(read('public/google16f16c402ad0eb27.html'),/google-site-verification:/);
 });
