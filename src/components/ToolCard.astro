@@ -1,4 +1,22 @@
 ---
 const {tool}=Astro.props;
+const iconPaths={
+  energia:['M13 2 5.5 13h6L10.8 22 18.5 11h-6L13 2Z'],
+  climatizacion:['M12 2v20M4.2 6.5l15.6 11M19.8 6.5l-15.6 11M9.5 4 12 6.5 14.5 4M9.5 20l2.5-2.5 2.5 2.5'],
+  aislamiento:['M4 5.5h16v4H4zM4 14.5h16v4H4zM8 9.5v5M16 9.5v5'],
+  solar:['M12 4.2V2M12 22v-2.2M19.8 12H22M2 12h2.2M17.5 6.5l1.6-1.6M4.9 19.1l1.6-1.6M17.5 17.5l1.6 1.6M4.9 4.9l1.6 1.6M16.2 12a4.2 4.2 0 1 1-8.4 0 4.2 4.2 0 0 1 8.4 0Z'],
+  reformas:['M14.7 6.3a4 4 0 0 0-5-5L12 3.6 9.6 6 7.3 3.7a4 4 0 0 0 5 5L4 17l3 3 8.3-8.3a4 4 0 0 0-.6-5.4Z']
+};
+const paths=iconPaths[tool.categorySlug]||iconPaths.energia;
 ---
-<a class="card tool-card" href={`/${tool.path}/`} data-tool-card data-search={`${tool.short} ${tool.category} ${tool.description} ${(tool.keywords||[]).join(' ')} ${tool.path}`.toLowerCase()}><span class="tool-icon" aria-hidden="true">{tool.icon}</span><p class="eyebrow">{tool.category}</p><h3>{tool.short}</h3><p class="muted">{tool.description}</p><span class="link">Abrir calculadora →</span></a>
+<a class={'card tool-card category-'+tool.categorySlug} href={'/'+tool.path+'/'} data-tool-card data-search={(tool.short+' '+tool.category+' '+tool.description+' '+(tool.keywords||[]).join(' ')+' '+tool.path).toLowerCase()}>
+  <span class="tool-card-top">
+    <span class="tool-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">{paths.map(d=><path d={d}/>)}</svg>
+    </span>
+    <span class="tool-category">{tool.category}</span>
+  </span>
+  <h3>{tool.short}</h3>
+  <p class="muted">{tool.description}</p>
+  <span class="link">Calcular <span aria-hidden="true">→</span></span>
+</a>

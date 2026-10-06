@@ -1,14 +1,31 @@
 ---
 import ToolCard from './ToolCard.astro';
-const {tools}=Astro.props;
+const {tools,compact=false}=Astro.props;
 ---
-<div class="search-tools"><label for="tool-search">Buscar calculadora</label><input id="tool-search" type="search" autocomplete="off" placeholder="Ej.: termo, aislamiento, frigorías…" aria-describedby="search-count"/><p class="help" id="search-count" aria-live="polite">{tools.length} herramientas disponibles</p><div class="grid" data-tool-grid>{tools.map(tool=><ToolCard tool={tool}/>)}</div></div>
+<div class="search-panel search-tools" data-search-tools data-compact={compact?'true':'false'}>
+  <label for={compact?'tool-search-home':'tool-search-directory'}>¿Qué quieres calcular?</label>
+  <div class="search-input-wrap">
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="6.8"/><path d="m16.2 16.2 4.2 4.2"/></svg>
+    <input id={compact?'tool-search-home':'tool-search-directory'} type="search" autocomplete="off" placeholder="Ej.: frigorías, pintura, solar, factura…" aria-describedby={compact?'search-count-home':'search-count-directory'}/>
+  </div>
+  <p class="help" id={compact?'search-count-home':'search-count-directory'} data-search-count aria-live="polite">{compact?tools.length+' herramientas disponibles · escribe para filtrar':tools.length+' herramientas disponibles'}</p>
+  <div class="grid search-results" data-tool-grid hidden={compact}>{tools.map(tool=><ToolCard tool={tool}/>)}</div>
+  <p class="search-empty" data-search-empty hidden>No hay coincidencias. Prueba con otro término o explora el directorio completo.</p>
+  {compact&&<a class="link search-all-link" href="/calculadoras/">Ver las {tools.length} calculadoras →</a>}
+  <noscript><p class="help">El buscador necesita JavaScript. Puedes abrir el <a href="/calculadoras/">directorio completo de calculadoras</a>.</p></noscript>
+</div>
 <script>
 import {normalizeSearchText} from '../lib/search.mjs';
-const input=document.querySelector('#tool-search');
-const cards=[...document.querySelectorAll('[data-tool-card]')];
-const count=document.querySelector('#search-count');
-if(input){
+document.querySelectorAll('[data-search-tools]').forEach(root=>{
+ if(root.dataset.ready==='true')return;
+ root.dataset.ready='true';
+ const input=root.querySelector('input[type=search]');
+ const cards=[...root.querySelectorAll('[data-tool-card]')];
+ const count=root.querySelector('[data-search-count]');
+ const grid=root.querySelector('[data-tool-grid]');
+ const empty=root.querySelector('[data-search-empty]');
+ const compact=root.dataset.compact==='true';
+ if(!input||!count||!grid)return;
  input.addEventListener('input',()=>{
    const q=normalizeSearchText(input.value);
    let visible=0;
@@ -17,7 +34,11 @@ if(input){
      card.hidden=!show;
      if(show)visible++;
    });
-   count.textContent=visible+' herramienta'+(visible===1?'':'s')+' encontrada'+(visible===1?'':'s');
+   grid.hidden=compact&&!q;
+   if(empty)empty.hidden=!q||visible>0;
+   count.textContent=!q&&compact
+     ? cards.length+' herramientas disponibles · escribe para filtrar'
+     : visible+' herramienta'+(visible===1?'':'s')+' encontrada'+(visible===1?'':'s');
  });
-}
+});
 </script>

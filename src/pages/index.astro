@@ -1,6 +1,53 @@
 ---
 import Base from '../layouts/Base.astro';
 import SearchTools from '../components/SearchTools.astro';
-import {tools} from '../lib/catalog.mjs';
+import ToolCard from '../components/ToolCard.astro';
+import {tools,categories,toolByPath} from '../lib/catalog.mjs';
+const featuredPaths=['climatizacion/calculadora-frigorias','energia/simulador-factura-electrica','solar/numero-placas-solares','reformas/presupuesto-reforma-integral'];
+const featured=featuredPaths.map(path=>toolByPath.get(path)).filter(Boolean);
 ---
-<Base title="Calculadoras para hogar, energía, climatización y aislamiento" description="Calcula primero y decide después: herramientas gratuitas, sin registro, con fórmulas, fuentes y procesamiento transparente."><section class="hero"><p class="eyebrow">TU HOGAR, CON LAS CUENTAS CLARAS</p><h1>Calcula primero.<br/>Decide después.</h1><p class="lead">Herramientas para estimar consumo, factura, potencia, climatización, ventilación, solar, agua caliente y aislamiento. Sin registro, sin llamadas y con la metodología visible.</p><a class="button" href="#herramientas">Encontrar una calculadora</a><div class="mt-6"><span class="badge">{tools.length} calculadoras</span><span class="badge">Procesamiento transparente</span><span class="badge">Sin teléfono</span><span class="badge">Fórmulas transparentes</span></div></section><section id="herramientas" class="section"><p class="eyebrow">EMPIEZA POR UNA PREGUNTA</p><h2>¿Qué quieres calcular?</h2><SearchTools tools={tools}/></section><section class="how"><div class="steps"><div><strong>01 · Introduce tus datos</strong><p class="muted">Usa la etiqueta de tus equipos o las medidas de tu vivienda cuando proceda.</p></div><div><strong>02 · Revisa las hipótesis</strong><p class="muted">Los factores orientativos se identifican y no se presentan como datos universales.</p></div><div><strong>03 · Sigue el siguiente cálculo</strong><p class="muted">Las herramientas se enlazan según la siguiente decisión natural.</p></div></div></section></Base>
+<Base title="Calculadoras para hogar, energía, climatización y aislamiento" description="Calcula primero y decide después: herramientas gratuitas, sin registro, con fórmulas, fuentes y procesamiento transparente.">
+  <section class="home-hero">
+    <div>
+      <p class="eyebrow">TU HOGAR, CON LAS CUENTAS CLARAS</p>
+      <h1>Calcula primero.<br/>Decide después.</h1>
+      <p class="lead">Calculadoras gratuitas para tomar mejores decisiones sobre tu casa, energía y reformas. Sin registro, sin llamadas y con la metodología visible.</p>
+      <div class="hero-actions"><a class="button" href="#buscar">Buscar una calculadora</a><a class="button secondary" href="/calculadoras/">Ver todas</a></div>
+      <div class="mt-6"><span class="badge">Sin registro</span><span class="badge">Fórmula visible</span><span class="badge">Datos privados</span></div>
+    </div>
+    <aside class="hero-proof" aria-label="Principios de Calcula tu Casa">
+      <p class="proof-kicker">Herramientas publicadas</p>
+      <p class="proof-number">{tools.length}</p>
+      <ul class="proof-list"><li>Resultado inmediato y gratuito</li><li>Hipótesis y limitaciones visibles</li><li>Fuentes identificadas y metodología trazable</li></ul>
+    </aside>
+  </section>
+
+  <section id="buscar" class="section">
+    <SearchTools tools={tools} compact />
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div><p class="eyebrow">EMPIEZA POR AQUÍ</p><h2>Herramientas principales</h2></div><p class="muted">Una selección transversal para empezar a calcular climatización, factura, solar y reformas sin inventar rankings de popularidad.</p></div>
+    <div class="grid featured-grid">{featured.map(tool=><ToolCard tool={tool}/>)}</div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div><p class="eyebrow">EXPLORA POR TEMA</p><h2>Cinco áreas, una misma forma de decidir</h2></div><p class="muted">Encuentra rápidamente las herramientas relacionadas con el problema que quieres resolver.</p></div>
+    <div class="category-grid">{categories.map(category=>{
+      const count=tools.filter(tool=>tool.categorySlug===category.slug).length;
+      return <a class="category-card" href={'/'+category.slug+'/'}>
+        <strong>{category.name}</strong>
+        <span>{category.description}</span>
+        <span class="category-count">{count} herramienta{count===1?'':'s'} →</span>
+      </a>;
+    })}</div>
+  </section>
+
+  <section class="how">
+    <div class="steps">
+      <div><strong>01 · Introduce tus datos</strong><p class="muted">Usa la etiqueta de tus equipos o las medidas de tu vivienda cuando proceda.</p></div>
+      <div><strong>02 · Revisa las hipótesis</strong><p class="muted">Los factores orientativos se identifican y no se presentan como datos universales.</p></div>
+      <div><strong>03 · Sigue el siguiente cálculo</strong><p class="muted">Las herramientas se enlazan según la siguiente decisión natural.</p></div>
+    </div>
+  </section>
+</Base>
