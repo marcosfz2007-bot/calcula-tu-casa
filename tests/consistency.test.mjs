@@ -16,11 +16,20 @@ const expected=[
  'climatizacion/suelo-radiante-tubo-circuitos',
  'energia/ventilacion-vivienda',
  'energia/simulador-factura-electrica',
- 'solar/produccion-placas-solares'
+ 'solar/produccion-placas-solares',
+ 'climatizacion/potencia-radiadores-elementos',
+ 'solar/numero-placas-solares',
+ 'energia/comparador-coste-calefaccion',
+ 'reformas/presupuesto-reforma-integral',
+ 'reformas/reforma-bano',
+ 'reformas/reforma-cocina',
+ 'solar/amortizacion-placas-solares',
+ 'energia/rentabilidad-aerotermia',
+ 'reformas/comparador-reformas-energeticas'
 ];
 
-test('Catálogo contiene exactamente las doce rutas canónicas',()=>{
- assert.equal(tools.length,12);
+test('Catálogo contiene exactamente las veintiuna rutas canónicas',()=>{
+ assert.equal(tools.length,21);
  assert.deepEqual(new Set(tools.map(t=>t.path)),new Set(expected));
 });
 test('No hay rutas duplicadas',()=>assert.equal(new Set(tools.map(t=>t.path)).size,tools.length));
@@ -54,17 +63,34 @@ test('Hubs sin herramientas quedan noindex y fuera de sitemap',()=>{
  assert.equal(indexable.get('climatizacion'),true);
  assert.equal(indexable.get('aislamiento'),true);
  assert.equal(indexable.get('solar'),true);
- assert.equal(indexable.get('reformas'),false);
+ assert.equal(indexable.get('reformas'),true);
  assert.equal(isSitemapPage('https://example.com/energia/'),true);
  assert.equal(isSitemapPage('https://example.com/climatizacion/'),true);
  assert.equal(isSitemapPage('https://example.com/aislamiento/'),true);
  assert.equal(isSitemapPage('https://example.com/solar/'),true);
- assert.equal(isSitemapPage('https://example.com/reformas/'),false);
+ assert.equal(isSitemapPage('https://example.com/reformas/'),true);
  assert.ok(!SITEMAP_EXCLUDED_PATHS.includes('/solar/'));
- assert.ok(SITEMAP_EXCLUDED_PATHS.includes('/reformas/'));
+ assert.ok(!SITEMAP_EXCLUDED_PATHS.includes('/reformas/'));
 });
 test('Buscador normaliza tildes y diacríticos',()=>{
  assert.equal(normalizeSearchText('Frigorías'),'frigorias');
  assert.equal(normalizeSearchText('aislamiento térmico'),'aislamiento termico');
  assert.ok(normalizeSearchText('Calculadora de frigorías').includes(normalizeSearchText('frigorias')));
+});
+
+test('Contadores de interfaz no codifican 8 o 12 herramientas',async()=>{
+ const {readFileSync}=await import('node:fs');
+ const read=(path)=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
+ for(const path of ['src/pages/index.astro','src/pages/calculadoras/index.astro','src/components/Hub.astro','src/pages/[info].astro']){
+   const source=read(path);
+   assert.doesNotMatch(source,/\b(?:8|12) calculadoras\b|\b(?:ocho|doce) (?:calculadoras|herramientas)\b/i,path);
+ }
+ assert.match(read('src/pages/index.astro'),/tools\.length/);
+ assert.match(read('src/pages/calculadoras/index.astro'),/tools\.length/);
+});
+test('Reformas y Solar están indexables y fuera de exclusiones del sitemap',()=>{
+ assert.equal(categories.find(c=>c.slug==='reformas')?.indexable,true);
+ assert.equal(categories.find(c=>c.slug==='solar')?.indexable,true);
+ assert.ok(!SITEMAP_EXCLUDED_PATHS.includes('/reformas/'));
+ assert.ok(!SITEMAP_EXCLUDED_PATHS.includes('/solar/'));
 });
