@@ -17,7 +17,7 @@ Solar pasa a ser indexable y entra en sitemap. Reformas continúa `noindex, foll
 
 Se mantienen los 86 tests previos y se añaden pruebas de regresión para las cuatro calculadoras nuevas, además de adaptar las comprobaciones de catálogo/indexación a 12 rutas.
 
-Ejecución real del cierre técnico (workflow `Verify` sobre `723751c4`):
+Ejecución real registrada por el workflow `Verify` de la rama. No se fija un SHA en este documento para evitar que el registro quede obsoleto tras correcciones documentales; la validación de cierre debe corresponder al HEAD actual del PR #2:
 
 ```text
 npm test
@@ -47,7 +47,7 @@ El job final completó correctamente `npm ci`, los 127 tests y ambos builds; `np
 
 - Ventilación: valores de HS 3 tabla 2.1 centralizados y revisados el 06/10/2026; se informa separadamente la extracción específica de cocción.
 - Factura: referencias regulatorias comprobadas el 06/10/2026; precios de comercializadora nunca se obtienen ni ocultan en código.
-- Solar: no se realizan llamadas AJAX a PVGIS porque la documentación oficial las rechaza por CORS; la consulta se abre en JRC y el JSON se procesa localmente.
+- Solar: preparar la consulta no envía datos. Cuando el usuario abre voluntariamente el enlace oficial, el navegador comunica directamente a PVGIS/JRC las coordenadas y parámetros necesarios; el JSON que posteriormente se pega o selecciona se procesa localmente.
 - Suelo radiante: el máximo por circuito es un dato editable del diseño/fabricante, no una norma universal.
 
 ## Revisión visual humana

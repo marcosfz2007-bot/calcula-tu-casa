@@ -1,6 +1,6 @@
 # Calcula tu casa
 
-Proyecto de calculadoras para hogar, energía, climatización, aislamiento, solar y ahorro. La base V1 de 8 herramientas se amplía a 12 manteniendo la misma arquitectura. El sitio se genera de forma estática con Astro, Tailwind CSS 4 compilado y JavaScript vanilla. Los cálculos se realizan localmente en el navegador.
+Proyecto de calculadoras para hogar, energía, climatización, aislamiento, solar y ahorro. La base V1 de 8 herramientas se amplía a 12 manteniendo la misma arquitectura. El sitio se genera de forma estática con Astro, Tailwind CSS 4 compilado y JavaScript vanilla. La mayoría de los cálculos se realiza localmente en el navegador y Calcula tu Casa no recibe ni almacena esos valores. En Solar, preparar la consulta no envía datos; solo al abrir voluntariamente el enlace oficial se envían las coordenadas y parámetros directamente a PVGIS/JRC, y el JSON de respuesta se procesa después localmente.
 
 ## Calculadoras publicadas
 

@@ -6,7 +6,7 @@ export const categories=[
  {slug:'reformas',name:'Reformas',indexable:false,description:'Hub preparado para estimadores por partidas, con rangos y fuentes.',future:['Reforma integral','Reforma de baño','Reforma de cocina']}
 ];
 const commonFaq=[
- ['¿Se guardan los datos que introduzco?','No. En esta V1 los cálculos se ejecutan en el navegador y los valores del formulario no se envían ni se almacenan por el código de la calculadora.'],
+ ['¿Se guardan o envían los datos que introduzco?','Calcula tu Casa no recibe ni almacena los valores de cálculo. La mayoría de las calculadoras los procesa íntegramente en el navegador. En Solar, preparar la consulta no envía nada a PVGIS: solo cuando abres voluntariamente el enlace oficial, tu navegador envía las coordenadas y parámetros necesarios directamente al JRC/PVGIS. El JSON que después pegues o selecciones se procesa localmente en tu navegador.'],
  ['¿El resultado sustituye a un profesional?','No. Es una herramienta orientativa basada en las variables e hipótesis visibles. Cuando una decisión requiera proyecto, verificación reglamentaria o dimensionado profesional, debe hacerse esa comprobación aparte.']
 ];
 export const tools=[
