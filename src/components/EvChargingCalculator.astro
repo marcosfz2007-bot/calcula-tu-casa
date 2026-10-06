@@ -1,0 +1,29 @@
+---
+---
+<noscript><p class="no-js">Activa JavaScript para utilizar la calculadora.</p></noscript>
+<div class="calculator" data-ev-charging>
+<form class="card" novalidate>
+<h2>Energía y carga</h2>
+<div><label for="evMode">Cómo defines la energía</label><select id="evMode" name="mode"><option value="battery">Por batería y SOC</option><option value="manual">Energía manual</option></select></div>
+<div class="fields mt-5" data-battery-mode>
+<div><label for="batteryCapacityKwh">Capacidad útil de batería</label><div class="input-wrap"><input id="batteryCapacityKwh" name="batteryCapacityKwh" value="" inputmode="decimal"/><span>kWh</span></div></div>
+<div><label for="socInitial">SOC inicial</label><div class="input-wrap"><input id="socInitial" name="socInitial" value="" inputmode="decimal"/><span>%</span></div></div>
+<div><label for="socTarget">SOC objetivo</label><div class="input-wrap"><input id="socTarget" name="socTarget" value="" inputmode="decimal"/><span>%</span></div></div>
+</div>
+<div class="fields mt-5" data-manual-mode hidden>
+<div><label for="manualEnergyKwh">Energía que quieres añadir</label><div class="input-wrap"><input id="manualEnergyKwh" name="manualEnergyKwh" value="" inputmode="decimal"/><span>kWh</span></div></div>
+</div>
+<div class="fields mt-5">
+<div><label for="chargerPowerKw">Potencia del cargador</label><div class="input-wrap"><input id="chargerPowerKw" name="chargerPowerKw" value="" inputmode="decimal"/><span>kW</span></div></div>
+<div><label for="vehicleAcLimitKw">Límite AC del vehículo (opcional)</label><div class="input-wrap"><input id="vehicleAcLimitKw" name="vehicleAcLimitKw" value="" inputmode="decimal"/><span>kW</span></div></div>
+<div><label for="evEfficiency">Eficiencia global de carga</label><div class="input-wrap"><input id="evEfficiency" name="efficiencyPercent" value="" inputmode="decimal"/><span>%</span></div></div>
+<div><label for="evPrice">Precio electricidad</label><div class="input-wrap"><input id="evPrice" name="price" value="" inputmode="decimal"/><span>€/kWh</span></div></div>
+<div><label for="evConsumption">Consumo vehículo (opcional)</label><div class="input-wrap"><input id="evConsumption" name="consumptionKwh100" value="" inputmode="decimal"/><span>kWh/100 km</span></div></div>
+</div>
+<p class="help mt-5">Eficiencia, potencia y precio son datos del usuario. No se descarga ninguna tarifa. El tiempo es una aproximación de energía de red / potencia efectiva y no modela curvas DC, reducción térmica o balance dinámico doméstico.</p>
+<p class="error" data-form-error aria-live="polite"></p>
+<div class="actions"><button class="button" type="submit">Calcular recarga</button><button class="button secondary" type="reset">Restablecer</button></div>
+</form>
+<section class="card result"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Recarga del vehículo</h2><div data-result aria-live="polite"><p>Introduce los datos reales de tu vehículo y cargador.</p></div></section>
+</div>
+<script>import '../lib/ev-charging-ui.mjs';</script>

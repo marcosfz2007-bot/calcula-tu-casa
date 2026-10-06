@@ -25,11 +25,21 @@ const expected=[
  'reformas/reforma-cocina',
  'solar/amortizacion-placas-solares',
  'energia/rentabilidad-aerotermia',
- 'reformas/comparador-reformas-energeticas'
+ 'reformas/comparador-reformas-energeticas',
+ 'reformas/calculadora-pintura',
+ 'reformas/calculadora-azulejos-baldosas',
+ 'reformas/suelo-laminado-tarima',
+ 'reformas/calculadora-rodapie',
+ 'reformas/calculadora-papel-pintado',
+ 'energia/calculadora-iluminacion-lux',
+ 'energia/ahorro-bombillas-led',
+ 'energia/consumo-standby',
+ 'energia/recarga-coche-electrico',
+ 'solar/bateria-solar'
 ];
 
-test('Catálogo contiene exactamente las veintiuna rutas canónicas',()=>{
- assert.equal(tools.length,21);
+test('Catálogo contiene exactamente las treinta y una rutas canónicas',()=>{
+ assert.equal(tools.length,31);
  assert.deepEqual(new Set(tools.map(t=>t.path)),new Set(expected));
 });
 test('No hay rutas duplicadas',()=>assert.equal(new Set(tools.map(t=>t.path)).size,tools.length));

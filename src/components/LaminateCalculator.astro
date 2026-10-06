@@ -1,0 +1,30 @@
+---
+---
+<noscript><p class="no-js">Activa JavaScript para utilizar la calculadora.</p></noscript>
+<div class="calculator wide-calculator" data-laminate>
+<form class="card" novalidate>
+<h2>Estancias y cajas</h2>
+<div class="dynamic-list" data-laminate-rooms>
+<div class="laminate-room" data-room>
+<input name="roomName" value="Estancia 1" aria-label="Nombre de estancia"/>
+<div class="fields three">
+<div><label>Largo <span class="input-wrap"><input name="roomLength" value="5" inputmode="decimal"/><span>m</span></span></label></div>
+<div><label>Ancho <span class="input-wrap"><input name="roomWidth" value="4" inputmode="decimal"/><span>m</span></span></label></div>
+<div><label>O superficie manual <span class="input-wrap"><input name="roomArea" value="" inputmode="decimal"/><span>m²</span></span></label></div>
+</div>
+<button class="button tertiary" type="button" data-remove-room>Eliminar</button>
+</div>
+</div>
+<button class="button secondary" type="button" data-add-room>Añadir estancia</button>
+<div class="fields mt-5">
+<div><label for="lamWaste">Desperdicio/margen</label><div class="input-wrap"><input id="lamWaste" name="wastePercent" value="0" inputmode="decimal"/><span>%</span></div></div>
+<div><label for="lamCoverage">Cobertura por caja</label><div class="input-wrap"><input id="lamCoverage" name="coveragePerBoxM2" value="" inputmode="decimal"/><span>m²</span></div></div>
+<div><label for="lamPrice">Precio por caja (opcional)</label><div class="input-wrap"><input id="lamPrice" name="pricePerBox" value="" inputmode="decimal"/><span>€</span></div></div>
+</div>
+<p class="help mt-5">Si introduces superficie manual en una estancia, se usa esa cifra y se ignoran largo/ancho para esa fila. El desperdicio depende de geometría y patrón de colocación: no se impone un porcentaje universal.</p>
+<p class="error" data-form-error aria-live="polite"></p>
+<div class="actions"><button class="button" type="submit">Calcular cajas</button><button class="button secondary" type="reset">Restablecer</button></div>
+</form>
+<section class="card result"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Suelo laminado / tarima</h2><div data-result aria-live="polite"><p>Introduce la cobertura de tu caja y calcula.</p></div></section>
+</div>
+<script>import '../lib/laminate-ui.mjs';</script>

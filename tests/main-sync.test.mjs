@@ -19,7 +19,7 @@ const walk=(dir)=>{
 };
 
 test('Sincronización main · catálogo e indexación se conservan',()=>{
-  assert.equal(tools.length,21);
+  assert.equal(tools.length,31);
   assert.equal(categories.find(c=>c.slug==='solar')?.indexable,true);
   assert.equal(categories.find(c=>c.slug==='reformas')?.indexable,true);
 });
@@ -56,4 +56,27 @@ test('Sincronización main · no se activan scripts AdSense Analytics ni CMP',()
   assert.doesNotMatch(source,/pagead2\.googlesyndication\.com|adsbygoogle/i);
   assert.doesNotMatch(source,/googletagmanager\.com\/gtag\/js|google-analytics\.com/i);
   assert.doesNotMatch(source,/quantcast\.mgr|didomi|consentmanager|cookiebot/i);
+});
+
+test('Sincronización main · ads.txt y verificación Search Console permanecen',()=>{
+  assert.match(read('public/ads.txt'),/^google\.com, pub-[0-9]+, DIRECT, f08c47fec0942fa0/m);
+  assert.match(read('public/google16f16c402ad0eb27.html'),/google-site-verification:/);
+});
+
+test('Cierre PR4 · env.example documenta variables legales vacías',()=>{
+  const env=read('.env.example');
+  assert.match(env,/^SITE_URL=/m);
+  assert.match(env,/^PUBLIC_CONTACT_EMAIL=$/m);
+  assert.match(env,/^LEGAL_OWNER_NAME=$/m);
+  assert.match(env,/^LEGAL_NIF=$/m);
+  assert.match(env,/^LEGAL_ADDRESS=$/m);
+});
+
+test('Cierre PR4 · batería aclara que el excedente se comprueba para un solo día',()=>{
+  const catalog=read('src/lib/catalog.mjs');
+  const ui=read('src/lib/calculator-ui.mjs');
+  assert.match(catalog,/excedente solar disponible en un día/i);
+  assert.match(catalog,/No simula varios días/i);
+  assert.match(ui,/excedente de un día cargaría completamente la batería dimensionada, considerando pérdidas/i);
+  assert.match(ui,/no simula varios días/i);
 });
