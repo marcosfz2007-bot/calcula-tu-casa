@@ -16,4 +16,37 @@ const pages={
 };
 const page=pages[info];const pending=['contacto','aviso-legal','privacidad','cookies'].includes(info);
 ---
-<Base title={page.title} description={page.intro} noindex={pending}><article class="article hero"><p class="eyebrow">TRANSPARENCIA DEL PROYECTO</p><h1>{page.title}</h1><p class="lead">{page.intro}</p>{page.body.map(p=><p>{p}</p>)}{info==='sobre-nosotros'&&<p><a class="link" href="/calculadoras/">Ver las {tools.length} calculadoras →</a></p>}{info==='contacto'&&email&&<a class="button" href={`mailto:${email}`}>Escribir a {email}</a>}<p class="help">Última revisión: 6 de octubre de 2026.</p></article></Base>
+<Base title={page.title} description={page.intro} noindex={pending}><article class="article hero"><p class="eyebrow">TRANSPARENCIA DEL PROYECTO</p><h1>{page.title}</h1><p class="lead">{page.intro}</p>{page.body.map(p=><p>{p}</p>)}{info==='sobre-nosotros'&&<p><a class="link" href="/calculadoras/">Ver las {tools.length} calculadoras →</a></p>}{info==='contacto'&&email&&<div data-contact-actions><p><strong>Correo:</strong> <a class="link" href={`mailto:${email}`}>{email}</a></p><div class="actions"><a class="button" href={`mailto:${email}`}>Escribir correo</a><button class="button secondary" type="button" data-copy-email={email}>Copiar dirección</button></div><p class="help" data-copy-status aria-live="polite"></p></div>}<p class="help">Última revisión: 6 de octubre de 2026.</p></article></Base>
+<script>
+  const copyButton=document.querySelector('[data-copy-email]');
+  const copyStatus=document.querySelector('[data-copy-status]');
+  if(copyButton instanceof HTMLButtonElement){
+    copyButton.addEventListener('click',async()=>{
+      const email=copyButton.dataset.copyEmail||'';
+      if(!email)return;
+      try{
+        if(navigator.clipboard?.writeText){
+          await navigator.clipboard.writeText(email);
+        }else{
+          const textarea=document.createElement('textarea');
+          textarea.value=email;
+          textarea.setAttribute('readonly','');
+          textarea.style.position='absolute';
+          textarea.style.left='-9999px';
+          document.body.append(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          textarea.remove();
+        }
+        if(copyStatus)copyStatus.textContent='Dirección copiada al portapapeles.';
+        copyButton.textContent='Copiada';
+        window.setTimeout(()=>{
+          copyButton.textContent='Copiar dirección';
+          if(copyStatus)copyStatus.textContent='';
+        },2500);
+      }catch{
+        if(copyStatus)copyStatus.textContent='No se ha podido copiar automáticamente. Selecciona la dirección mostrada arriba.';
+      }
+    });
+  }
+</script>
