@@ -1,9 +1,9 @@
 export const categories=[
- {slug:'energia',name:'Energía',indexable:true,description:'Calcula consumos, factura, ventilación, costes de calefacción y rentabilidad energética con tus propios datos.',future:[]},
+ {slug:'energia',name:'Energía',indexable:true,description:'Calcula consumos, factura, ventilación, calefacción, iluminación, standby y recarga eléctrica con tus propios datos.',future:[]},
  {slug:'climatizacion',name:'Climatización',indexable:true,description:'Dimensiona climatización, suelo radiante y radiadores hidráulicos con modelos transparentes y editables.',future:[]},
  {slug:'aislamiento',name:'Aislamiento',indexable:true,description:'Comprueba condensación y parámetros térmicos básicos de cerramientos.',future:['Ahorro por aislamiento','Puentes térmicos simplificados']},
- {slug:'solar',name:'Solar',indexable:true,description:'Estima producción, dimensionado y amortización fotovoltaica utilizando datos del usuario y resultados oficiales de PVGIS/JRC.',future:[]},
- {slug:'reformas',name:'Reformas',indexable:true,description:'Presupuesta reformas por partidas y compara actuaciones energéticas sin precios nacionales ocultos.',future:[]}
+ {slug:'solar',name:'Solar',indexable:true,description:'Estima producción, dimensionado, amortización y almacenamiento fotovoltaico utilizando datos del usuario y resultados oficiales de PVGIS/JRC.',future:[]},
+ {slug:'reformas',name:'Reformas',indexable:true,description:'Presupuesta reformas y calcula materiales domésticos por mediciones, fichas de producto y parámetros editables.',future:[]}
 ];
 const commonFaq=[
  ['¿Se guardan o envían los datos que introduzco?','Calcula tu Casa no recibe ni almacena los valores de cálculo. La mayoría de las calculadoras los procesa íntegramente en el navegador. En Solar, preparar la consulta no envía nada a PVGIS: solo cuando abres voluntariamente el enlace oficial, tu navegador envía las coordenadas y parámetros necesarios directamente al JRC/PVGIS. El JSON que después pegues o selecciones se procesa localmente en tu navegador.'],
@@ -96,7 +96,7 @@ export const tools=[
   limitations:'Los factores 45/65/85 % son hipótesis del simulador, no coeficientes reglamentarios ni una recomendación contractual. El modelo solo garantiza que cada escenario no caiga por debajo de la carga individual máxima.',
   example:'Con un único aparato de 8 kW, los tres escenarios son como mínimo 8 kW. Con varios aparatos, se toma el mayor valor entre la carga individual máxima y la suma nominal multiplicada por el factor.',
   sources:[['Metodología e hipótesis del proyecto','/metodologia/']],
-  related:['energia/consumo-electrodomesticos','climatizacion/consumo-aire-acondicionado','energia/termo-electrico'],
+  related:['energia/consumo-electrodomesticos','energia/recarga-coche-electrico','energia/consumo-standby','climatizacion/consumo-aire-acondicionado'],
   faqs:[['¿Por qué no suma todo y recomienda esa cifra?','Porque muchos aparatos no funcionan a la vez. La suma nominal se muestra, pero además se calculan escenarios de simultaneidad.'],['¿Los factores 45/65/85 % son oficiales?','No. Son hipótesis transparentes de esta herramienta para comparar escenarios.'],['¿Puedo editar la potencia de cada aparato?','Sí. Debes usar la potencia de tus equipos, no un valor genérico.'],['¿Incluye un cargador de vehículo eléctrico?','Sí, como opción editable, igual que el resto de aparatos.'],['¿Qué significa margen?','La diferencia entre la suma nominal y el escenario habitual estimado; no es un margen contractual recomendado.'],...commonFaq]
  },
  {
@@ -156,7 +156,7 @@ export const tools=[
   example:'Introduce coordenadas, 5 kWp, orientación e inclinación; abre la consulta oficial PVGIS y procesa el JSON para ver kWh/año, kWh/kWp·año, meses y rango anual ±1 desviación estándar cuando PVGIS la facilita.',
   methodologyDetails:['Se usa el endpoint oficial PVGIS 5.3 PVcalc del Joint Research Centre.','Azimut PVGIS: 0° sur, −90° este y +90° oeste. Las pérdidas son el porcentaje introducido en la petición.','PVGIS documenta E_m como producción mensual media, E_y como producción anual media y SD_y como variabilidad interanual anual.','La API de PVGIS rechaza AJAX/CORS desde navegador; por eso no se hace fetch desde esta web ni se usa una clave privada. El JSON se procesa localmente.'],
   sources:[['JRC · PVGIS 5.3 API non-interactive service','https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/using-pvgis-5/api-non-interactive-service_en'],['JRC · PVGIS grid-connected PV performance tool','https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/pvgis-tools/grid-connected-pv_en']],
-  related:['solar/numero-placas-solares','solar/amortizacion-placas-solares','energia/simulador-factura-electrica','energia/consumo-electrodomesticos'],
+  related:['solar/numero-placas-solares','solar/amortizacion-placas-solares','solar/bateria-solar','energia/simulador-factura-electrica'],
   faqs:[['¿Por qué la web no consulta PVGIS automáticamente?','El JRC indica que su API no permite acceso AJAX desde navegador por CORS. Esta V1 respeta esa limitación.'],['¿Se envían mis coordenadas a Calcula tu casa?','No. Solo se envían al JRC cuando tú abres la consulta oficial en otra pestaña.'],['¿Qué significa kWh/kWp?','Es la producción anual dividida por la potencia pico instalada, útil para comparar rendimiento específico.'],['¿Qué es el rango mostrado?','Cuando PVGIS aporta SD_y se muestra E_y ± una desviación estándar como variabilidad interanual, no como garantía.'],['¿Incluye sombras de árboles o edificios?','No necesariamente. El resultado depende de los datos y horizonte considerados por PVGIS y no sustituye un estudio de sombras local.'],...commonFaq]
  },
  {
@@ -181,7 +181,7 @@ export const tools=[
   example:'Con 5.000 kWh/año, objetivo 80 %, paneles de 450 Wp y una producción específica de 1.400 kWh/kWp·año introducida por el usuario, se calculan los kWp y se redondea al panel entero superior.',
   methodologyDetails:['La producción específica debe proceder de PVGIS/JRC o de una fuente identificada por el usuario; no se asigna irradiación por provincia.','El JSON oficial de la calculadora PVGIS existente puede reutilizarse: se procesa localmente para extraer E_y/kWp.','El redondeo a panel entero puede hacer que la cobertura anual teórica supere ligeramente el objetivo.'],
   sources:[['JRC · PVGIS 5.3 API y parámetros PVcalc','https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/using-pvgis-5/api-non-interactive-service_en'],['JRC · PVGIS, rendimiento de sistemas fotovoltaicos conectados a red','https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/pvgis-tools/grid-connected-pv_en']],
-  related:['solar/produccion-placas-solares','solar/amortizacion-placas-solares','energia/simulador-factura-electrica'],
+  related:['solar/produccion-placas-solares','solar/amortizacion-placas-solares','solar/bateria-solar','energia/simulador-factura-electrica'],
   faqs:[['¿Cobertura anual es autoconsumo?','No. Cobertura anual compara producción y consumo anuales; autoconsumo mide qué parte de la producción se consume cuando está disponible.'],['¿De dónde saco kWh/kWp·año?','Puedes reutilizar el JSON oficial de PVGIS o introducir manualmente un valor de una fuente identificable.'],['¿Por qué se redondea hacia arriba?','Porque no se puede instalar una fracción de panel en este modelo.'],['¿Comprueba si caben?','Si introduces superficie disponible, compara el área estimada de los paneles con ella.'],['¿Calcula baterías?','No. El dimensionado de almacenamiento requiere otro modelo y perfiles temporales.'],...commonFaq]
  },
  {
@@ -218,7 +218,7 @@ export const tools=[
   example:'Para un baño de 5 m² y 20 m² de paredes, la herramienta utiliza esas mediciones en pavimento y alicatado y suma las partidas fijas que selecciones.',
   methodologyDetails:['Reutiliza la misma configuración y lógica común de reformas que la calculadora integral.','Electrodomésticos/marcas no intervienen; ducha, mampara y mueble pueden excluirse.','Los costes son entradas del usuario y no factores geográficos automáticos.'],
   sources:[['Junta de Andalucía · BCCA, actualización enero 2024','https://www.juntadeandalucia.es/organismos/viviendajuventudyordenaciondelterritorio/areas/vivienda-rehabilitacion/planes-instrumentos/paginas/bcca-ene-2024.html'],['BOE · Reglamento general de contratación, precios unitarios','https://www.boe.es/buscar/act.php?id=BOE-A-2001-19995']],
-  related:['reformas/presupuesto-reforma-integral','reformas/reforma-cocina','reformas/comparador-reformas-energeticas'],
+  related:['reformas/calculadora-azulejos-baldosas','reformas/calculadora-pintura','reformas/presupuesto-reforma-integral','reformas/reforma-cocina'],
   faqs:[['¿Cómo se usan los m²?','La superficie de suelo se aplica a demolición/pavimento y la de paredes a revestimientos.'],['¿Puedo excluir mampara o mueble?','Sí. Son partidas opcionales.'],['¿Los sanitarios tienen precio precargado?','No. Introduces tu rango según la calidad elegida.'],['¿Incluye mano de obra?','Solo en la medida en que la incluyas en los precios unitarios que uses.'],['¿Por qué hay tres resultados?','Para expresar la incertidumbre del presupuesto sin falsa precisión.'],...commonFaq]
  },
  {
@@ -230,7 +230,7 @@ export const tools=[
   example:'La superficie mide pavimentos/demolición; metros lineales miden muebles y encimera; electrodomésticos pueden incluirse como partida total o excluirse.',
   methodologyDetails:['Muebles y encimera se calculan por metros lineales introducidos.','Los electrodomésticos son una partida total manual y opcional.','No existe corrección provincial automática.'],
   sources:[['Junta de Andalucía · BCCA, actualización enero 2024','https://www.juntadeandalucia.es/organismos/viviendajuventudyordenaciondelterritorio/areas/vivienda-rehabilitacion/planes-instrumentos/paginas/bcca-ene-2024.html'],['BOE · Reglamento general de contratación, precios unitarios','https://www.boe.es/buscar/act.php?id=BOE-A-2001-19995']],
-  related:['reformas/presupuesto-reforma-integral','reformas/reforma-bano','reformas/comparador-reformas-energeticas'],
+  related:['reformas/calculadora-azulejos-baldosas','reformas/suelo-laminado-tarima','reformas/presupuesto-reforma-integral','reformas/reforma-bano'],
   faqs:[['¿Los electrodomésticos son obligatorios?','No. Puedes excluir esa partida o introducir un total manual.'],['¿Cómo se calcula el mobiliario?','Con los metros lineales de muebles y el rango €/m que introduzcas.'],['¿Cómo se calcula la encimera?','Con metros lineales y tu rango €/m.'],['¿Incluye IVA?','Depende del criterio de los precios que introduzcas; úsalo de forma coherente.'],['¿Por qué no hay precios por marca?','Para no inventar ni mantener precios comerciales cambiantes.'],...commonFaq]
  },
  {
@@ -243,7 +243,7 @@ export const tools=[
   fields:[['installationCost','Coste de instalación','€',''],['aid','Ayudas introducidas manualmente','€','0'],['annualProductionKwh','Producción anual inicial','kWh/año',''],['annualConsumptionKwh','Consumo anual','kWh/año',''],['selfConsumptionPercent','Porcentaje de autoconsumo de la producción','%',''],['avoidedPrice','Precio electricidad evitada','€/kWh',''],['surplusCompensation','Compensación de excedentes','€/kWh',''],['annualMaintenance','Mantenimiento anual','€/año','0'],['degradationPercent','Degradación anual','%',''],['horizonYears','Horizonte','años','20'],['energyPriceGrowthPercent','Incremento anual precio evitado','%','0'],['discountRatePercent','Tasa de descuento para VAN','%','0']],
   methodologyDetails:['Autoconsumo significa la parte de la producción usada directamente; se limita además al consumo anual introducido.','Las ayudas solo se restan si el usuario introduce un importe; no se consulta ninguna convocatoria.','No se implementa TIR: se muestra payback acumulado y VAN para evitar complejidad numérica innecesaria.'],
   sources:[['IDAE · Guía profesional de tramitación del autoconsumo, excedentes y compensación','https://idae.es/publicaciones/guia-profesional-de-tramitacion-del-autoconsumo'],['JRC · PVGIS para producción fotovoltaica','https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis_en']],
-  related:['solar/produccion-placas-solares','solar/numero-placas-solares','energia/simulador-factura-electrica'],
+  related:['solar/produccion-placas-solares','solar/numero-placas-solares','solar/bateria-solar','energia/simulador-factura-electrica']
   faqs:[['¿Busca subvenciones actuales?','No. Las ayudas son un importe manual.'],['¿Qué es porcentaje de autoconsumo?','La parte de la producción fotovoltaica que consumes directamente; no es lo mismo que cobertura anual.'],['¿Cómo trata los excedentes?','La producción no autoconsumida se valora al precio de compensación que introduzcas.'],['¿Qué ocurre si nunca recupero la inversión?','Se indica que no hay recuperación dentro del horizonte, sin mostrar infinito.'],['¿Incluye VAN?','Sí, con la tasa de descuento editable; no calcula TIR.'],...commonFaq]
  },
  {
@@ -270,6 +270,131 @@ export const tools=[
   sources:[['CTE · DB-HE Ahorro de energía','https://www.codigotecnico.org/pdf/Documentos/HE/DBHE.pdf'],['IDAE · Guía práctica de rehabilitación y aislamiento','https://idae.es/tecnologias/eficiencia-energetica/edificacion/aislamiento-en-edificacion/guia-practica-de-la-energia']],
   related:['aislamiento/transmitancia-termica','aislamiento/punto-de-rocio-moho','reformas/presupuesto-reforma-integral'],
   faqs:[['¿De dónde saco HDD?','Debes introducirlos a partir de una fuente climática apropiada; la web no inventa valores por provincia.'],['¿Puedo usar SCOP?','Sí. El campo de rendimiento es un ratio: para bomba de calor puedes introducir SCOP.'],['¿Qué pasa si U nueva es peor?','No se atribuye ahorro positivo y se muestra un aviso.'],['¿Suma medidas como si fueran independientes?','Compara cada actuación por separado; no modela interacciones al combinar varias.'],['¿Sustituye un certificado energético?','No. Es una aproximación simplificada para comparar órdenes de magnitud.'],...commonFaq]
+ },
+ {
+  kind:'paint',path:'reformas/calculadora-pintura',keywords:['litros pintura','cuánta pintura necesito','pintar habitación','rendimiento pintura'],category:'Reformas',categorySlug:'reformas',short:'Litros de pintura necesarios',icon:'◩',
+  title:'Calculadora de pintura: litros para paredes y techo',description:'Calcula superficie neta, manos, litros y envases a partir de las medidas de la habitación y del rendimiento real de tu pintura.',
+  methodology:'1.0',reviewedAt:'06/10/2026',reviewedAtIso:'2026-10-06',
+  formula:'Superficie paredes = 2 × (largo + ancho) × altura. Se suma el techo si se selecciona y se restan huecos. Litros = superficie neta × manos ÷ rendimiento × (1 + margen/100).',
+  limitations:'El rendimiento y el desperdicio dependen de la pintura, espesor, soporte, porosidad, herramienta y aplicación. Debes introducir el rendimiento de la ficha técnica o una hipótesis propia; no se precarga un valor universal.',
+  example:'Una habitación de 5 × 4 × 2,5 m tiene 45 m² de paredes antes de descontar huecos. Con dos manos, el área equivalente es 90 m²; los litros dependen del rendimiento que introduzcas.',
+  methodologyDetails:['Jotun publica el rendimiento por mano en m²/L y advierte que cambia con espesor, textura, porosidad, imperfecciones, temperatura y pérdidas.','El margen es opcional y totalmente editable; 0 % significa no añadir desperdicio.','El tamaño de envase es opcional y solo se usa para redondear a envases completos.'],
+  sources:[['Jotun · ficha técnica: spreading rate por mano y factores que lo modifican','https://www.jotun.com/api/v1/datasheets/download/merged?selectedFiles=575']],
+  related:['reformas/presupuesto-reforma-integral','reformas/reforma-bano','reformas/reforma-cocina','reformas/calculadora-papel-pintado'],
+  faqs:[['¿Qué rendimiento debo introducir?','El de la ficha técnica de tu pintura para la aplicación prevista.'],['¿Debo restar puertas y ventanas?','Sí, si no vas a pintarlas; introduce su superficie total en el campo de huecos.'],['¿El margen es obligatorio?','No. Es una hipótesis editable; puedes dejarlo en 0 %.'],['¿Cuenta el techo?','Solo si marcas la opción correspondiente.'],['¿Por qué puede variar el consumo real?','Por absorción del soporte, espesor de película, herramienta, pérdidas y condiciones de aplicación.'],...commonFaq]
+ },
+ {
+  kind:'tiles',path:'reformas/calculadora-azulejos-baldosas',keywords:['azulejos necesarios','baldosas necesarias','cajas azulejos','piezas suelo cerámico'],category:'Reformas',categorySlug:'reformas',short:'Azulejos, baldosas y cajas',icon:'▦',
+  title:'Calculadora de azulejos y baldosas: piezas y cajas',description:'Calcula piezas, cajas, superficie comprada, sobrante y coste opcional usando el formato de la pieza y los datos reales de la caja.',
+  methodology:'1.0',reviewedAt:'06/10/2026',reviewedAtIso:'2026-10-06',
+  formula:'Área pieza = ancho × largo. Piezas = ceil(superficie ÷ área pieza × (1 + desperdicio)). Las cajas se redondean según piezas/caja o m²/caja, usando solo uno de los dos métodos.',
+  limitations:'El porcentaje de desperdicio depende del formato, modulación, patrón, recortes y geometría. No se recomienda un porcentaje universal. Comprueba siempre el contenido real de la caja del producto.',
+  example:'Una baldosa de 30 × 60 cm cubre 0,18 m². Para 10 m², sin desperdicio, hacen falta 56 piezas por redondeo; las cajas dependen de su contenido real.',
+  methodologyDetails:['Marazzi incluye el porcentaje de residuo como entrada de su calculadora de colocación, lo que confirma que es un parámetro del proyecto, no una constante universal.','Modo piezas/caja y modo m²/caja son alternativos para no duplicar información ni generar inconsistencias.','El coste solo se calcula si introduces precio por caja.'],
+  sources:[['Marazzi · calculadora de colocación: superficie, formato y porcentaje de residuo','https://www.marazzi.es/colocacion/calculadora-de-colocacion/']],
+  related:['reformas/reforma-bano','reformas/reforma-cocina','reformas/suelo-laminado-tarima','reformas/calculadora-rodapie'],
+  faqs:[['¿Qué desperdicio debo poner?','El que corresponda a tu patrón, formato y geometría; la herramienta no impone uno.'],['¿Piezas por caja o m² por caja?','Usa el dato que indique tu producto. Son modos alternativos.'],['¿Por qué redondea hacia arriba?','Porque no puedes comprar una fracción de pieza o caja.'],['¿El sobrante incluye el desperdicio?','Muestra la superficie comprada menos la superficie real a cubrir.'],['¿Calcula adhesivo o junta?','No. Solo piezas/cajas y coste opcional.'],...commonFaq]
+ },
+ {
+  kind:'laminate',path:'reformas/suelo-laminado-tarima',keywords:['suelo laminado cajas','tarima cajas','m2 laminado','cuánto suelo comprar'],category:'Reformas',categorySlug:'reformas',short:'Suelo laminado y tarima',icon:'▤',
+  title:'Calculadora de suelo laminado y tarima por cajas',description:'Suma varias estancias, aplica un margen editable y redondea a cajas completas según los m² por paquete de tu producto.',
+  methodology:'1.0',reviewedAt:'06/10/2026',reviewedAtIso:'2026-10-06',
+  formula:'Superficie = suma de estancias. Objetivo de compra = superficie × (1 + desperdicio/100). Cajas = ceil(objetivo ÷ m² por caja).',
+  limitations:'La cobertura por caja cambia entre colecciones y el desperdicio depende del patrón, cortes y geometría. Introduce los datos del producto concreto; no se usa una caja ni porcentaje universales.',
+  example:'Quick-Step publica productos con distintas coberturas por paquete, por ejemplo 1,596 m² o 2,952 m²; por eso este valor se introduce manualmente.',
+  methodologyDetails:['Cada estancia puede definirse por largo × ancho o por superficie manual.','Si hay superficie manual en una fila, esa cifra tiene prioridad sobre largo/ancho.','El coste efectivo por m² se calcula solo si introduces precio por caja.'],
+  sources:[['Quick-Step · ejemplo de laminado con 1,596 m²/paquete','https://int.quick-step.com/en/laminate/classic/cl4966_classic-spotted-gum-light'],['Quick-Step · ejemplo de laminado con 2,952 m²/paquete','https://int.quick-step.com/en/laminate/majestic/mj3554_valley-oak-light-beige']],
+  related:['reformas/calculadora-rodapie','reformas/presupuesto-reforma-integral','reformas/calculadora-azulejos-baldosas'],
+  faqs:[['¿Puedo sumar varias habitaciones?','Sí. Añade tantas estancias como necesites.'],['¿Qué m² por caja debo usar?','Los indicados por el fabricante de tu referencia concreta.'],['¿Hay un desperdicio recomendado universal?','No. Depende del patrón de colocación, geometría y cortes.'],['¿Qué pasa si conozco directamente los m²?','Puedes introducirlos manualmente y se ignorarán largo y ancho de esa estancia.'],['¿Calcula rodapié?','No en esta página; enlaza con la calculadora específica de rodapié.'],...commonFaq]
+ },
+ {
+  kind:'skirting',path:'reformas/calculadora-rodapie',keywords:['rodapié metros','cuánto rodapié necesito','piezas rodapié','perímetro habitación'],category:'Reformas',categorySlug:'reformas',short:'Metros y piezas de rodapié',icon:'⌑',
+  title:'Calculadora de rodapié: metros, piezas y paquetes',description:'Calcula perímetro neto, margen, piezas completas, paquetes opcionales y sobrante a partir de las dimensiones reales de la estancia.',
+  methodology:'1.0',reviewedAt:'06/10/2026',reviewedAtIso:'2026-10-06',
+  formula:'Perímetro = 2 × (largo + ancho). Longitud neta = perímetro − huecos. Compra objetivo = neta × (1 + margen). Piezas = ceil(objetivo ÷ longitud de pieza).',
+  limitations:'No modela cortes a inglete, esquinas especiales ni pérdidas de instalación. Longitud de pieza, piezas por paquete, precios y margen son datos del producto/proyecto.',
+  example:'Una estancia de 5 × 4 m tiene 18 m de perímetro. Si descuentas 0,8 m de puerta, quedan 17,2 m antes del margen y del redondeo a piezas.',
+  fields:[['length','Largo habitación','m','5'],['width','Ancho habitación','m','4'],['openingsM','Huecos sin rodapié','m','0,8'],['marginPercent','Margen/desperdicio','%','0'],['pieceLengthM','Longitud de cada pieza','m',''],['piecesPerPack','Piezas por paquete (opcional)','ud.',''],['pricePerPiece','Precio por pieza (opcional)','€',''],['pricePerPack','Precio por paquete (opcional)','€','']],
+  methodologyDetails:['La geometría básica es perímetro menos huecos donde no se instala rodapié.','El margen es editable y no se precarga como recomendación universal.','Puedes indicar precio por pieza o por paquete, pero no ambos.'],
+  sources:[['Quick-Step · productos de suelo y accesorios de acabado/rodapié vinculados a cada referencia','https://int.quick-step.com/en/laminate/classic/clm1294_light-grey-oiled-oak']],
+  related:['reformas/suelo-laminado-tarima','reformas/presupuesto-reforma-integral','reformas/reforma-cocina'],
+  faqs:[['¿Debo descontar las puertas?','Sí, si en esos huecos no instalarás rodapié.'],['¿Qué longitud de pieza uso?','La longitud comercial del producto concreto.'],['¿Puedo usar paquetes?','Sí, indicando cuántas piezas contiene cada paquete.'],['¿Puedo indicar dos precios?','No. Usa precio por pieza o por paquete para evitar doble contabilización.'],['¿Incluye cortes de esquina?','No de forma geométrica; puedes reflejarlos mediante el margen que decidas.'],...commonFaq]
+ },
+ {
+  kind:'wallpaper',path:'reformas/calculadora-papel-pintado',keywords:['rollos papel pintado','papel pintado rapport','cuántos rollos necesito','papel pared'],category:'Reformas',categorySlug:'reformas',short:'Rollos de papel pintado',icon:'▥',
+  title:'Calculadora de rollos de papel pintado con rapport',description:'Calcula tiras y rollos usando anchura/longitud del rollo, altura de pared, repetición del patrón, margen de corte y extra editable.',
+  methodology:'1.0',reviewedAt:'06/10/2026',reviewedAtIso:'2026-10-06',
+  formula:'Tira base = altura + margen. Con rapport: tira = ceil(tira base ÷ rapport) × rapport. Tiras = ceil(ancho pared ÷ ancho rollo). Rollos = ceil(tiras necesarias ÷ floor(longitud rollo ÷ longitud tira)).',
+  limitations:'El casado real depende del tipo de match (recto, alterno/half-drop, etc.), esquinas, huecos y diseño. La herramienta usa el rapport introducido como aproximación por tira y permite añadir un extra porcentual.',
+  example:'Cole & Son publica para cada diseño longitud, anchura y pattern repeat; esos tres datos cambian por producto y deben introducirse desde la ficha concreta.',
+  fields:[['wallWidthM','Anchura total de pared','m',''],['heightM','Altura','m',''],['rollWidthM','Anchura del rollo','m',''],['rollLengthM','Longitud del rollo','m',''],['repeatM','Rapport / repetición','m','0'],['trimMarginM','Margen total de corte por tira','m','0'],['extraPercent','Tiras extra','%','0']],
+  methodologyDetails:['Cole & Son pide dimensiones de pared, dimensiones de rollo y pattern repeat en su propia calculadora.','Rapport 0 significa patrón sin repetición aplicada en este modelo.','Si el rollo no permite obtener ni una tira completa se devuelve un error en lugar de un resultado absurdo.'],
+  sources:[['Cole & Son · Wallpaper Calculator','https://cole-and-son.com/en-eu/pages/wallpaper-calculator'],['Cole & Son · ejemplo de ficha con longitud, anchura, repeat y match','https://cole-and-son.com/en-eu/products/alicatado-roll']],
+  related:['reformas/calculadora-pintura','reformas/presupuesto-reforma-integral','reformas/reforma-bano'],
+  faqs:[['¿Qué es el rapport?','La repetición vertical del patrón indicada por el fabricante.'],['¿Sirve para half-drop?','Es una aproximación por longitud de tira; los patrones con match complejo pueden exigir más material.'],['¿Debo restar puertas y ventanas?','Esta versión trabaja por anchura total de pared y tiras; no descuenta automáticamente huecos.'],['¿Qué pasa con un papel sin repetición?','Introduce rapport 0.'],['¿Por qué usa tiras y no solo m²?','Porque la anchura del rollo y el casado del patrón condicionan cuántas tiras reales puedes obtener.'],...commonFaq]
+ },
+ {
+  kind:'lux',path:'energia/calculadora-iluminacion-lux',keywords:['lux habitación','lúmenes necesarios','iluminación lux','cuántas luminarias'],category:'Energía',categorySlug:'energia',short:'Iluminación por lux y lúmenes',icon:'◉',
+  title:'Calculadora de iluminación por lux y lúmenes',description:'Convierte un objetivo de iluminancia elegido por ti en lúmenes útiles y número orientativo de luminarias, con factores de utilización y mantenimiento editables.',
+  methodology:'1.0',reviewedAt:'06/10/2026',reviewedAtIso:'2026-10-06',
+  formula:'1 lx = 1 lm/m². Lúmenes útiles = lux objetivo × superficie. Lúmenes efectivos por luminaria = lúmenes nominales × factor de utilización × factor de mantenimiento. Luminarias = ceil(lúmenes útiles ÷ lúmenes efectivos).',
+  limitations:'No modela distribución espacial, uniformidad, deslumbramiento, reflectancias detalladas, altura ni curva fotométrica. El objetivo de lux y los factores son datos del usuario, no recomendaciones residenciales de esta web.',
+  example:'Para 20 m² y un objetivo manual de 300 lx hacen falta 6.000 lm útiles; el número de luminarias depende de sus lúmenes y de los factores que introduzcas.',
+  fields:[['areaM2','Superficie','m²','20'],['targetLux','Objetivo de iluminancia','lx',''],['lumensPerFixture','Lúmenes nominales por luminaria','lm',''],['utilizationFactor','Factor de utilización','ratio','1'],['maintenanceFactor','Factor de mantenimiento','ratio','1']],
+  methodologyDetails:['BIPM define el lux como lumen por metro cuadrado.','La web no prescribe un objetivo residencial de lux: el usuario debe introducir el nivel que quiera comprobar.','Factores 1 significan no aplicar reducción; cualquier otro valor debe estar justificado por tu diseño o metodología.'],
+  sources:[['BIPM · SI Brochure: illuminance, lux (lx) = lm/m²','https://www.bipm.org/documents/d/guest/si-brochure-9-2_01']],
+  related:['energia/ahorro-bombillas-led','energia/consumo-electrodomesticos','energia/simulador-factura-electrica'],
+  faqs:[['¿Qué lux debo poner?','El objetivo de tu proyecto o criterio técnico; la web no impone uno.'],['¿Qué significa 1 lux?','Un lumen de flujo luminoso por metro cuadrado.'],['¿Qué es el factor de utilización?','Una reducción editable que representa qué parte del flujo nominal contribuye al plano considerado.'],['¿Qué es el factor de mantenimiento?','Una reducción editable para contemplar depreciación/suciedad cuando dispongas de un criterio para ello.'],['¿Sustituye un cálculo luminotécnico?','No. No usa archivos fotométricos ni evalúa uniformidad o deslumbramiento.'],...commonFaq]
+ },
+ {
+  kind:'led-savings',path:'energia/ahorro-bombillas-led',keywords:['ahorro LED','cambiar bombillas por LED','consumo bombillas','amortización LED'],category:'Energía',categorySlug:'energia',short:'Ahorro al sustituir bombillas por LED',icon:'✦',
+  title:'Calculadora de ahorro al cambiar bombillas por LED',description:'Compara consumo y coste anual usando la potencia real de las bombillas actuales y LED, horas, unidades y tu precio de electricidad.',
+  methodology:'1.0',reviewedAt:'06/10/2026',reviewedAtIso:'2026-10-06',
+  formula:'kWh/año = W ÷ 1000 × horas/día × días/año × unidades. Ahorro = consumo actual − consumo LED. Payback opcional = inversión ÷ ahorro anual si el ahorro es positivo.',
+  limitations:'No presupone equivalencia luminosa entre dos bombillas: debes comparar productos que den el nivel de luz que necesitas. No incluye vida útil, reposición, regulación ni cambios de uso.',
+  example:'El cálculo usa exclusivamente las potencias y horas introducidas; si el LED tiene igual o mayor potencia, el ahorro puede ser cero o negativo.',
+  fields:[['bulbs','Número de bombillas','ud.',''],['currentWatts','Potencia actual por bombilla','W',''],['ledWatts','Potencia LED por bombilla','W',''],['hoursPerDay','Horas al día','h',''],['daysPerYear','Días al año','días','365'],['price','Precio electricidad','€/kWh',''],['investment','Inversión en sustitución (opcional)','€','']],
+  methodologyDetails:['La fórmula W × tiempo / 1000 es la misma base energética usada en otras calculadoras del sitio.','La inversión es opcional; sin ella no se muestra payback.','Si el ahorro anual no es positivo no se fuerza un payback infinito.'],
+  sources:[['Virginia Tech · Estimating Appliance and Home Electronic Energy Use','https://www.pubs.ext.vt.edu/2901/2901-9014/2901-9014.html'],['BIPM · SI Brochure, unidades de potencia y energía','https://www.bipm.org/documents/d/guest/si-brochure-9-2_01']],
+  related:['energia/calculadora-iluminacion-lux','energia/consumo-standby','energia/simulador-factura-electrica'],
+  faqs:[['¿Compara bombillas equivalentes en luz?','No automáticamente. Debes introducir potencias de productos que cumplan tus necesidades de iluminación.'],['¿Usa un precio actual de electricidad?','No. El precio lo introduces tú.'],['¿Calcula mantenimiento?','No. Solo energía, coste e inversión opcional.'],['¿Qué ocurre si el LED consume más?','El ahorro sale negativo y no se muestra payback positivo.'],['¿Puedo dejar vacía la inversión?','Sí. El cálculo energético sigue funcionando.'],...commonFaq]
+ },
+ {
+  kind:'standby',path:'energia/consumo-standby',keywords:['consumo standby','consumo fantasma','aparatos en espera','coste standby'],category:'Energía',categorySlug:'energia',short:'Consumo fantasma y standby',icon:'◌',
+  title:'Calculadora de consumo eléctrico en standby',description:'Suma varios equipos en modo espera y calcula kWh/año, coste, peso de cada equipo y un escenario editable de reducción.',
+  methodology:'1.0',reviewedAt:'06/10/2026',reviewedAtIso:'2026-10-06',
+  formula:'kWh/año = W standby ÷ 1000 × horas/día × días/año × unidades. Coste = kWh × precio. Ahorro potencial = total × reducción % introducida.',
+  limitations:'Debes introducir la potencia real o medida de cada aparato. Los límites de ecodiseño de la UE no representan necesariamente el consumo de tus equipos y no se usan como valores automáticos.',
+  example:'Un aparato de 2 W en espera durante 24 h/día y 365 días consume 17,52 kWh/año por unidad.',
+  methodologyDetails:['El Reglamento (UE) 2023/826 establece requisitos de ecodiseño para modos apagado, standby y standby en red, pero esta herramienta no sustituye esos límites por mediciones reales.','Puedes analizar una reducción parcial o total con un porcentaje editable.','El ranking ordena equipos por kWh/año calculados.'],
+  sources:[['EUR-Lex · Reglamento (UE) 2023/826, consumo en modos desactivado, preparado y preparado en red','https://eur-lex.europa.eu/eli/reg/2023/826/oj?locale=es'],['Virginia Tech · cálculo de consumo eléctrico por potencia y tiempo','https://www.pubs.ext.vt.edu/2901/2901-9014/2901-9014.html']],
+  related:['energia/ahorro-bombillas-led','energia/consumo-electrodomesticos','energia/simulador-factura-electrica'],
+  faqs:[['¿Qué potencia standby uso?','La indicada/medida para tu equipo en ese modo.'],['¿La web aplica los límites europeos?','No. Se citan como contexto regulatorio; el cálculo usa tus vatios.'],['¿Puedo añadir varios equipos?','Sí, con unidades, horas y días independientes.'],['¿Qué es reducción potencial?','Un escenario editable para ver cuánto ahorrarías si eliminas una fracción del consumo calculado.'],['¿Incluye equipos en standby en red?','Sí si introduces su potencia real en ese estado.'],...commonFaq]
+ },
+ {
+  kind:'ev-charging',path:'energia/recarga-coche-electrico',keywords:['cargar coche eléctrico casa','tiempo recarga coche','coste cargar coche eléctrico','wallbox kWh'],category:'Energía',categorySlug:'energia',short:'Tiempo y coste de recarga de coche eléctrico',icon:'⚡',
+  title:'Calculadora de recarga de coche eléctrico: tiempo, kWh y coste',description:'Estima energía de red, pérdidas, tiempo y coste usando batería/SOC o energía manual, potencia efectiva, eficiencia y precio introducidos.',
+  methodology:'1.0',reviewedAt:'06/10/2026',reviewedAtIso:'2026-10-06',
+  formula:'Energía almacenada = capacidad × (SOC objetivo − SOC inicial), o energía manual. Energía de red = almacenada ÷ eficiencia. Potencia efectiva = min(cargador, límite AC del vehículo si se indica). Tiempo ≈ energía de red ÷ potencia efectiva.',
+  limitations:'Aproximación AC simplificada. No modela curva de carga DC, reducción de potencia por temperatura o SOC, balance dinámico de vivienda, pérdidas variables ni límites que no introduzcas.',
+  example:'Si quieres almacenar 30 kWh con 90 % de eficiencia, la red debe aportar 33,33 kWh. A 7,4 kW efectivos el tiempo idealizado sería ≈4,5 h.',
+  methodologyDetails:['La potencia efectiva se limita por el menor de cargador y límite AC del vehículo cuando este último se introduce.','La eficiencia global es editable; no se precarga una eficiencia universal.','El consumo kWh/100 km es opcional y solo sirve para traducir energía a autonomía/coste energético equivalente.'],
+  sources:[['GOV.UK · Residential chargepoints: potencias y requisitos técnicos de carga AC','https://www.gov.uk/guidance/residential-chargepoints-minimum-technical-specification']],
+  related:['energia/potencia-electrica','energia/simulador-factura-electrica','energia/consumo-electrodomesticos','solar/bateria-solar'],
+  faqs:[['¿Qué potencia debo introducir?','La potencia disponible del cargador; si conoces el límite AC del vehículo, introdúcelo también.'],['¿Por qué usa eficiencia?','Porque la energía tomada de la red puede ser mayor que la almacenada en la batería.'],['¿Calcula carga rápida DC?','No. Está pensado como aproximación doméstica AC.'],['¿Usa una tarifa eléctrica actual?','No. El precio del kWh es manual.'],['¿La autonomía es exacta?','No. Si introduces consumo kWh/100 km se muestra una equivalencia energética, no una predicción de conducción.'],...commonFaq]
+ },
+ {
+  kind:'solar-battery',path:'solar/bateria-solar',keywords:['batería solar tamaño','kWh batería fotovoltaica','batería autoconsumo','capacidad batería solar'],category:'Solar',categorySlug:'solar',short:'Capacidad de batería solar',icon:'▣',
+  title:'Calculadora de capacidad de batería solar',description:'Estima capacidad nominal a partir de energía que quieres desplazar, autonomía, fracción utilizable y eficiencia round-trip, con comprobación opcional de excedente.',
+  methodology:'1.0',reviewedAt:'06/10/2026',reviewedAtIso:'2026-10-06',
+  formula:'Capacidad útil objetivo = kWh/día × días. Capacidad nominal = útil ÷ fracción utilizable. Energía de carga = útil ÷ eficiencia round-trip.',
+  limitations:'No dimensiona inversor, potencia de descarga, corrientes, química, temperatura, degradación, garantía, backup real ni estrategia horaria. Capacidad kWh y potencia kW son magnitudes independientes.',
+  example:'Si quieres desplazar 5 kWh/día durante 1 día y declaras 90 % utilizable, la capacidad nominal teórica es 5,56 kWh antes de considerar otras restricciones.',
+  fields:[['dailyShiftKwh','Energía que quieres desplazar al día','kWh/día',''],['autonomyDays','Autonomía objetivo','días','1'],['usableFractionPercent','Fracción utilizable / DoD efectivo','%',''],['roundTripEfficiencyPercent','Eficiencia round-trip','%',''],['dailySurplusKwh','Excedente solar diario disponible (opcional)','kWh/día',''],['requiredPowerKw','Potencia simultánea requerida (opcional)','kW',''],['moduleCapacityKwh','Capacidad nominal por módulo (opcional)','kWh','']],
+  methodologyDetails:['NREL distingue explícitamente energía/capacidad (kWh), potencia (kW), estado de carga, profundidad de descarga y eficiencia round-trip.','La eficiencia round-trip se aplica a la energía necesaria para cargar, no para convertir kWh en kW.','Si introduces excedente diario se comprueba si alcanzaría para cargar la energía útil objetivo considerando pérdidas.'],
+  sources:[['NREL · Fundamentals of Energy Storage: power, energy, DoD y round-trip efficiency','https://www.nrel.gov/docs/fy23osti/84500.pdf'],['NREL ATB · Residential Battery Storage: definición de round-trip efficiency','https://atb.nrel.gov/electricity/2024/residential_battery_storage']],
+  related:['solar/produccion-placas-solares','solar/numero-placas-solares','solar/amortizacion-placas-solares','energia/recarga-coche-electrico'],
+  faqs:[['¿kWh y kW son lo mismo?','No. kWh mide energía/capacidad; kW mide potencia instantánea.'],['¿Qué fracción utilizable debo poner?','La que corresponda a la batería y estrategia que quieras analizar; no se impone una universal.'],['¿Qué es eficiencia round-trip?','La relación entre energía útil recuperada y energía introducida en un ciclo.'],['¿Calcula backup durante un apagón?','No. Eso exige potencia, cargas críticas, inversor y estrategia de reserva.'],['¿Usa mis excedentes solares?','Solo si introduces un excedente diario manual; entonces comprueba si cubre una carga completa idealizada.'],...commonFaq]
  }
 ];
 export const toolByPath=new Map(tools.map(t=>[t.path,t]));
