@@ -1,23 +1,34 @@
 # Calcula tu casa
 
-Proyecto de calculadoras para hogar, energía, climatización, aislamiento, solar y ahorro. La base V1 de 8 herramientas se amplía a 12 manteniendo la misma arquitectura. El sitio se genera de forma estática con Astro, Tailwind CSS 4 compilado y JavaScript vanilla. La mayoría de los cálculos se realiza localmente en el navegador y Calcula tu Casa no recibe ni almacena esos valores. En Solar, preparar la consulta no envía datos; solo al abrir voluntariamente el enlace oficial se envían las coordenadas y parámetros directamente a PVGIS/JRC, y el JSON de respuesta se procesa después localmente.
+Calcula tu Casa es un sitio estático de calculadoras para hogar, energía, climatización, aislamiento, solar y reformas. Mantiene el principio **«Calcula primero. Decide después»**: sin registro, sin teléfono, con fórmulas, fuentes, hipótesis y limitaciones visibles.
 
-## Calculadoras publicadas
+La mayoría de las herramientas calcula localmente en el navegador y Calcula tu Casa no recibe ni almacena esos valores. En la calculadora de producción solar, preparar la consulta no envía datos; solo cuando el usuario abre voluntariamente el enlace oficial se envían los parámetros necesarios directamente a PVGIS/JRC. El JSON que después se pega o selecciona se procesa localmente.
 
-1. `/climatizacion/consumo-aire-acondicionado/`
-2. `/energia/consumo-radiador-electrico/`
-3. `/energia/termo-electrico/`
-4. `/aislamiento/punto-de-rocio-moho/`
-5. `/aislamiento/transmitancia-termica/`
-6. `/climatizacion/calculadora-frigorias/`
-7. `/energia/potencia-electrica/`
-8. `/energia/consumo-electrodomesticos/`
-9. `/climatizacion/suelo-radiante-tubo-circuitos/`
-10. `/energia/ventilacion-vivienda/`
-11. `/energia/simulador-factura-electrica/`
-12. `/solar/produccion-placas-solares/`
+## Rutas publicadas
 
-Los hubs canónicos son `/energia/`, `/climatizacion/`, `/aislamiento/`, `/solar/` y `/reformas/`. `/calculadoras/` funciona como directorio global con buscador local sin sensibilidad a tildes. Solar ya contiene una calculadora real y es indexable. Reformas continúa `noindex, follow` y fuera del sitemap hasta publicar su primera herramienta.
+- `/climatizacion/consumo-aire-acondicionado/`
+- `/energia/consumo-radiador-electrico/`
+- `/energia/termo-electrico/`
+- `/aislamiento/punto-de-rocio-moho/`
+- `/aislamiento/transmitancia-termica/`
+- `/climatizacion/calculadora-frigorias/`
+- `/energia/potencia-electrica/`
+- `/energia/consumo-electrodomesticos/`
+- `/climatizacion/suelo-radiante-tubo-circuitos/`
+- `/energia/ventilacion-vivienda/`
+- `/energia/simulador-factura-electrica/`
+- `/solar/produccion-placas-solares/`
+- `/climatizacion/potencia-radiadores-elementos/`
+- `/solar/numero-placas-solares/`
+- `/energia/comparador-coste-calefaccion/`
+- `/reformas/presupuesto-reforma-integral/`
+- `/reformas/reforma-bano/`
+- `/reformas/reforma-cocina/`
+- `/solar/amortizacion-placas-solares/`
+- `/energia/rentabilidad-aerotermia/`
+- `/reformas/comparador-reformas-energeticas/`
+
+Los hubs canónicos son `/energia/`, `/climatizacion/`, `/aislamiento/`, `/solar/` y `/reformas/`. Solar y Reformas tienen herramientas funcionales y son indexables.
 
 ## Desarrollo
 
@@ -41,78 +52,89 @@ npm run build
 SITE_URL=https://calcula-tu-casa.pages.dev npm run build
 ```
 
-Verificación combinada:
-
-```bash
-npm run check
-```
-
 La salida estática se genera en `dist/`.
 
 ## Arquitectura
 
-- `src/lib/calculators/`: funciones matemáticas puras y validación.
-- `src/lib/calculator-ui.mjs`: lectura de formularios y renderizado DOM.
+- `src/lib/calculators/`: motores matemáticos puros y validación.
+- `src/lib/config/`: datos externos/versionados y configuración compartida.
+- `src/lib/calculators/heating-common.mjs`: conversión común de calor útil a energía comprada.
+- `src/lib/calculators/investment-common.mjs`: payback acumulado y VAN.
+- `src/lib/calculators/reforms-common.mjs`: rangos de presupuesto por mediciones y precios unitarios.
+- `src/lib/config/reform-costs.mjs`: estructura común de partidas y política de precios de reformas.
+- `src/lib/calculators/solar-pvgis.mjs`: integración/parser común de resultados PVGIS.
+- `src/components/`: formularios, resultados, metodología, fuentes, FAQ, breadcrumbs, relacionados y placeholders publicitarios.
+- `src/layouts/CalculatorLayout.astro`: estructura común, Schema y metadatos.
 - `src/lib/catalog.mjs`: catálogo, SEO, FAQ, fuentes, keywords e interlinking.
-- `src/components/`: formularios reutilizables, resultados, metodología, fuentes, FAQ, breadcrumbs, relacionados y placeholders publicitarios.
-- `src/layouts/CalculatorLayout.astro`: estructura común de las calculadoras y Schema.
-- `src/pages/`: páginas estáticas, hubs, directorio, institucionales, legales y robots.
-- `tests/`: pruebas matemáticas y consistencia del catálogo.
+- `tests/`: pruebas matemáticas, consistencia, privacidad y contratos UI.
 
-## SEO y sitemap
+No se introduce React, Vue, backend ni base de datos.
 
-Cada calculadora incluye title, description, canonical cuando existe `SITE_URL`, breadcrumbs, H1, metodología, fórmula, ejemplo, limitaciones, fuentes, fecha de revisión, FAQ visible y herramientas relacionadas. El termo modela mezcla de agua y precio opcional; AC/radiador incluyen sensibilidad ±20 % de horas; la potencia eléctrica impone como suelo la mayor carga individual. La expansión añade suelo radiante geométrico, ventilación CTE HS 3, factura editable con parámetros regulados versionados y producción solar basada en PVGIS.
+## Decisiones metodológicas de la expansión
 
-Se utiliza la integración oficial `@astrojs/sitemap`, que genera `sitemap-index.xml` y `sitemap-0.xml` cuando se construye con `SITE_URL`. `robots.txt` apunta al índice. Páginas legales pendientes y el hub sin herramientas `/reformas/` se excluyen del sitemap. `/solar/` vuelve a indexarse al disponer de contenido funcional.
+### Radiadores hidráulicos
 
-## Variables de entorno
+El factor térmico W/m³ y la potencia por elemento son datos del usuario. No existe un W/m³ normativo precargado. La potencia útil puede corregirse con un factor introducido por el usuario cuando exista una metodología o tabla del fabricante aplicable.
 
-- `SITE_URL=https://DOMINIO`: origen HTTPS real, sin ruta. Necesario para canonical y sitemap de producción. La CI valida actualmente con `https://calcula-tu-casa.pages.dev`.
-- `PUBLIC_CONTACT_EMAIL`: opcional durante desarrollo; debe configurarse con un email real antes de publicar la página de contacto.
+### Solar
 
-No se deben guardar secretos en variables `PUBLIC_`.
+El número de paneles usa producción específica `kWh/kWp·año` introducida manualmente o extraída del mismo JSON oficial de PVGIS usado por la calculadora de producción. No hay irradiación provincial inventada.
+
+La amortización solar usa exclusivamente inversión, ayudas, producción, autoconsumo, precios, compensación, mantenimiento, degradación, crecimiento de precio y descuento introducidos por el usuario. No consulta subvenciones ni tarifas actuales.
+
+### Calefacción y aerotermia
+
+Todos los precios, rendimientos, SCOP y costes fijos son datos editables. El comparador obliga a producir la misma cantidad de calor útil con cada sistema. La rentabilidad de aerotermia no muestra payback cuando el ahorro anual no es positivo.
+
+### Reformas
+
+No se precargan `€/m²` nacionales ni factores provinciales. La configuración común define partidas, unidades y fuentes, mientras los precios unitarios bajo/central/alto los introduce el usuario a partir de presupuestos o una base apropiada a su ámbito.
+
+La BCCA de la Junta de Andalucía se cita como base pública de referencia metodológica, pero sus importes no se trasladan automáticamente al conjunto de España.
+
+### Reformas energéticas
+
+El usuario introduce HDD manualmente. El modelo simplificado es:
+
+```text
+Ahorro térmico = (U inicial - U nueva) × superficie × HDD × 24 / 1000
+```
+
+Después se convierte a energía comprada según rendimiento o SCOP. Si `U nueva >= U inicial`, la herramienta no atribuye ahorro positivo.
+
+## SEO, sitemap y privacidad
+
+Cada calculadora incluye title, description, canonical con `SITE_URL`, H1, breadcrumbs, fórmula, metodología, ejemplo, limitaciones, fuentes, revisión, versión metodológica, FAQ visible, Schema e interlinking.
+
+`@astrojs/sitemap` genera el sitemap cuando existe `SITE_URL`. Solar y Reformas se incluyen. Las páginas legales pendientes siguen excluidas/noindex.
+
+La corrección de privacidad de PVGIS se mantiene: preparar la URL no envía datos; abrir voluntariamente la consulta comunica los parámetros directamente al JRC/PVGIS; Calcula tu Casa no recibe esos datos; el JSON importado se procesa localmente.
 
 ## Cloudflare Pages
-
-Configuración prevista:
 
 - Production branch: `main`
 - Build command: `npm run build`
 - Output directory: `dist`
 - Node: 24
-- Variable de producción: `SITE_URL=https://DOMINIO`
+- Producción actual: `https://calcula-tu-casa.pages.dev/`
 
-El proyecto es estático y no necesita adaptador de Cloudflare.
+## AdSense / CMP / analítica
 
-## AdSense y CMP
-
-La V1 **no carga anuncios reales**. `AdSlot.astro` reserva espacio después de resultados y metodología para minimizar CLS, sin publisher ID ni scripts publicitarios.
-
-Antes de activar AdSense en el EEE debe configurarse una CMP certificada por Google, verificar aceptar/rechazar/configurar/revocar y actualizar la política de cookies según las tecnologías realmente cargadas. No se implementa una CMP falsa.
-
-`ads.txt` no debe contener identificadores inventados; se añadirá la entrada exacta facilitada por AdSense cuando exista la cuenta.
+No se activan AdSense, Google Analytics, CMP, publisher IDs ni cookies publicitarias. Se conservan únicamente los placeholders existentes.
 
 ## Datos legales pendientes
 
-Las páginas legales permanecen `noindex` mientras falten datos esenciales. Sustituir:
-
-- `[NOMBRE_TITULAR]`
-- `[NIF]`
-- `[DOMICILIO]`
-- `[EMAIL_CONTACTO]`
-- `[DOMINIO]`
-
-Después debe revisarse la redacción legal contra la configuración real de alojamiento, CMP, publicidad, analítica y contacto.
+No se inventan datos legales. Permanecen los placeholders que correspondan hasta completar titular, NIF, domicilio, email y dominio definitivo.
 
 ## QA
 
-La CI se ejecuta en push, pull request y manualmente mediante `workflow_dispatch`. Ejecuta `npm ci`, `npm test`, `npm run build` y un segundo build con `SITE_URL=https://calcula-tu-casa.pages.dev`.
+La CI se ejecuta en push, Pull Request y `workflow_dispatch`, con:
 
-Consulta `docs/qa.md` para el registro de verificaciones reales de la V1.
+```bash
+npm ci
+npm test
+npm run build
+SITE_URL=https://calcula-tu-casa.pages.dev npm run build
+```
 
-## Metodologías de la expansión
-
-- **Suelo radiante:** estimación geométrica `L ≈ A/separación`, conexiones y margen; el máximo por circuito lo introduce el usuario y no se presenta como norma universal.
-- **Ventilación:** CTE DB-HS 3, tabla 2.1, ventilación de caudal constante y equilibrado de admisión/extracción; valores normativos centralizados en `src/lib/config/ventilation-cte.mjs`.
-- **Factura eléctrica:** precios comerciales introducidos por el usuario; tipos fiscales y referencias reguladas visibles, editables, versionadas y con fuentes BOE en `src/lib/config/electricity-bill.mjs`.
-- **Solar:** PVGIS 5.3/JRC. Debido a la prohibición CORS de AJAX en PVGIS, la web genera la consulta oficial y procesa localmente el JSON que aporta el usuario, sin backend ni claves privadas.
+Consulta `docs/qa.md` para el registro real de la rama de expansión.
