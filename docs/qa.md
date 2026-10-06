@@ -48,8 +48,8 @@ Workflow `Verify` sobre el código funcional previo al cierre documental:
 
 ```text
 npm test
-318 tests
-318 aprobados
+320 tests
+320 aprobados
 0 fallidos
 ```
 
@@ -66,7 +66,7 @@ Regresiones adicionales:
 - LED: no forzar payback cuando no existe ahorro;
 - standby: ranking y reducción parcial;
 - VE: límite AC del vehículo y coherencia de SOC;
-- batería: módulos, excedente insuficiente y separación kWh/kW;
+- batería: módulos, excedente insuficiente, separación kWh/kW y contrato explícito de que el excedente solar se comprueba para un único día;
 - catálogo: exactamente 31 rutas y relacionados existentes;
 - integración con main: AdSense verification meta, `ads.txt`, Search Console, legales y ausencia de scripts de Ads/Analytics/CMP.
 
@@ -116,3 +116,26 @@ Antes del merge conviene una revisión humana de la preview a 360 px y escritori
 ## Producción
 
 La rama no modifica directamente `main`. El despliegue de producción depende de un merge manual.
+
+
+## Correcciones finales PR #4
+
+- `.env.example` documenta `SITE_URL`, `PUBLIC_CONTACT_EMAIL`, `LEGAL_OWNER_NAME`, `LEGAL_NIF` y `LEGAL_ADDRESS`; las variables personales permanecen vacías.
+- En batería solar, «Excedente solar disponible en un día» responde únicamente a si ese excedente de un solo día permitiría cargar completamente la batería dimensionada considerando pérdidas. No es una simulación de varios días ni una serie temporal de producción/consumo.
+- La fórmula de capacidad y la separación entre energía/capacidad (kWh) y potencia (kW) no se modifican.
+
+Verificación real tras estas correcciones:
+
+```text
+npm test
+320 tests
+320 aprobados
+0 fallidos
+
+npm run build
+47 páginas generadas
+
+SITE_URL=https://calcula-tu-casa.pages.dev npm run build
+47 páginas generadas
+sitemap-index.xml generado
+```
