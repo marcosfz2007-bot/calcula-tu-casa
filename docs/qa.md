@@ -21,8 +21,8 @@ Ejecución real registrada por el workflow `Verify` de la rama. No se fija un SH
 
 ```text
 npm test
-127 tests
-127 aprobados
+129 tests
+129 aprobados
 0 fallidos
 ```
 
@@ -41,7 +41,7 @@ SITE_URL=https://calcula-tu-casa.pages.dev npm run build
 sitemap-index.xml generado
 ```
 
-El job final completó correctamente `npm ci`, los 127 tests y ambos builds; `npm ci` reportó 0 vulnerabilidades en esa ejecución.
+El job final completó correctamente `npm ci`, los 129 tests y ambos builds; `npm ci` reportó 0 vulnerabilidades en esa ejecución.
 
 ## Verificaciones funcionales y normativas
 
