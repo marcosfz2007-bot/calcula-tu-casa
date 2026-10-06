@@ -22,7 +22,7 @@ test('Suelo radiante · suma varias estancias antes del trazado',()=>near(calcul
 
 const ventilation={bedrooms:2,livingRooms:1,kitchens:1,bathrooms:1,toilets:0};
 test('Ventilación CTE · normal',()=>{const r=calculateVentilation(ventilation);near(r.dryMinimumLs,20);near(r.wetMinimumLs,24);near(r.balancedLs,24);near(r.balancedM3h,86.4);});
-test('Ventilación CTE · mínimo',()=>{const r=calculateVentilation({bedrooms:1,livingRooms:0,kitchens:1,bathrooms:0,toilets:0});near(r.dryMinimumLs,8);near(r.wetMinimumLs,12);near(r.balancedLs,12);});
+test('Ventilación CTE · mínimo',()=>{const r=calculateVentilation({bedrooms:0,livingRooms:1,kitchens:1,bathrooms:0,toilets:0});near(r.dryMinimumLs,8);near(r.studioMultiuseAdjustmentLs,2);near(r.wetMinimumLs,12);near(r.balancedLs,12);});
 test('Ventilación CTE · máximo razonable',()=>assert.doesNotThrow(()=>calculateVentilation({bedrooms:10,livingRooms:10,kitchens:5,bathrooms:10,toilets:10})));
 test('Ventilación CTE · cero en locales opcionales',()=>{const r=calculateVentilation({bedrooms:1,livingRooms:0,kitchens:1,bathrooms:0,toilets:0});assert.equal(r.bathrooms,0);assert.equal(r.toilets,0);});
 test('Ventilación CTE · negativo',()=>assert.throws(()=>calculateVentilation({...ventilation,bathrooms:-1}),RangeError));
@@ -40,7 +40,7 @@ test('Factura · cero consumo mantiene términos fijos',()=>{const r=calculateEl
 test('Factura · negativo',()=>assert.throws(()=>calculateElectricityBill({...bill,energyPrice:-1}),RangeError));
 test('Factura · vacío',()=>assert.throws(()=>calculateElectricityBill({...bill,days:''}),RangeError));
 test('Factura · decimal con coma',()=>near(calculateElectricityBill({...bill,energyPrice:'0,20'}).energyTerm,50));
-test('Factura · manual sin impuestos',()=>{const r=calculateElectricityBill({consumptionKwh:100,energyPrice:0.2,powerKw:2,powerPriceKwDay:0.1,days:10,electricityTaxPercent:0,vatPercent:0,meterRental:1,otherBeforeVat:3,otherAfterVat:4});near(r.energyTerm,20);near(r.powerTerm,2);near(r.total,30.1);});
+test('Factura · manual sin impuestos',()=>{const r=calculateElectricityBill({consumptionKwh:100,energyPrice:0.2,powerKw:2,powerPriceKwDay:0.1,days:10,electricityTaxPercent:0,electricityTaxMinimumEuroPerMwh:0,vatPercent:0,meterRental:1,otherBeforeVat:3,otherAfterVat:4});near(r.energyTerm,20);near(r.powerTerm,2);near(r.total,30);});
 test('Factura · mínimo legal doméstico del impuesto eléctrico',()=>{const r=calculateElectricityBill({consumptionKwh:1,energyPrice:0,powerKw:0,powerPriceKwDay:0,days:1,electricityTaxPercent:0,vatPercent:0,meterRental:0,otherBeforeVat:0,otherAfterVat:0});near(r.electricityTax,0.001);near(r.total,0.001);});
 test('Factura · parámetros regulados centralizados y fechados',()=>{assert.equal(ELECTRICITY_BILL_REGULATION.checkedAt,'2026-10-06');assert.equal(ELECTRICITY_BILL_REGULATION.electricityTax.valuePercent,5.11269632);assert.equal(ELECTRICITY_BILL_REGULATION.vat.valuePercent,21);});
 
@@ -56,3 +56,6 @@ test('Solar PVGIS · decimal con coma',()=>near(validateSolarInputs(solar).latit
 test('Solar PVGIS · manual conocido desde JSON',()=>{const r=parsePvgisResult(pvgisFixture,5);near(r.annualKwh,5000);near(r.specificYieldKwhPerKwp,1000);near(r.rangeLowKwh,4800);near(r.rangeHighKwh,5200);assert.equal(r.months.length,12);});
 test('Solar PVGIS · parser rechaza JSON incompleto',()=>assert.throws(()=>parsePvgisResult({outputs:{}},5),RangeError));
 test('Solar PVGIS · no incorpora clave ni llamada AJAX',()=>{const {url}=buildPvgisUrl(solar);assert.ok(!/key=|token=|apikey=/i.test(url));assert.match(PVGIS_META.cors,/no permite acceso AJAX/i);});
+
+test('Ventilación CTE · estudio sin dormitorio aplica mayor uso del local seco',()=>{const r=calculateVentilation({bedrooms:0,livingRooms:1,kitchens:1,bathrooms:0,toilets:0});near(r.livingLs,6);near(r.studioMultiuseAdjustmentLs,2);near(r.dryMinimumLs,8);});
+test('Factura · mínimo fiscal puede editarse a cero',()=>{const r=calculateElectricityBill({consumptionKwh:1,energyPrice:0,powerKw:0,powerPriceKwDay:0,days:1,electricityTaxPercent:0,electricityTaxMinimumEuroPerMwh:0,vatPercent:0,meterRental:0,otherBeforeVat:0,otherAfterVat:0});near(r.electricityTax,0);near(r.total,0);});
