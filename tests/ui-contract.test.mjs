@@ -26,3 +26,28 @@ test('Enlace al sitemap solo se emite cuando Astro.site existe',()=>{
  const source=read('src/layouts/Base.astro');
  assert.match(source,/Astro\.site&&<link rel="sitemap" href="\/sitemap-index\.xml"\/>/);
 });
+
+
+test('Rediseño UI v2 · respeta reduced motion y tamaños de interacción',()=>{
+ const css=read('src/styles/global.css');
+ assert.match(css,/prefers-reduced-motion:reduce/);
+ assert.match(css,/min-height:48px/);
+ assert.match(css,/font-size:16px/);
+});
+
+test('Rediseño UI v2 · usa iconografía SVG ligera en tarjetas',()=>{
+ const card=read('src/components/ToolCard.astro');
+ assert.match(card,/<svg/);
+ assert.doesNotMatch(card,/\{tool\.icon\}/);
+});
+
+test('Rediseño UI v2 · buscador mantiene label visible y contador accesible',()=>{
+ const search=read('src/components/SearchTools.astro');
+ assert.match(search,/>¿Qué quieres calcular\?<\/label>/);
+ assert.match(search,/aria-live="polite"/);
+});
+
+test('Rediseño UI v2 · relacionadas aparecen después del contenido explicativo',()=>{
+ const layout=read('src/layouts/CalculatorLayout.astro');
+ assert.ok(layout.indexOf('<RelatedTools')>layout.indexOf('<FAQ'));
+});
