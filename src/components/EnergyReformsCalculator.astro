@@ -1,0 +1,42 @@
+---
+---
+<noscript><p class="no-js">Activa JavaScript para utilizar el comparador.</p></noscript>
+<div class="calculator wide-calculator" data-energy-reforms>
+  <form class="card" novalidate>
+    <h2>Condiciones generales</h2>
+    <div class="fields">
+      <div><label for="hdd">Grados día de calefacción (HDD)</label><div class="input-wrap"><input id="hdd" name="hdd" value="" inputmode="decimal"/><span>K·día/año</span></div></div>
+      <div><label for="systemPerformance">Rendimiento o SCOP del sistema</label><div class="input-wrap"><input id="systemPerformance" name="systemPerformance" value="" inputmode="decimal"/><span>ratio</span></div></div>
+      <div><label for="energyPrice">Precio de energía comprada</label><div class="input-wrap"><input id="energyPrice" name="energyPrice" value="" inputmode="decimal"/><span>€/kWh</span></div></div>
+    </div>
+    <p class="help mt-5">Introduce HDD manualmente a partir de una fuente climática adecuada. No hay factores automáticos por provincia. Para una caldera introduce el rendimiento como ratio (p. ej. 0,90); para bomba de calor, el SCOP.</p>
+    <h2 class="mt-6">Actuaciones</h2>
+    <div class="dynamic-list" data-energy-actions>
+      <div class="energy-action" data-action>
+        <input name="actionName" value="Aislamiento fachada" aria-label="Nombre de actuación"/>
+        <div class="fields">
+          <div><label>Superficie <span class="input-wrap"><input name="actionArea" value="100" inputmode="decimal"/><span>m²</span></span></label></div>
+          <div><label>U inicial <span class="input-wrap"><input name="uInitial" value="1,20" inputmode="decimal"/><span>W/m²K</span></span></label></div>
+          <div><label>U nueva <span class="input-wrap"><input name="uNew" value="0,35" inputmode="decimal"/><span>W/m²K</span></span></label></div>
+          <div><label>Coste <span class="input-wrap"><input name="actionCost" value="" inputmode="decimal"/><span>€</span></span></label></div>
+        </div>
+        <button class="button tertiary" type="button" data-remove-action>Eliminar</button>
+      </div>
+      <div class="energy-action" data-action>
+        <input name="actionName" value="Ventanas" aria-label="Nombre de actuación"/>
+        <div class="fields">
+          <div><label>Superficie <span class="input-wrap"><input name="actionArea" value="20" inputmode="decimal"/><span>m²</span></span></label></div>
+          <div><label>U inicial <span class="input-wrap"><input name="uInitial" value="3" inputmode="decimal"/><span>W/m²K</span></span></label></div>
+          <div><label>U nueva <span class="input-wrap"><input name="uNew" value="1,5" inputmode="decimal"/><span>W/m²K</span></span></label></div>
+          <div><label>Coste <span class="input-wrap"><input name="actionCost" value="" inputmode="decimal"/><span>€</span></span></label></div>
+        </div>
+        <button class="button tertiary" type="button" data-remove-action>Eliminar</button>
+      </div>
+    </div>
+    <button class="button secondary" type="button" data-add-action>Añadir actuación</button>
+    <p class="error" data-form-error aria-live="polite"></p>
+    <div class="actions"><button class="button" type="submit">Comparar actuaciones</button><button class="button secondary" type="reset">Restablecer</button></div>
+  </form>
+  <section class="card result"><p class="eyebrow">COMPARACIÓN</p><h2>Ahorro y payback simple</h2><div data-result aria-live="polite"><p>Introduce HDD, rendimiento/SCOP, precio y costes de las actuaciones.</p></div></section>
+</div>
+<script>import '../lib/energy-reforms-ui.mjs';</script>
