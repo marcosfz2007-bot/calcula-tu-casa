@@ -1,0 +1,30 @@
+---
+---
+<noscript><p class="no-js">Activa JavaScript para utilizar la calculadora.</p></noscript>
+<div class="calculator wide-calculator" data-standby>
+<form class="card" novalidate>
+<h2>Equipos en standby</h2>
+<div class="dynamic-list" data-standby-items>
+<div class="standby-row" data-item>
+<input name="itemName" value="Equipo 1" aria-label="Nombre del equipo"/>
+<div class="fields">
+<div><label>Potencia standby <span class="input-wrap"><input name="watts" value="" inputmode="decimal"/><span>W</span></span></label></div>
+<div><label>Unidades <span class="input-wrap"><input name="units" value="1" inputmode="numeric"/><span>ud.</span></span></label></div>
+<div><label>Horas standby/día <span class="input-wrap"><input name="hoursPerDay" value="24" inputmode="decimal"/><span>h</span></span></label></div>
+<div><label>Días/año <span class="input-wrap"><input name="daysPerYear" value="365" inputmode="numeric"/><span>días</span></span></label></div>
+</div>
+<button class="button tertiary" type="button" data-remove-item>Eliminar</button>
+</div>
+</div>
+<button class="button secondary" type="button" data-add-item>Añadir equipo</button>
+<div class="fields mt-5">
+<div><label for="standbyPrice">Precio electricidad</label><div class="input-wrap"><input id="standbyPrice" name="price" value="" inputmode="decimal"/><span>€/kWh</span></div></div>
+<div><label for="reductionPercent">Reducción potencial analizada</label><div class="input-wrap"><input id="reductionPercent" name="reductionPercent" value="100" inputmode="decimal"/><span>%</span></div></div>
+</div>
+<p class="help mt-5">Introduce la potencia real o medida de cada aparato. Los límites europeos de ecodiseño son contexto regulatorio, no sustituyen el consumo de tus equipos.</p>
+<p class="error" data-form-error aria-live="polite"></p>
+<div class="actions"><button class="button" type="submit">Calcular standby</button><button class="button secondary" type="reset">Restablecer</button></div>
+</form>
+<section class="card result"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Consumo fantasma anual</h2><div data-result aria-live="polite"><p>Añade equipos y calcula.</p></div></section>
+</div>
+<script>import '../lib/standby-ui.mjs';</script>
