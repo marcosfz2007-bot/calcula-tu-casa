@@ -1,0 +1,27 @@
+---
+---
+<noscript><p class="no-js">Activa JavaScript para utilizar la calculadora. La metodología permanece visible sin JavaScript.</p></noscript>
+<div class="calculator" data-underfloor>
+  <form class="card" novalidate>
+    <h2>Superficie y trazado</h2>
+    <div data-rooms class="dynamic-list">
+      <div class="dynamic-row room-row">
+        <label>Estancia <input name="roomName" type="text" value="Zona calefactada" autocomplete="off"/></label>
+        <label>Superficie <span class="input-wrap"><input name="roomArea" inputmode="decimal" value="80"/><span>m²</span></span></label>
+        <button type="button" class="button tertiary" data-remove-room>Eliminar</button>
+      </div>
+    </div>
+    <button type="button" class="button secondary" data-add-room>Añadir estancia</button>
+    <div class="fields mt-5">
+      <div><label for="spacingM">Separación entre tubos</label><div class="input-wrap"><input id="spacingM" name="spacingM" inputmode="decimal" value="0,15"/><span>m</span></div></div>
+      <div><label for="connectionM">Longitud adicional de conexión</label><div class="input-wrap"><input id="connectionM" name="connectionM" inputmode="decimal" value="10"/><span>m</span></div></div>
+      <div><label for="marginPercent">Margen adicional</label><div class="input-wrap"><input id="marginPercent" name="marginPercent" inputmode="decimal" value="5"/><span>%</span></div></div>
+      <div><label for="maxCircuitM">Longitud máxima adoptada por circuito</label><div class="input-wrap"><input id="maxCircuitM" name="maxCircuitM" inputmode="decimal" value="100"/><span>m</span></div></div>
+    </div>
+    <p class="help mt-5">Los valores iniciales son ejemplos editables. La longitud máxima por circuito debe proceder del fabricante y del diseño hidráulico de tu sistema; no es un límite normativo universal.</p>
+    <p class="error" data-form-error aria-live="polite"></p>
+    <div class="actions"><button class="button" type="submit">Calcular tubo y circuitos</button><button class="button secondary" type="reset">Restablecer</button></div>
+  </form>
+  <section class="card result"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Longitud y circuitos</h2><div data-result aria-live="polite"><p>Revisa los datos y pulsa «Calcular tubo y circuitos».</p></div></section>
+</div>
+<script>import '../lib/underfloor-ui.mjs';</script>

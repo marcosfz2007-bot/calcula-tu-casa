@@ -1,0 +1,31 @@
+---
+---
+<noscript><p class="no-js">Activa JavaScript para preparar la consulta y procesar el resultado de PVGIS. La metodología permanece visible sin JavaScript.</p></noscript>
+<div class="calculator" data-solar-pvgis>
+  <form class="card" novalidate>
+    <h2>Datos para PVGIS</h2>
+    <div class="fields">
+      <div><label for="latitude">Latitud</label><div class="input-wrap"><input id="latitude" name="latitude" inputmode="decimal" value="40,63"/><span>°</span></div></div>
+      <div><label for="longitude">Longitud</label><div class="input-wrap"><input id="longitude" name="longitude" inputmode="decimal" value="-3,17"/><span>°</span></div></div>
+      <div><label for="peakPowerKw">Potencia pico instalada</label><div class="input-wrap"><input id="peakPowerKw" name="peakPowerKw" inputmode="decimal" value="5"/><span>kWp</span></div></div>
+      <div><label for="tilt">Inclinación</label><div class="input-wrap"><input id="tilt" name="tilt" inputmode="decimal" value="30"/><span>°</span></div></div>
+      <div><label for="azimuth">Azimut PVGIS</label><div class="input-wrap"><input id="azimuth" name="azimuth" inputmode="decimal" value="0"/><span>°</span></div><p class="help">0° sur; −90° este; +90° oeste.</p></div>
+      <div><label for="lossPercent">Pérdidas del sistema</label><div class="input-wrap"><input id="lossPercent" name="lossPercent" inputmode="decimal" value="14"/><span>%</span></div></div>
+      <div><label for="technology">Tecnología</label><select id="technology" name="technology"><option value="crystSi" selected>Silicio cristalino</option><option value="CIS">CIS</option><option value="CdTe">CdTe</option><option value="Unknown">Desconocida</option></select></div>
+      <div><label for="mounting">Montaje</label><select id="mounting" name="mounting"><option value="building" selected>Integrado/sobre edificio</option><option value="free">Estructura libre</option></select></div>
+    </div>
+    <p class="help mt-5">Calcula tu casa no envía estas coordenadas a ningún servidor. Al abrir la consulta oficial, los parámetros se envían directamente a PVGIS/JRC en otra pestaña.</p>
+    <p class="error" data-solar-error aria-live="polite"></p>
+    <div class="actions"><button class="button" type="submit">Preparar consulta PVGIS</button><button class="button secondary" type="reset">Restablecer</button></div>
+    <div class="pvgis-import" data-import hidden>
+      <h3>2. Procesa el resultado oficial</h3>
+      <p><a class="button secondary" data-pvgis-link target="_blank" rel="noopener noreferrer">Abrir consulta oficial PVGIS 5.3 →</a></p>
+      <p class="help">PVGIS bloquea las consultas AJAX desde navegador. Abre el enlace, guarda o copia el JSON oficial y procésalo aquí; el archivo/texto se lee solo en tu navegador.</p>
+      <label for="pvgisFile">Archivo JSON de PVGIS</label><input id="pvgisFile" type="file" accept=".json,application/json" data-pvgis-file/>
+      <label for="pvgisJson">O pega el JSON</label><textarea id="pvgisJson" data-pvgis-json rows="6" placeholder="{ ... }"></textarea>
+      <button class="button secondary" type="button" data-process-json>Procesar JSON pegado</button>
+    </div>
+  </form>
+  <section class="card result"><p class="eyebrow">PVGIS · JRC</p><h2>Producción fotovoltaica</h2><div data-solar-result aria-live="polite"><p>Prepara la consulta y procesa el JSON oficial de PVGIS.</p></div></section>
+</div>
+<script>import '../lib/solar-pvgis-ui.mjs';</script>
