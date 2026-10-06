@@ -12,11 +12,15 @@ const expected=[
  'aislamiento/transmitancia-termica',
  'climatizacion/calculadora-frigorias',
  'energia/potencia-electrica',
- 'energia/consumo-electrodomesticos'
+ 'energia/consumo-electrodomesticos',
+ 'climatizacion/suelo-radiante-tubo-circuitos',
+ 'energia/ventilacion-vivienda',
+ 'energia/simulador-factura-electrica',
+ 'solar/produccion-placas-solares'
 ];
 
-test('Catálogo V1 contiene exactamente las ocho rutas canónicas',()=>{
- assert.equal(tools.length,8);
+test('Catálogo contiene exactamente las doce rutas canónicas',()=>{
+ assert.equal(tools.length,12);
  assert.deepEqual(new Set(tools.map(t=>t.path)),new Set(expected));
 });
 test('No hay rutas duplicadas',()=>assert.equal(new Set(tools.map(t=>t.path)).size,tools.length));
@@ -49,14 +53,14 @@ test('Hubs sin herramientas quedan noindex y fuera de sitemap',()=>{
  assert.equal(indexable.get('energia'),true);
  assert.equal(indexable.get('climatizacion'),true);
  assert.equal(indexable.get('aislamiento'),true);
- assert.equal(indexable.get('solar'),false);
+ assert.equal(indexable.get('solar'),true);
  assert.equal(indexable.get('reformas'),false);
  assert.equal(isSitemapPage('https://example.com/energia/'),true);
  assert.equal(isSitemapPage('https://example.com/climatizacion/'),true);
  assert.equal(isSitemapPage('https://example.com/aislamiento/'),true);
- assert.equal(isSitemapPage('https://example.com/solar/'),false);
+ assert.equal(isSitemapPage('https://example.com/solar/'),true);
  assert.equal(isSitemapPage('https://example.com/reformas/'),false);
- assert.ok(SITEMAP_EXCLUDED_PATHS.includes('/solar/'));
+ assert.ok(!SITEMAP_EXCLUDED_PATHS.includes('/solar/'));
  assert.ok(SITEMAP_EXCLUDED_PATHS.includes('/reformas/'));
 });
 test('Buscador normaliza tildes y diacríticos',()=>{
