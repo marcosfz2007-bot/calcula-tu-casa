@@ -1,0 +1,15 @@
+import {buildPvgisUrl,parsePvgisResult} from './calculators/solar-pvgis.mjs';
+const nf=new Intl.NumberFormat('es-ES',{maximumFractionDigits:1});
+const root=document.querySelector('[data-solar-pvgis]');
+if(root){
+ const form=root.querySelector('form'),error=root.querySelector('[data-solar-error]'),result=root.querySelector('[data-solar-result]'),importBox=root.querySelector('[data-import]'),link=root.querySelector('[data-pvgis-link]'),textarea=root.querySelector('[data-pvgis-json]'),file=root.querySelector('[data-pvgis-file]');
+ let peakPower=null;
+ const values=()=>Object.fromEntries(new FormData(form));
+ const line=(label,value)=>{const p=document.createElement('p');const strong=document.createElement('strong');strong.textContent=label+': ';p.append(strong,document.createTextNode(value));return p;};
+ const render=(r)=>{const amount=document.createElement('p');amount.className='amount';amount.textContent=nf.format(r.annualKwh)+' kWh/año';const nodes=[amount,line('Producción específica',nf.format(r.specificYieldKwhPerKwp)+' kWh/kWp·año')];if(r.sdKwh!==null)nodes.push(line('Variabilidad interanual PVGIS (±1 SD)',nf.format(r.rangeLowKwh)+'–'+nf.format(r.rangeHighKwh)+' kWh/año'));if(r.totalLossPercent!==null)nodes.push(line('Pérdidas totales informadas por PVGIS',nf.format(r.totalLossPercent)+' %'));const h=document.createElement('h3');h.textContent='Producción mensual';nodes.push(h);const list=document.createElement('ol');const names=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];r.months.forEach(m=>{const li=document.createElement('li');li.textContent=names[m.month-1]+': '+nf.format(m.energyKwh)+' kWh';list.append(li);});nodes.push(list);const note=document.createElement('p');note.className='notice';note.textContent='Resultado calculado por PVGIS/JRC para los parámetros enviados. No es una garantía de producción real ni modela sombras locales no representadas en la consulta.';nodes.push(note);result.replaceChildren(...nodes);};
+ const parseText=(text)=>{error.textContent='';try{render(parsePvgisResult(JSON.parse(text),peakPower));}catch(err){error.textContent=err instanceof Error?err.message:'No se ha podido procesar el JSON.';}};
+ form.addEventListener('submit',e=>{e.preventDefault();error.textContent='';try{const prepared=buildPvgisUrl(values());peakPower=prepared.inputs.peakPowerKw;link.href=prepared.url;importBox.hidden=false;result.replaceChildren(Object.assign(document.createElement('p'),{textContent:'Consulta preparada. Abre PVGIS y procesa aquí su JSON para obtener la estimación.'}));}catch(err){error.textContent=err instanceof Error?err.message:'Revisa los datos.';}});
+ root.querySelector('[data-process-json]').addEventListener('click',()=>parseText(textarea.value));
+ file.addEventListener('change',async()=>{const selected=file.files?.[0];if(selected)parseText(await selected.text());});
+ form.addEventListener('reset',()=>queueMicrotask(()=>{peakPower=null;error.textContent='';importBox.hidden=true;textarea.value='';result.replaceChildren(Object.assign(document.createElement('p'),{textContent:'Valores restablecidos. Prepara una nueva consulta PVGIS.'}));}));
+}

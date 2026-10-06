@@ -1,85 +1,66 @@
-# QA — V1
+# QA — Expansión a 12 calculadoras
 
-Fecha de cierre técnico/hardening: 5 de octubre de 2026.
+Fecha de revisión: 6 de octubre de 2026.
 
 ## Alcance
 
-La V1 contiene ocho calculadoras funcionales, cinco hubs canónicos, directorio global con buscador local normalizado sin tildes, navegación responsive, páginas institucionales, legales con placeholders, Schema, interlinking, placeholders AdSense, sitemap oficial y CI. Solar y Reformas permanecen `noindex, follow` y fuera del sitemap hasta publicar herramientas reales.
+La rama `expansion-calculadoras-01` conserva las 8 calculadoras de la V1 y añade cuatro herramientas:
 
-## Tests definidos
+- suelo radiante: tubo y circuitos;
+- ventilación mínima de vivienda (CTE DB-HS 3);
+- simulador de factura eléctrica;
+- producción de placas solares con PVGIS/JRC.
 
-`tests/calculators.test.mjs` mantiene los 8 casos base por cada calculadora:
+Solar pasa a ser indexable y entra en sitemap. Reformas continúa `noindex, follow` y excluido del sitemap.
 
-1. normal;
-2. mínimo;
-3. máximo razonable;
-4. cero;
-5. negativo;
-6. vacío;
-7. decimal con coma;
-8. caso manual verificable.
+## Tests
 
-Son 64 pruebas base. El hardening añade 8 regresiones específicas en el mismo archivo: mezcla térmica del termo, precio opcional, coherencia de temperaturas, acristalamiento mayor que suelo, varios aparatos de potencia, sensibilidad ±20 % en aire acondicionado, sensibilidad ±20 % en radiador y límite superior de 24 h/día.
+Se mantienen los 86 tests previos y se añaden pruebas de regresión para las cuatro calculadoras nuevas, además de adaptar las comprobaciones de catálogo/indexación a 12 rutas.
 
-`tests/consistency.test.mjs` contiene 10 comprobaciones:
+Ejecución real registrada por el workflow `Verify` de la rama. No se fija un SHA en este documento para evitar que el registro quede obsoleto tras correcciones documentales; la validación de cierre debe corresponder al HEAD actual del PR #2:
 
-- exactamente ocho rutas canónicas;
-- ausencia de duplicidades;
-- retirada de la URL antigua del radiador;
-- metadatos obligatorios y 5–7 FAQ;
-- enlaces internos a herramientas existentes;
-- categorías válidas y ausencia de ratings/reviews inventados;
-- keywords presentes para el buscador local;
-- hubs Energía/Climatización/Aislamiento indexables frente a Solar/Reformas noindex y fuera de sitemap;
-- normalización de tildes/diacríticos del buscador.
-
-`tests/ui-contract.test.mjs` añade 4 contratos de integración: Hub aplica `noindex`, reset de filas dinámicas, etiqueta/escape del menú móvil y enlace al sitemap condicionado a `Astro.site`.
-
-Total definido tras hardening: **86 tests**.
-
-## Verificación de ejecución
-
-El workflow `Verify` del PR ejecuta obligatoriamente, sobre el HEAD de `fase-2-final`:
-
-```bash
-npm ci
+```text
 npm test
-npm run build
-SITE_URL=https://example.com npm run build
+129 tests
+129 aprobados
+0 fallidos
 ```
 
-El resultado del HEAD final se comprueba en GitHub Actions antes de fusionar.
+Las nuevas herramientas cubren como mínimo caso normal, mínimo, máximo razonable, cero, negativo, vacío, decimal con coma y caso manual conocido. También existen pruebas específicas de múltiples estancias y circuitos, filas CTE/equilibrado, mínimo fiscal editable, parámetros regulatorios centralizados, URL/JSON PVGIS y ausencia de claves privadas.
 
-## Build
+## Builds
 
-El hardening no añade ni elimina páginas HTML: se mantienen 24 rutas generadas. Con `SITE_URL`, el sitemap excluye páginas legales pendientes y los hubs `/solar/` y `/reformas/`; sin `SITE_URL` no se enlaza ni genera sitemap de producción.
+Ejecución real previa al cierre documental:
 
-## Revisión visual
+```text
+npm run build
+28 páginas generadas
 
-Pendiente de navegador real. La CI no sustituye una auditoría visual, WCAG ni Core Web Vitals. Antes del lanzamiento revisar al menos:
+SITE_URL=https://calcula-tu-casa.pages.dev npm run build
+28 páginas generadas
+sitemap-index.xml generado
+```
 
-- 360 px y escritorio;
-- menú hamburguesa, Escape y foco;
-- inputs dinámicos de capas/aparatos;
-- buscador con teclado;
-- mensajes de error;
-- ausencia de desbordamiento;
-- posiciones reservadas para anuncios;
-- canonical/Schema en el dominio final.
+El job final completó correctamente `npm ci`, los 129 tests y ambos builds; `npm ci` reportó 0 vulnerabilidades en esa ejecución.
 
-## Despliegue provisional
+## Verificaciones funcionales y normativas
 
-La V1 está desplegada provisionalmente en Cloudflare Pages en `https://calcula-tu-casa.pages.dev`. Se ha verificado visualmente la carga en escritorio y móvil. Mientras se valida el sitio y antes de un dominio definitivo, esta URL se utiliza como entorno de producción temporal.
+- Ventilación: valores de HS 3 tabla 2.1 centralizados y revisados el 06/10/2026; se informa separadamente la extracción específica de cocción.
+- Factura: referencias regulatorias comprobadas el 06/10/2026; precios de comercializadora nunca se obtienen ni ocultan en código.
+- Solar: preparar la consulta no envía datos. Cuando el usuario abre voluntariamente el enlace oficial, el navegador comunica directamente a PVGIS/JRC las coordenadas y parámetros necesarios; el JSON que posteriormente se pega o selecciona se procesa localmente.
+- Suelo radiante: el máximo por circuito es un dato editable del diseño/fabricante, no una norma universal.
 
-## Placeholders y tareas dependientes del lanzamiento
+## Revisión visual humana
 
-- `[NOMBRE_TITULAR]`
-- `[NIF]`
-- `[DOMICILIO]`
-- `[EMAIL_CONTACTO]`
-- `[DOMINIO]`
-- dominio real para `SITE_URL`;
-- CMP certificada cuando se active publicidad en el EEE;
-- cuenta AdSense y entrada real de `ads.txt`;
-- publisher ID real, nunca ficticio;
-- validación final en Search Console/Schema/Rich Results cuando el dominio esté publicado.
+Pendiente de revisión final del PR en navegador real, especialmente:
+
+- flujo de varias estancias en suelo radiante a 360 px;
+- comprensión del equilibrado CTE y aviso de extracción de cocción;
+- correspondencia de campos de factura con una factura real representativa;
+- experiencia de abrir PVGIS, guardar/copiar JSON e importarlo;
+- navegación e interlinking con 12 tarjetas;
+- sitemap de producción con Solar incluido y Reformas excluido.
+
+## Producción
+
+La producción actual en `https://calcula-tu-casa.pages.dev/` no se modifica desde esta rama. El despliegue seguirá dependiendo del merge manual a `main`.
