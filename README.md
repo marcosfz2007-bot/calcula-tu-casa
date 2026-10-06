@@ -120,11 +120,11 @@ La corrección de privacidad de PVGIS se mantiene: preparar la URL no envía dat
 
 ## AdSense / CMP / analítica
 
-No se activan AdSense, Google Analytics, CMP, publisher IDs ni cookies publicitarias. Se conservan únicamente los placeholders existentes.
+Se conserva la metaetiqueta `google-adsense-account` de verificación incorporada en `main`. No se cargan scripts de AdSense, Google Analytics ni CMP, ni se activan cookies publicitarias.
 
-## Datos legales pendientes
+## Datos legales y contacto
 
-No se inventan datos legales. Permanecen los placeholders que correspondan hasta completar titular, NIF, domicilio, email y dominio definitivo.
+Las páginas de Contacto, Aviso legal, Privacidad y Cookies leen la configuración actual mediante `PUBLIC_CONTACT_EMAIL`, `LEGAL_OWNER_NAME`, `LEGAL_NIF`, `LEGAL_ADDRESS` y `SITE_URL`. No se mantienen placeholders legales en `src/`. Estas páginas continúan `noindex` y fuera del sitemap.
 
 ## QA
 

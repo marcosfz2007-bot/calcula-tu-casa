@@ -96,3 +96,27 @@ No se dispone en este entorno de un navegador gráfico contra una preview de la 
 ## Producción
 
 La rama no modifica directamente producción. El despliegue continúa dependiendo del merge manual a `main`.
+
+
+## Sincronización con main antes de cerrar PR #3
+
+La rama se sincronizó mediante merge commit con el HEAD vigente de `main`, conservando los cambios posteriores de:
+
+- metaetiqueta `google-adsense-account` en el `<head>`;
+- Contacto;
+- Aviso legal;
+- Privacidad;
+- Cookies;
+- variables de entorno legales actuales.
+
+El conflicto lógico en `src/pages/[info].astro` se resolvió tomando como base la versión de `main` para la configuración legal/contacto y aplicando únicamente los cambios narrativos de la expansión que eliminan referencias obsoletas a un número fijo de calculadoras.
+
+Se añaden regresiones para comprobar que:
+
+- el catálogo sigue teniendo exactamente 21 herramientas;
+- Solar y Reformas son indexables;
+- Contacto, Aviso legal, Privacidad y Cookies permanecen fuera del sitemap;
+- la metaetiqueta de verificación de AdSense permanece en `Base.astro`;
+- las páginas legales leen `PUBLIC_CONTACT_EMAIL`, `LEGAL_OWNER_NAME`, `LEGAL_NIF`, `LEGAL_ADDRESS` y `SITE_URL`;
+- no reaparecen placeholders legales dentro de `src/`;
+- no se cargan scripts de AdSense, Google Analytics ni CMP.
