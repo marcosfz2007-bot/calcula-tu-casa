@@ -1,0 +1,32 @@
+---
+import {REFORM_PRESETS,REFORM_COSTS_META} from '../lib/config/reform-costs.mjs';
+const {tool}=Astro.props;
+const preset=REFORM_PRESETS[tool.kind];
+---
+<noscript><p class="no-js">Activa JavaScript para utilizar la calculadora. La metodología y las fuentes permanecen visibles.</p></noscript>
+<div class="calculator wide-calculator" data-reform-budget data-kind={tool.kind}>
+  <form class="card" novalidate>
+    <h2>{preset.title}</h2>
+    <div class="fields">
+      {preset.globals.map(g=><div><label for={g.key}>{g.label}</label><div class="input-wrap"><input id={g.key} name={g.key} value={g.value} inputmode="decimal"/><span>{g.unit}</span></div></div>)}
+    </div>
+    <p class="help mt-5">No se precargan precios nacionales. Introduce para cada partida tus precios unitarios bajo, central y alto a partir de presupuestos, una base de precios adecuada a tu ámbito o tus propias hipótesis.</p>
+    <div class="reform-rows" data-reform-rows>
+      {preset.rows.map((row,index)=><fieldset class="reform-row" data-row data-key={row.key} data-label={row.label} data-quantity-key={row.quantityKey} data-unit={row.unit}>
+        <legend>{row.label}</legend>
+        <label class="check-line"><input type="checkbox" name={'selected-'+index} checked={!row.optional}/> Incluir partida</label>
+        <p class="help" data-quantity-label>La cantidad se calcula con los datos superiores.</p>
+        <div class="fields three">
+          <div><label for={row.key+'-low'}>Precio unitario bajo</label><div class="input-wrap"><input id={row.key+'-low'} name="low" inputmode="decimal" value=""/><span>€/ {row.unit}</span></div></div>
+          <div><label for={row.key+'-central'}>Precio unitario central</label><div class="input-wrap"><input id={row.key+'-central'} name="central" inputmode="decimal" value=""/><span>€/ {row.unit}</span></div></div>
+          <div><label for={row.key+'-high'}>Precio unitario alto</label><div class="input-wrap"><input id={row.key+'-high'} name="high" inputmode="decimal" value=""/><span>€/ {row.unit}</span></div></div>
+        </div>
+      </fieldset>)}
+    </div>
+    <p class="help">Referencia metodológica: {REFORM_COSTS_META.sources[0].label}. No se importan automáticamente sus importes porque su ámbito y fecha no justifican presentarlos como precios nacionales actuales.</p>
+    <p class="error" data-form-error aria-live="polite"></p>
+    <div class="actions"><button class="button" type="submit">Calcular rango</button><button class="button secondary" type="reset">Restablecer</button></div>
+  </form>
+  <section class="card result"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Rango de presupuesto</h2><div data-result aria-live="polite"><p>Selecciona partidas e introduce sus precios unitarios.</p></div></section>
+</div>
+<script>import '../lib/reform-budget-ui.mjs';</script>

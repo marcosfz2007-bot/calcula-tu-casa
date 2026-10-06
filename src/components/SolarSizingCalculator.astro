@@ -1,0 +1,22 @@
+---
+---
+<noscript><p class="no-js">Activa JavaScript para utilizar la calculadora y procesar un JSON de PVGIS.</p></noscript>
+<div class="calculator" data-solar-sizing>
+  <form class="card" novalidate>
+    <h2>Demanda y paneles</h2>
+    <div class="fields">
+      <div><label for="annualConsumptionKwh">Consumo anual</label><div class="input-wrap"><input id="annualConsumptionKwh" name="annualConsumptionKwh" value="5000" inputmode="decimal"/><span>kWh/año</span></div></div>
+      <div><label for="targetCoveragePercent">Cobertura energética anual objetivo</label><div class="input-wrap"><input id="targetCoveragePercent" name="targetCoveragePercent" value="80" inputmode="decimal"/><span>%</span></div></div>
+      <div><label for="panelPowerWp">Potencia de cada panel</label><div class="input-wrap"><input id="panelPowerWp" name="panelPowerWp" value="450" inputmode="decimal"/><span>Wp</span></div></div>
+      <div><label for="panelAreaM2">Superficie aproximada por panel</label><div class="input-wrap"><input id="panelAreaM2" name="panelAreaM2" value="2" inputmode="decimal"/><span>m²</span></div></div>
+      <div><label for="availableAreaM2">Superficie disponible (opcional)</label><div class="input-wrap"><input id="availableAreaM2" name="availableAreaM2" value="" inputmode="decimal"/><span>m²</span></div></div>
+      <div><label for="specificYieldKwhPerKwp">Producción específica</label><div class="input-wrap"><input id="specificYieldKwhPerKwp" name="specificYieldKwhPerKwp" value="" inputmode="decimal"/><span>kWh/kWp·año</span></div></div>
+    </div>
+    <p class="help mt-5">Introduce la producción específica obtenida de PVGIS o de otra fuente identificable. No se usa irradiación por provincia ni un rendimiento oculto.</p>
+    <details class="mt-5"><summary>Obtener producción específica desde un JSON oficial de PVGIS</summary><p class="help">Puedes reutilizar el JSON descargado en la calculadora de producción solar. Se lee localmente en tu navegador.</p><label for="solarSizingFile">Archivo JSON</label><input id="solarSizingFile" type="file" accept=".json,application/json" data-pvgis-file/><label for="solarSizingJson">O pega el JSON</label><textarea id="solarSizingJson" rows="5" data-pvgis-json></textarea><button type="button" class="button secondary" data-read-pvgis>Usar kWh/kWp del JSON</button></details>
+    <p class="error" data-form-error aria-live="polite"></p>
+    <div class="actions"><button class="button" type="submit">Calcular paneles</button><button class="button secondary" type="reset">Restablecer</button></div>
+  </form>
+  <section class="card result"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Número de paneles</h2><div data-result aria-live="polite"><p>Introduce una producción específica y pulsa «Calcular paneles».</p></div></section>
+</div>
+<script>import '../lib/solar-sizing-ui.mjs';</script>
