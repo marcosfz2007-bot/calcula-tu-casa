@@ -27,6 +27,16 @@ La mayoría de las herramientas calcula localmente en el navegador y Calcula tu 
 - `/solar/amortizacion-placas-solares/`
 - `/energia/rentabilidad-aerotermia/`
 - `/reformas/comparador-reformas-energeticas/`
+- `/reformas/calculadora-pintura/`
+- `/reformas/calculadora-azulejos-baldosas/`
+- `/reformas/suelo-laminado-tarima/`
+- `/reformas/calculadora-rodapie/`
+- `/reformas/calculadora-papel-pintado/`
+- `/energia/calculadora-iluminacion-lux/`
+- `/energia/ahorro-bombillas-led/`
+- `/energia/consumo-standby/`
+- `/energia/recarga-coche-electrico/`
+- `/solar/bateria-solar/`
 
 Los hubs canónicos son `/energia/`, `/climatizacion/`, `/aislamiento/`, `/solar/` y `/reformas/`. Solar y Reformas tienen herramientas funcionales y son indexables.
 
@@ -102,11 +112,28 @@ Ahorro térmico = (U inicial - U nueva) × superficie × HDD × 24 / 1000
 
 Después se convierte a energía comprada según rendimiento o SCOP. Si `U nueva >= U inicial`, la herramienta no atribuye ahorro positivo.
 
+## Materiales, iluminación, movilidad y almacenamiento
+
+La expansión posterior añade 10 calculadoras domésticas de long-tail sin introducir precios, desperdicios o rendimientos universales:
+
+- pintura: rendimiento, manos y margen son entradas del usuario;
+- azulejos: desperdicio editable y caja por piezas o por m², en modos alternativos;
+- laminado/tarima: varias estancias, m²/caja y desperdicio manual;
+- rodapié: perímetro, huecos, margen y longitud comercial de pieza;
+- papel pintado: cálculo por tiras y rapport del producto;
+- lux: objetivo de iluminancia y factores de utilización/mantenimiento manuales;
+- LED: comparación energética con potencias reales introducidas;
+- standby: múltiples equipos, consumo anual y escenario de reducción;
+- vehículo eléctrico: batería/SOC o energía manual, eficiencia y potencia efectiva;
+- batería solar: kWh de capacidad y kW de potencia se mantienen como magnitudes independientes.
+
+Las referencias principales son fichas de producto/fabricante (Jotun, Marazzi, Quick-Step, Cole & Son), BIPM para lux, EUR-Lex para contexto de standby, documentación técnica de recarga y NREL para almacenamiento. Cuando una variable depende del producto o del uso, se deja editable.
+
 ## SEO, sitemap y privacidad
 
 Cada calculadora incluye title, description, canonical con `SITE_URL`, H1, breadcrumbs, fórmula, metodología, ejemplo, limitaciones, fuentes, revisión, versión metodológica, FAQ visible, Schema e interlinking.
 
-`@astrojs/sitemap` genera el sitemap cuando existe `SITE_URL`. Solar y Reformas se incluyen. Las páginas legales pendientes siguen excluidas/noindex.
+`@astrojs/sitemap` genera el sitemap cuando existe `SITE_URL`. Solar y Reformas se incluyen. Contacto, Aviso legal, Privacidad y Cookies continúan excluidos del sitemap y con el tratamiento de indexación definido por el proyecto.
 
 La corrección de privacidad de PVGIS se mantiene: preparar la URL no envía datos; abrir voluntariamente la consulta comunica los parámetros directamente al JRC/PVGIS; Calcula tu Casa no recibe esos datos; el JSON importado se procesa localmente.
 
