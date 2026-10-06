@@ -1,0 +1,23 @@
+---
+---
+<noscript><p class="no-js">Activa JavaScript para utilizar la calculadora.</p></noscript>
+<div class="calculator" data-tiles>
+<form class="card" novalidate>
+<h2>Superficie, pieza y caja</h2>
+<div class="fields">
+<div><label for="tileSurface">Superficie a cubrir</label><div class="input-wrap"><input id="tileSurface" name="surfaceM2" value="10" inputmode="decimal"/><span>m²</span></div></div>
+<div><label for="pieceWidthCm">Ancho pieza</label><div class="input-wrap"><input id="pieceWidthCm" name="pieceWidthCm" value="30" inputmode="decimal"/><span>cm</span></div></div>
+<div><label for="pieceLengthCm">Largo pieza</label><div class="input-wrap"><input id="pieceLengthCm" name="pieceLengthCm" value="60" inputmode="decimal"/><span>cm</span></div></div>
+<div><label for="tileWaste">Desperdicio/margen</label><div class="input-wrap"><input id="tileWaste" name="wastePercent" value="0" inputmode="decimal"/><span>%</span></div></div>
+<div><label for="boxMode">Dato disponible de la caja</label><select id="boxMode" name="boxMode"><option value="pieces">Piezas por caja</option><option value="coverage">m² por caja</option></select></div>
+<div data-pieces-box><label for="piecesPerBox">Piezas por caja</label><div class="input-wrap"><input id="piecesPerBox" name="piecesPerBox" value="" inputmode="numeric"/><span>ud.</span></div></div>
+<div data-coverage-box hidden><label for="coveragePerBoxM2">Cobertura por caja</label><div class="input-wrap"><input id="coveragePerBoxM2" name="coveragePerBoxM2" value="" inputmode="decimal"/><span>m²</span></div></div>
+<div><label for="tilePriceBox">Precio por caja (opcional)</label><div class="input-wrap"><input id="tilePriceBox" name="pricePerBox" value="" inputmode="decimal"/><span>€</span></div></div>
+</div>
+<p class="help mt-5">El desperdicio no tiene un porcentaje universal: depende del formato, colocación, recortes y geometría. Introduce tu hipótesis. Usa una sola forma de describir la caja.</p>
+<p class="error" data-form-error aria-live="polite"></p>
+<div class="actions"><button class="button" type="submit">Calcular piezas</button><button class="button secondary" type="reset">Restablecer</button></div>
+</form>
+<section class="card result"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Azulejos / baldosas</h2><div data-result aria-live="polite"><p>Introduce los datos de la caja y calcula.</p></div></section>
+</div>
+<script>import '../lib/tiles-ui.mjs';</script>

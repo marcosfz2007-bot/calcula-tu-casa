@@ -1,0 +1,27 @@
+---
+---
+<noscript><p class="no-js">Activa JavaScript para utilizar la calculadora.</p></noscript>
+<div class="calculator" data-paint>
+<form class="card" novalidate>
+<h2>Superficies y pintura</h2>
+<div class="fields">
+<div><label for="paintLength">Longitud habitación</label><div class="input-wrap"><input id="paintLength" name="length" value="5" inputmode="decimal"/><span>m</span></div></div>
+<div><label for="paintWidth">Anchura habitación</label><div class="input-wrap"><input id="paintWidth" name="width" value="4" inputmode="decimal"/><span>m</span></div></div>
+<div><label for="paintHeight">Altura</label><div class="input-wrap"><input id="paintHeight" name="height" value="2,5" inputmode="decimal"/><span>m</span></div></div>
+<div><label for="openingsArea">Puertas/ventanas a descontar</label><div class="input-wrap"><input id="openingsArea" name="openingsArea" value="0" inputmode="decimal"/><span>m²</span></div></div>
+<div><label for="coats">Número de manos</label><div class="input-wrap"><input id="coats" name="coats" value="2" inputmode="numeric"/><span>manos</span></div></div>
+<div><label for="coverage">Rendimiento de tu pintura</label><div class="input-wrap"><input id="coverage" name="coverage" value="" inputmode="decimal"/><span>m²/L·mano</span></div></div>
+<div><label for="marginPercent">Margen/desperdicio</label><div class="input-wrap"><input id="marginPercent" name="marginPercent" value="0" inputmode="decimal"/><span>%</span></div></div>
+<div><label for="canLitres">Tamaño de envase (opcional)</label><div class="input-wrap"><input id="canLitres" name="canLitres" value="" inputmode="decimal"/><span>L</span></div></div>
+</div>
+<div class="option-grid mt-5">
+<label class="check-line"><input type="checkbox" name="paintWalls" checked/> Pintar paredes</label>
+<label class="check-line"><input type="checkbox" name="paintCeiling"/> Pintar techo</label>
+</div>
+<p class="help mt-5">El rendimiento y el margen dependen del producto, soporte y forma de aplicación. Introdúcelos desde la ficha técnica o tu propia hipótesis; no se aplica un valor universal.</p>
+<p class="error" data-form-error aria-live="polite"></p>
+<div class="actions"><button class="button" type="submit">Calcular pintura</button><button class="button secondary" type="reset">Restablecer</button></div>
+</form>
+<section class="card result"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Pintura necesaria</h2><div data-result aria-live="polite"><p>Introduce el rendimiento de tu pintura y calcula.</p></div></section>
+</div>
+<script>import '../lib/paint-ui.mjs';</script>

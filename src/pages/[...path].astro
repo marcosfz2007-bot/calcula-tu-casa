@@ -10,10 +10,12 @@ import SolarCalculator from '../components/SolarCalculator.astro';
 import SolarSizingCalculator from '../components/SolarSizingCalculator.astro';
 import ReformBudgetCalculator from '../components/ReformBudgetCalculator.astro';
 import EnergyReformsCalculator from '../components/EnergyReformsCalculator.astro';
+import PaintCalculator from '../components/PaintCalculator.astro';
+import TilesCalculator from '../components/TilesCalculator.astro';
 import {tools} from '../lib/catalog.mjs';
 export function getStaticPaths(){return tools.map(tool=>({params:{path:tool.path},props:{tool}}));}
 const {tool}=Astro.props;
-const specialized={cooling:CoolingCalculator,transmittance:TransmittanceCalculator,power:PowerCalculator,appliances:AppliancesCalculator,underfloor:UnderfloorCalculator,solar:SolarCalculator,'solar-sizing':SolarSizingCalculator,'reform-integral':ReformBudgetCalculator,'reform-bathroom':ReformBudgetCalculator,'reform-kitchen':ReformBudgetCalculator,'energy-reforms':EnergyReformsCalculator};
+const specialized={cooling:CoolingCalculator,transmittance:TransmittanceCalculator,power:PowerCalculator,appliances:AppliancesCalculator,underfloor:UnderfloorCalculator,solar:SolarCalculator,'solar-sizing':SolarSizingCalculator,'reform-integral':ReformBudgetCalculator,'reform-bathroom':ReformBudgetCalculator,'reform-kitchen':ReformBudgetCalculator,'energy-reforms':EnergyReformsCalculator,'paint':PaintCalculator,'tiles':TilesCalculator};
 const Calculator=specialized[tool.kind]||GenericCalculator;
 ---
 <CalculatorLayout tool={tool}><Calculator tool={tool}/></CalculatorLayout>
