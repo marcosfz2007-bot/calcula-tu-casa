@@ -17,7 +17,7 @@ Solar pasa a ser indexable y entra en sitemap. Reformas continúa `noindex, foll
 
 Se mantienen los 86 tests previos y se añaden pruebas de regresión para las cuatro calculadoras nuevas, además de adaptar las comprobaciones de catálogo/indexación a 12 rutas.
 
-Ejecución real previa al cierre documental:
+Ejecución real del cierre técnico (workflow `Verify` sobre `723751c4`):
 
 ```text
 npm test
@@ -36,18 +36,12 @@ Ejecución real previa al cierre documental:
 npm run build
 28 páginas generadas
 
-SITE_URL=https://example.com npm run build
+SITE_URL=https://calcula-tu-casa.pages.dev npm run build
 28 páginas generadas
 sitemap-index.xml generado
 ```
 
-La CI final de esta rama sustituye el segundo comando por el dominio provisional real:
-
-```bash
-SITE_URL=https://calcula-tu-casa.pages.dev npm run build
-```
-
-El resultado final de ese HEAD debe quedar verde antes de revisión/merge.
+El job final completó correctamente `npm ci`, los 127 tests y ambos builds; `npm ci` reportó 0 vulnerabilidades en esa ejecución.
 
 ## Verificaciones funcionales y normativas
 
