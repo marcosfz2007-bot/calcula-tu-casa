@@ -7,12 +7,34 @@ import FAQ from '../components/FAQ.astro';
 import RelatedTools from '../components/RelatedTools.astro';
 import AdSlot from '../components/AdSlot.astro';
 const {tool}=Astro.props;
-const url=Astro.site?new URL(`/${tool.path}/`,Astro.site).href:undefined;
-const categoryUrl=Astro.site?new URL(`/${tool.categorySlug}/`,Astro.site).href:undefined;
+const url=Astro.site?new URL('/'+tool.path+'/',Astro.site).href:undefined;
+const categoryUrl=Astro.site?new URL('/'+tool.categorySlug+'/',Astro.site).href:undefined;
 const schema=url?{'@context':'https://schema.org','@graph':[
  {'@type':['SoftwareApplication','WebApplication'],name:tool.title,description:tool.description,url,applicationCategory:'UtilitiesApplication',operatingSystem:'Any',browserRequirements:'HTML5, JavaScript',isAccessibleForFree:true,offers:{'@type':'Offer',price:'0',priceCurrency:'EUR'},dateModified:tool.reviewedAtIso||'2026-10-05'},
  {'@type':'BreadcrumbList',itemListElement:[{'@type':'ListItem',position:1,name:'Inicio',item:Astro.site.href},{'@type':'ListItem',position:2,name:tool.category,item:categoryUrl},{'@type':'ListItem',position:3,name:tool.short,item:url}]},
  {'@type':'FAQPage',mainEntity:tool.faqs.map(([q,a])=>({'@type':'Question',name:q,acceptedAnswer:{'@type':'Answer',text:a}}))}
 ]}:undefined;
 ---
-<Base title={tool.title} description={tool.description} schema={schema}><Breadcrumbs items={[{label:'Inicio',href:'/'},{label:tool.category,href:`/${tool.categorySlug}/`},{label:tool.short}]}/><header class="calc-heading"><p class="eyebrow">{tool.category} · HERRAMIENTA GRATUITA</p><h1>{tool.title}</h1><p class="lead">{tool.description}</p><div><span class="badge">Sin registro</span><span class="badge">{tool.kind==='solar'?'PVGIS bajo acción del usuario':'Cálculo local'}</span><span class="badge">Metodología {tool.methodology}</span><span class="badge">Revisión {tool.reviewedAt||'05/10/2026'}</span></div></header><slot/><RelatedTools paths={tool.related}/><AdSlot position="after-result"/><article class="article"><Methodology tool={tool}/><AdSlot position="after-methodology"/><Sources sources={tool.sources} methodology={tool.methodology}/><FAQ items={tool.faqs}/></article></Base>
+<Base title={tool.title} description={tool.description} schema={schema}>
+  <Breadcrumbs items={[{label:'Inicio',href:'/'},{label:tool.category,href:'/'+tool.categorySlug+'/'},{label:tool.short}]}/>
+  <header class="calc-heading">
+    <p class="eyebrow">{tool.category} · HERRAMIENTA GRATUITA</p>
+    <h1>{tool.title}</h1>
+    <p class="lead">{tool.description}</p>
+    <div aria-label="Características de la herramienta">
+      <span class="badge">Sin registro</span>
+      <span class="badge">{tool.kind==='solar'?'PVGIS bajo acción del usuario':'Cálculo local'}</span>
+      <span class="badge">Metodología {tool.methodology}</span>
+      <span class="badge">Revisión {tool.reviewedAt||'05/10/2026'}</span>
+    </div>
+  </header>
+  <slot/>
+  <AdSlot position="after-result"/>
+  <article class="article">
+    <Methodology tool={tool}/>
+    <AdSlot position="after-methodology"/>
+    <Sources sources={tool.sources} methodology={tool.methodology}/>
+    <FAQ items={tool.faqs}/>
+  </article>
+  <RelatedTools paths={tool.related}/>
+</Base>

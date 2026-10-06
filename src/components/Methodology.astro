@@ -1,4 +1,30 @@
 ---
 const {tool}=Astro.props;
 ---
-<section><h2>Cómo se calcula</h2><p class="formula">{tool.formula}</p><p>{tool.example}</p>{tool.methodologyDetails?.length>0&&<><h3>Coeficientes, fuentes e hipótesis del modelo</h3><ul>{tool.methodologyDetails.map(item=><li>{item}</li>)}</ul></>}</section><section><h2>Cómo interpretar el resultado</h2><p>El resultado responde a los datos que has introducido y a las hipótesis visibles de esta herramienta. Modifica una variable cada vez para comprobar qué factor cambia más la estimación.</p></section><section><h2>Cuándo esta calculadora no es suficiente</h2><p>{tool.limitations}</p><p class="notice"><strong>Resultado orientativo.</strong> No constituye proyecto técnico, certificación energética, presupuesto profesional ni asesoramiento individualizado.</p></section>
+<section>
+  <p class="eyebrow">ENTENDER EL RESULTADO</p>
+  <h2>Cómo interpretar la estimación</h2>
+  <p>El resultado responde a los datos que has introducido y a las hipótesis visibles de esta herramienta. Si quieres comparar escenarios, modifica una variable cada vez para identificar qué factor cambia más la estimación.</p>
+</section>
+
+<section>
+  <p class="eyebrow">TRANSPARENCIA</p>
+  <h2>Cómo se calcula</h2>
+  <details class="methodology-details">
+    <summary>Ver fórmula, ejemplo e hipótesis</summary>
+    <div class="methodology-details-body">
+      <h3>Fórmula o lógica utilizada</h3>
+      <p class="formula">{tool.formula}</p>
+      <h3>Ejemplo práctico</h3>
+      <p>{tool.example}</p>
+      {tool.methodologyDetails?.length>0&&<><h3>Coeficientes, fuentes e hipótesis del modelo</h3><ul>{tool.methodologyDetails.map(item=><li>{item}</li>)}</ul></>}
+    </div>
+  </details>
+</section>
+
+<section>
+  <p class="eyebrow">LÍMITES DEL MODELO</p>
+  <h2>Cuándo esta calculadora no es suficiente</h2>
+  <p>{tool.limitations}</p>
+  <p class="notice"><strong>Resultado orientativo.</strong> No constituye proyecto técnico, certificación energética, presupuesto profesional ni asesoramiento individualizado.</p>
+</section>
