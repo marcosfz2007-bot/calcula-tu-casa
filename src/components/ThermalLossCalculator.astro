@@ -1,0 +1,27 @@
+---
+---
+<noscript><p class="no-js">Activa JavaScript para utilizar la calculadora. La metodología permanece visible.</p></noscript>
+<div class="calculator wide-calculator" data-thermal-loss>
+  <form class="card" novalidate>
+    <h2>Temperaturas del escenario</h2>
+    <div class="fields">
+      <div><label for="interiorTempC">Temperatura interior</label><div class="input-wrap"><input id="interiorTempC" name="interiorTempC" inputmode="decimal" autocomplete="off"/><span>°C</span></div></div>
+      <div><label for="exteriorTempC">Temperatura exterior</label><div class="input-wrap"><input id="exteriorTempC" name="exteriorTempC" inputmode="decimal" autocomplete="off"/><span>°C</span></div></div>
+    </div>
+    <h2 class="mt-6">Elementos de la envolvente</h2>
+    <div class="dynamic-list" data-thermal-elements>
+      <div class="dynamic-row" data-element>
+        <input name="elementName" value="Pared exterior" aria-label="Nombre del elemento"/>
+        <label>Superficie <span class="input-wrap"><input name="areaM2" inputmode="decimal"/><span>m²</span></span></label>
+        <label>Transmitancia U <span class="input-wrap"><input name="uValue" inputmode="decimal"/><span>W/(m²·K)</span></span></label>
+        <button class="button tertiary" type="button" data-remove-element>Eliminar</button>
+      </div>
+    </div>
+    <button class="button secondary" type="button" data-add-element>Añadir superficie</button>
+    <p class="help mt-5">Introduce valores U obtenidos de documentación técnica, proyecto o una estimación separada. No se añaden infiltraciones, ventilación ni puentes térmicos ocultos.</p>
+    <p class="error" data-form-error aria-live="polite"></p>
+    <div class="actions"><button class="button" type="submit">Calcular pérdida</button><button class="button secondary" type="reset">Restablecer</button></div>
+  </form>
+  <section class="card result"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Pérdida por transmisión</h2><div data-result aria-live="polite"><p>Introduce temperaturas, superficies y valores U.</p></div></section>
+</div>
+<script>import '../lib/thermal-loss-ui.mjs';</script>

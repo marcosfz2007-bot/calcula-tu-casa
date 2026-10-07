@@ -15,10 +15,14 @@ import TilesCalculator from '../components/TilesCalculator.astro';
 import LaminateCalculator from '../components/LaminateCalculator.astro';
 import StandbyCalculator from '../components/StandbyCalculator.astro';
 import EvChargingCalculator from '../components/EvChargingCalculator.astro';
+import ThermalLossCalculator from '../components/ThermalLossCalculator.astro';
+import ConcreteCalculator from '../components/ConcreteCalculator.astro';
+import WaterproofingCalculator from '../components/WaterproofingCalculator.astro';
+import WaterTankCalculator from '../components/WaterTankCalculator.astro';
 import {tools} from '../lib/catalog.mjs';
 export function getStaticPaths(){return tools.map(tool=>({params:{path:tool.path},props:{tool}}));}
 const {tool}=Astro.props;
-const specialized={cooling:CoolingCalculator,transmittance:TransmittanceCalculator,power:PowerCalculator,appliances:AppliancesCalculator,underfloor:UnderfloorCalculator,solar:SolarCalculator,'solar-sizing':SolarSizingCalculator,'reform-integral':ReformBudgetCalculator,'reform-bathroom':ReformBudgetCalculator,'reform-kitchen':ReformBudgetCalculator,'energy-reforms':EnergyReformsCalculator,'paint':PaintCalculator,'tiles':TilesCalculator,'laminate':LaminateCalculator,'standby':StandbyCalculator,'ev-charging':EvChargingCalculator};
+const specialized={cooling:CoolingCalculator,transmittance:TransmittanceCalculator,power:PowerCalculator,appliances:AppliancesCalculator,underfloor:UnderfloorCalculator,solar:SolarCalculator,'solar-sizing':SolarSizingCalculator,'reform-integral':ReformBudgetCalculator,'reform-bathroom':ReformBudgetCalculator,'reform-kitchen':ReformBudgetCalculator,'energy-reforms':EnergyReformsCalculator,'paint':PaintCalculator,'tiles':TilesCalculator,'laminate':LaminateCalculator,'standby':StandbyCalculator,'ev-charging':EvChargingCalculator,'thermal-loss':ThermalLossCalculator,'concrete':ConcreteCalculator,'waterproofing':WaterproofingCalculator,'water-tank':WaterTankCalculator};
 const Calculator=specialized[tool.kind]||GenericCalculator;
 ---
 <CalculatorLayout tool={tool}><Calculator tool={tool}/></CalculatorLayout>

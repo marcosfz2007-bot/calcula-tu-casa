@@ -19,7 +19,7 @@ const walk=(dir)=>{
 };
 
 test('Sincronización main · catálogo e indexación se conservan',()=>{
-  assert.equal(tools.length,31);
+  assert.equal(tools.length,39);
   assert.equal(categories.find(c=>c.slug==='solar')?.indexable,true);
   assert.equal(categories.find(c=>c.slug==='reformas')?.indexable,true);
 });

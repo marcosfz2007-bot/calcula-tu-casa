@@ -1,141 +1,129 @@
-# QA — expansion-calculadoras-03
+# QA — expansion-calculadoras-04
 
-Fecha de revisión técnica: 6 de octubre de 2026.
+Fecha de revisión técnica: 7 de octubre de 2026.
 
-## Alcance
+## Base y alcance
 
-La rama parte del HEAD de `main` y añade exclusivamente estas diez herramientas:
+La rama se creó desde `main` en `15713b3a683e6dc48c9fedd495efe8207f74d5f1`, después de verificar 31 calculadoras, UI V2, tests, `ads.txt`, meta de AdSense, Search Console, sitemap, páginas legales y variables legales. No había ningún Pull Request abierto de expansión en ese momento.
 
-- pintura;
-- azulejos y baldosas;
-- suelo laminado / tarima;
-- rodapié;
-- papel pintado;
-- iluminación por lux;
-- ahorro al sustituir bombillas por LED;
-- consumo en standby;
-- recarga doméstica de vehículo eléctrico;
-- capacidad de batería solar.
+Se añaden exactamente ocho herramientas:
 
-El catálogo queda con **31 calculadoras reales** y mantiene los hubs Energía, Climatización, Aislamiento, Solar y Reformas indexables.
+- `/aislamiento/perdida-termica-vivienda/`;
+- `/energia/consumo-deshumidificador/`;
+- `/aislamiento/ahorro-cambio-ventanas/`;
+- `/reformas/hormigon-necesario/`;
+- `/reformas/mortero-necesario/`;
+- `/reformas/ladrillos-bloques-necesarios/`;
+- `/reformas/calculadora-impermeabilizacion/`;
+- `/reformas/tamano-deposito-agua/`.
 
-## Decisiones metodológicas
+El catálogo contiene exactamente **39 calculadoras**.
 
-- No se precarga un rendimiento universal de pintura; procede de la ficha del producto.
-- El desperdicio de cerámica, suelo y rodapié es editable.
-- Azulejos permite piezas/caja o m²/caja como modos alternativos.
-- Laminado admite varias estancias y superficie manual.
-- Papel pintado se calcula por tiras y rapport, no solo por m².
-- Iluminación usa la relación SI `1 lx = 1 lm/m²`; el objetivo de lux y los factores son manuales.
-- LED y standby usan potencia × tiempo; no descargan tarifas.
-- Recarga VE usa energía de red corregida por eficiencia y potencia efectiva limitada por cargador/vehículo cuando se indica.
-- Batería solar separa capacidad (kWh) y potencia (kW); eficiencia round-trip afecta a la energía de carga.
+## Metodología y fuentes
 
-## Fuentes principales
+### Pérdida térmica
 
-- Jotun: rendimiento por mano y factores que afectan al consumo de pintura.
-- Marazzi: superficie, formato y porcentaje de residuo en colocación.
-- Quick-Step: m² por paquete variables según colección y accesorios de acabado.
-- Cole & Son: dimensiones del rollo, repeat y match de papel pintado.
-- BIPM: lux como lumen por metro cuadrado.
-- Reglamento (UE) 2023/826: contexto normativo de standby.
-- Documentación técnica de recarga doméstica AC.
-- NREL: potencia, energía, DoD y round-trip efficiency en almacenamiento.
+`Q = Σ(U × A × ΔT)`. Solo transmisión estacionaria. Fuente principal: CTE DB-HE y Catálogo de Elementos Constructivos. No se añaden infiltración, ventilación o puentes térmicos ocultos.
+
+### Deshumidificador
+
+`kWh = W / 1000 × horas × días`. Precio manual. La capacidad L/24 h, si se introduce, se trata como dato nominal condicionado por el ensayo del fabricante. Se usa una ficha oficial de De’Longhi como ejemplo de declaración a temperatura/humedad concretas.
+
+### Cambio de ventanas
+
+`ΔP = max(0,(U actual − U nueva) × A × ΔT)`; `kWh térmicos = ΔP × horas / 1000`; energía comprada evitada = térmica / rendimiento o COP. Fuentes: CTE DB-HE e IDAE. La amortización simple solo aparece con coste opcional y ahorro positivo.
+
+### Hormigón y mortero
+
+Son cálculos geométricos de volumen. No se inventan densidad, dosificación ni rendimiento. Cuando se solicitan sacos, los L/saco deben proceder de la ficha del producto. Las fichas Sika citadas sirven como ejemplos de que el rendimiento se declara por producto, no como valor universal.
+
+### Ladrillos y bloques
+
+La superficie neta se divide por el módulo de colocación formado por dimensión física + junta. Fuente: CTE DB-SE-F. La herramienta no calcula mortero ni verifica estabilidad estructural.
+
+### Impermeabilización
+
+Modo L: `L = superficie × capas / (m²/L·capa)`. Modo kg: `kg = superficie × kg/m²`, multiplicando por capas solo cuando el consumo declarado es por capa. Fuentes de fabricante oficiales muestran ambas formas de declarar rendimiento. No se convierte entre L y kg sin densidad del producto.
+
+### Depósito de agua
+
+Demanda × autonomía, reserva y fracción utilizable opcional. Es solo dimensionamiento volumétrico orientativo. CTE HS 4 y RD 487/2022 se citan para dejar claro que bombas, presiones, red, antirretornos, calidad del agua, legionela y demás requisitos sanitarios/instalación quedan fuera.
 
 ## Tests reales
 
-Workflow `Verify` sobre el código funcional previo al cierre documental:
-
-```text
-npm test
-320 tests
-320 aprobados
-0 fallidos
-```
-
-Se conservan los **226 tests** existentes y se añaden regresiones para las diez nuevas herramientas. Cada calculadora cubre, como mínimo, caso normal, mínimo, máximo razonable, cero cuando aplica, negativo, vacío, decimal con coma y caso manual conocido.
-
-Regresiones adicionales:
-
-- pintura: envases y exigencia de al menos una superficie;
-- azulejos: modo piezas/caja frente a m²/caja;
-- laminado: suma de estancias y prioridad de superficie manual;
-- rodapié: paquetes y rechazo de doble precio;
-- papel pintado: rapport y rollo demasiado corto;
-- lux: identidad `1 lx = 1 lm/m²`;
-- LED: no forzar payback cuando no existe ahorro;
-- standby: ranking y reducción parcial;
-- VE: límite AC del vehículo y coherencia de SOC;
-- batería: módulos, excedente insuficiente, separación kWh/kW y contrato explícito de que el excedente solar se comprueba para un único día;
-- catálogo: exactamente 31 rutas y relacionados existentes;
-- integración con main: AdSense verification meta, `ads.txt`, Search Console, legales y ausencia de scripts de Ads/Analytics/CMP.
-
-## Builds reales
+Ejecución funcional previa a este cierre documental:
 
 ```text
 npm ci
 correcto
-0 vulnerabilidades reportadas
+0 vulnerabilidades
 
-npm run build
-correcto
-47 páginas generadas
-
-SITE_URL=https://calcula-tu-casa.pages.dev npm run build
-correcto
-47 páginas generadas
-sitemap-index.xml generado
-```
-
-## Preservación de main
-
-La expansión no elimina ni sustituye:
-
-- `google-adsense-account` del `<head>`;
-- `public/ads.txt`;
-- archivo de verificación de Google Search Console;
-- configuración y variables actuales de Contacto, Aviso legal, Privacidad y Cookies;
-- exclusión de páginas legales del sitemap;
-- robots/sitemap existentes;
-- la corrección de privacidad de PVGIS.
-
-No se activan scripts de AdSense, Google Analytics ni CMP.
-
-## Responsive / revisión visual
-
-La estructura mantiene los breakpoints existentes. Las nuevas filas dinámicas usan una columna en móvil mediante los estilos generales y específicos añadidos; las tablas usan contenedor con scroll horizontal cuando procede.
-
-Antes del merge conviene una revisión humana de la preview a 360 px y escritorio, especialmente:
-
-- habitaciones dinámicas de laminado;
-- equipos dinámicos de standby;
-- modos batería/manual de recarga VE;
-- selector piezas/caja vs m²/caja;
-- legibilidad de unidades largas en inputs.
-
-## Producción
-
-La rama no modifica directamente `main`. El despliegue de producción depende de un merge manual.
-
-
-## Correcciones finales PR #4
-
-- `.env.example` documenta `SITE_URL`, `PUBLIC_CONTACT_EMAIL`, `LEGAL_OWNER_NAME`, `LEGAL_NIF` y `LEGAL_ADDRESS`; las variables personales permanecen vacías.
-- En batería solar, «Excedente solar disponible en un día» responde únicamente a si ese excedente de un solo día permitiría cargar completamente la batería dimensionada considerando pérdidas. No es una simulación de varios días ni una serie temporal de producción/consumo.
-- La fórmula de capacidad y la separación entre energía/capacidad (kWh) y potencia (kW) no se modifican.
-
-Verificación real tras estas correcciones:
-
-```text
 npm test
-320 tests
-320 aprobados
+424 tests
+424 aprobados
 0 fallidos
 
 npm run build
-47 páginas generadas
+correcto
+55 páginas generadas
 
 SITE_URL=https://calcula-tu-casa.pages.dev npm run build
-47 páginas generadas
+correcto
+55 páginas generadas
 sitemap-index.xml generado
 ```
+
+La suite nueva cubre para cada motor: caso normal, mínimo razonable, máximo razonable, cero cuando procede, negativo, vacío, valor inválido/NaN, decimal con coma, decimal con punto y caso manual. También cubre suma/ranking/ΔT 0, W→kWh, U peor/igual, COP, `ceil` de sacos, conversiones cm/mm, juntas, huecos, modos L/kg, capas, envases, demanda por personas, fracción utilizable y depósitos comerciales.
+
+Existe una regresión explícita que exige `tools.length === 39` y otra que impide volver accidentalmente a 31.
+
+## Incidencias detectadas durante QA
+
+La primera ejecución ampliada detectó dos fallos nuevos y se corrigieron antes del cierre:
+
+1. una coma ausente en el catálogo tras modificar interlinking;
+2. precisión flotante en `ceil` de sacos de hormigón (1320 L representados como 1320.0000000000002), resuelta redondeando litros calculados antes del `ceil`.
+
+No se modificó ninguna fórmula ni motor de las 31 calculadoras anteriores.
+
+## UI V2 y responsive
+
+Las nuevas interfaces reutilizan los patrones actuales `calculator`, `card`, `result`, `fields`, `dynamic-list`, `dynamic-row`, `reform-row`, `button`, metodología, fuentes, FAQ y relacionados. No se añaden dependencias ni un sistema visual paralelo.
+
+Los tests de contrato verifican que las cuatro interfaces especializadas nuevas conservan los patrones UI V2. El CSS responsive existente hace que formularios y grids pasen a una columna en móvil.
+
+## Preservación de main
+
+No se modifican deliberadamente:
+
+- `src/layouts/Base.astro` y la meta `google-adsense-account`;
+- `public/ads.txt`;
+- `public/google16f16c402ad0eb27.html`;
+- páginas legales y contacto;
+- `.env.example` y sus variables legales;
+- configuración de sitemap/canonical;
+- scripts de publicidad, Analytics o CMP.
+
+Las regresiones existentes siguen comprobando estos contratos.
+
+## Cierre de rama y Pull Request
+
+Antes de abrir el PR se volvió a consultar `main`: continuaba en `15713b3a683e6dc48c9fedd495efe8207f74d5f1`, por lo que la rama estaba 0 commits por detrás y no requirió sincronización adicional.
+
+Comparación `main` → `expansion-calculadoras-04`:
+
+- 17 archivos añadidos;
+- 8 archivos modificados;
+- 0 archivos eliminados.
+
+Se verificó byte a byte que permanecen idénticos a `main`: `.env.example`, `astro.config.mjs`, `public/ads.txt`, verificación de Search Console, `src/layouts/Base.astro`, `src/lib/seo.mjs`, `src/pages/[info].astro`, `src/pages/robots.txt.ts`, `src/styles/global.css` y `docs/ui-redesign-v2.md`.
+
+PR abierto: **#6 — feat: ampliar Calcula tu Casa con herramientas de aislamiento y obra**.
+
+La CI del evento `pull_request` terminó correctamente. GitHub marca el PR como mergeable y no se ha fusionado.
+
+### Cloudflare Preview
+
+La integración disponible no publicó una URL de preview en estados ni comentarios de GitHub y el alias de rama esperado no resolvió públicamente durante la comprobación. Por tanto no se inventa una URL de preview ni se afirma una revisión visual que no haya podido realizarse.
+
+La estructura responsive sí queda protegida por UI V2 y por tests de contrato, pero la comprobación visual real a 360 px y escritorio de la preview queda como revisión humana previa al merge.

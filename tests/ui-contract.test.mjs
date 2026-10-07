@@ -62,3 +62,14 @@ test('Fuentes usa la fecha de revisión de cada herramienta y no una fecha globa
  assert.match(layout,/const reviewedAt=tool\.reviewedAt\|\|'05\/10\/2026'/);
  assert.match(layout,/<Sources[^>]*reviewedAt=\{reviewedAt\}/);
 });
+
+test('Expansión 04 · calculadoras especializadas reutilizan patrones UI v2',()=>{
+ for(const path of ['src/components/ThermalLossCalculator.astro','src/components/ConcreteCalculator.astro','src/components/WaterproofingCalculator.astro','src/components/WaterTankCalculator.astro']){
+  const source=read(path);
+  assert.match(source,/class="calculator/);
+  assert.match(source,/class="card/);
+  assert.match(source,/class="card result"/);
+  assert.match(source,/class="button/);
+  assert.match(source,/aria-live="polite"/);
+ }
+});

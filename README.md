@@ -37,6 +37,14 @@ La mayoría de las herramientas calcula localmente en el navegador y Calcula tu 
 - `/energia/consumo-standby/`
 - `/energia/recarga-coche-electrico/`
 - `/solar/bateria-solar/`
+- `/aislamiento/perdida-termica-vivienda/`
+- `/energia/consumo-deshumidificador/`
+- `/aislamiento/ahorro-cambio-ventanas/`
+- `/reformas/hormigon-necesario/`
+- `/reformas/mortero-necesario/`
+- `/reformas/ladrillos-bloques-necesarios/`
+- `/reformas/calculadora-impermeabilizacion/`
+- `/reformas/tamano-deposito-agua/`
 
 Los hubs canónicos son `/energia/`, `/climatizacion/`, `/aislamiento/`, `/solar/` y `/reformas/`. Solar y Reformas tienen herramientas funcionales y son indexables.
 
@@ -129,6 +137,21 @@ La expansión posterior añade 10 calculadoras domésticas de long-tail sin intr
 
 Las referencias principales son fichas de producto/fabricante (Jotun, Marazzi, Quick-Step, Cole & Son), BIPM para lux, EUR-Lex para contexto de standby, documentación técnica de recarga y NREL para almacenamiento. Cuando una variable depende del producto o del uso, se deja editable.
 
+## Aislamiento y obra — expansión a 39 herramientas
+
+La expansión añade ocho calculadoras locales sin modificar las fórmulas de las 31 herramientas anteriores:
+
+- pérdida térmica: suma `U × A × ΔT` por superficies y ranking de contribución;
+- deshumidificador: potencia × horas × días, con métrica opcional basada en L/24 h nominales;
+- cambio de ventanas: diferencia de transmisión, energía térmica/final evitada y amortización simple opcional;
+- hormigón: volumen de varias zonas, cm/m, margen y sacos solo con rendimiento declarado;
+- mortero: superficie × espesor, litros, margen y sacos opcionales;
+- ladrillos/bloques: superficie neta y módulo pieza + juntas;
+- impermeabilización: modos separados m²/L por capa y kg/m², sin conversiones de densidad inventadas;
+- depósito de agua: capacidad volumétrica orientativa con demanda manual o personas × consumo introducido.
+
+Los valores dependientes del proyecto o producto —U, rendimiento, COP/eficiencia, márgenes, juntas, L/saco, kg/m², L/persona·día o fracción utilizable— permanecen como entradas del usuario.
+
 ## SEO, sitemap y privacidad
 
 Cada calculadora incluye title, description, canonical con `SITE_URL`, H1, breadcrumbs, fórmula, metodología, ejemplo, limitaciones, fuentes, revisión, versión metodológica, FAQ visible, Schema e interlinking.
@@ -164,4 +187,4 @@ npm run build
 SITE_URL=https://calcula-tu-casa.pages.dev npm run build
 ```
 
-Consulta `docs/qa.md` para el registro real de la rama de expansión.
+Consulta `docs/qa.md` para el registro real. La expansión a 39 herramientas se valida con 424 tests y 55 páginas generadas en ambos builds.
