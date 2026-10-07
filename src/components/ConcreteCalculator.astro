@@ -1,0 +1,32 @@
+---
+---
+<noscript><p class="no-js">Activa JavaScript para utilizar la calculadora.</p></noscript>
+<div class="calculator wide-calculator" data-concrete>
+  <form class="card" novalidate>
+    <h2>Zonas de hormigón</h2>
+    <div class="dynamic-list" data-concrete-zones>
+      <fieldset class="reform-row" data-zone>
+        <legend>Zona 1</legend>
+        <div class="fields three">
+          <div><label>Largo</label><div class="input-wrap"><input name="lengthM" inputmode="decimal"/><span>m</span></div></div>
+          <div><label>Ancho</label><div class="input-wrap"><input name="widthM" inputmode="decimal"/><span>m</span></div></div>
+          <div><label>Espesor / altura</label><div class="input-wrap"><input name="thickness" inputmode="decimal"/><select name="thicknessUnit" aria-label="Unidad de espesor"><option value="cm">cm</option><option value="m">m</option></select></div></div>
+        </div>
+        <button class="button tertiary mt-5" type="button" data-remove-zone>Eliminar zona</button>
+      </fieldset>
+    </div>
+    <button class="button secondary" type="button" data-add-zone>Añadir zona</button>
+    <h2 class="mt-6">Compra opcional</h2>
+    <div class="fields">
+      <div><label for="concreteMargin">Margen/desperdicio</label><div class="input-wrap"><input id="concreteMargin" name="marginPercent" value="0" inputmode="decimal"/><span>%</span></div></div>
+      <div><label for="yieldLitresPerBag">Rendimiento real por saco</label><div class="input-wrap"><input id="yieldLitresPerBag" name="yieldLitresPerBag" inputmode="decimal"/><span>L/saco</span></div></div>
+      <div><label for="pricePerM3">Precio por m³ (opcional)</label><div class="input-wrap"><input id="pricePerM3" name="pricePerM3" inputmode="decimal"/><span>€/m³</span></div></div>
+      <div><label for="pricePerBag">Precio por saco (opcional)</label><div class="input-wrap"><input id="pricePerBag" name="pricePerBag" inputmode="decimal"/><span>€/saco</span></div></div>
+    </div>
+    <p class="help mt-5">No se presupone densidad, dosificación ni rendimiento. Para sacos, introduce los litros de mezcla indicados en la ficha del producto. Usa precio por m³ o por saco, no ambos.</p>
+    <p class="error" data-form-error aria-live="polite"></p>
+    <div class="actions"><button class="button" type="submit">Calcular hormigón</button><button class="button secondary" type="reset">Restablecer</button></div>
+  </form>
+  <section class="card result"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Hormigón necesario</h2><div data-result aria-live="polite"><p>Añade las dimensiones de cada zona.</p></div></section>
+</div>
+<script>import '../lib/concrete-ui.mjs';</script>

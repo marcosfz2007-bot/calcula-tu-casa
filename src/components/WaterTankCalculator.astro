@@ -1,0 +1,27 @@
+---
+---
+<noscript><p class="no-js">Activa JavaScript para utilizar la calculadora.</p></noscript>
+<div class="calculator" data-water-tank>
+  <form class="card" novalidate>
+    <h2>Demanda de almacenamiento</h2>
+    <div><label for="tankMode">Cómo defines la demanda diaria</label><select id="tankMode" name="mode"><option value="manual">Litros/día manuales</option><option value="persons">Personas × L/persona/día</option></select></div>
+    <div class="fields mt-5" data-manual-demand>
+      <div><label for="dailyDemandLitres">Demanda diaria</label><div class="input-wrap"><input id="dailyDemandLitres" name="dailyDemandLitres" inputmode="decimal"/><span>L/día</span></div></div>
+    </div>
+    <div class="fields mt-5" data-person-demand hidden>
+      <div><label for="persons">Personas</label><div class="input-wrap"><input id="persons" name="persons" inputmode="numeric"/><span>personas</span></div></div>
+      <div><label for="litresPerPersonDay">Consumo introducido por persona</label><div class="input-wrap"><input id="litresPerPersonDay" name="litresPerPersonDay" inputmode="decimal"/><span>L/persona·día</span></div></div>
+    </div>
+    <div class="fields mt-5">
+      <div><label for="autonomyDays">Autonomía objetivo</label><div class="input-wrap"><input id="autonomyDays" name="autonomyDays" inputmode="decimal"/><span>días</span></div></div>
+      <div><label for="reservePercent">Margen de reserva</label><div class="input-wrap"><input id="reservePercent" name="reservePercent" value="0" inputmode="decimal"/><span>%</span></div></div>
+      <div><label for="usableFractionPercent">Fracción utilizable (opcional)</label><div class="input-wrap"><input id="usableFractionPercent" name="usableFractionPercent" inputmode="decimal"/><span>%</span></div></div>
+      <div><label for="commercialTankLitres">Capacidad comercial por depósito (opcional)</label><div class="input-wrap"><input id="commercialTankLitres" name="commercialTankLitres" inputmode="decimal"/><span>L</span></div></div>
+    </div>
+    <p class="help mt-5">No se presupone ningún consumo estándar por persona. Esta herramienta solo estima capacidad de almacenamiento; no dimensiona bombas, presiones, red, calidad del agua ni cumplimiento sanitario.</p>
+    <p class="error" data-form-error aria-live="polite"></p>
+    <div class="actions"><button class="button" type="submit">Calcular depósito</button><button class="button secondary" type="reset">Restablecer</button></div>
+  </form>
+  <section class="card result"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Capacidad orientativa</h2><div data-result aria-live="polite"><p>Introduce demanda y autonomía.</p></div></section>
+</div>
+<script>import '../lib/water-tank-ui.mjs';</script>

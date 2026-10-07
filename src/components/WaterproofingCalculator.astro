@@ -1,0 +1,30 @@
+---
+---
+<noscript><p class="no-js">Activa JavaScript para utilizar la calculadora.</p></noscript>
+<div class="calculator" data-waterproofing>
+  <form class="card" novalidate>
+    <h2>Producto y superficie</h2>
+    <div class="fields">
+      <div><label for="waterproofMode">Unidad de rendimiento</label><select id="waterproofMode" name="mode"><option value="">Selecciona…</option><option value="litres">m²/L por capa</option><option value="kg">kg/m²</option></select></div>
+      <div><label for="waterproofArea">Superficie</label><div class="input-wrap"><input id="waterproofArea" name="areaM2" inputmode="decimal"/><span>m²</span></div></div>
+      <div><label for="waterproofCoats">Número de capas/manos</label><div class="input-wrap"><input id="waterproofCoats" name="coats" inputmode="numeric"/><span>capas</span></div></div>
+      <div><label for="waterproofMargin">Margen</label><div class="input-wrap"><input id="waterproofMargin" name="marginPercent" value="0" inputmode="decimal"/><span>%</span></div></div>
+    </div>
+    <div class="fields mt-5" data-litres-mode hidden>
+      <div><label for="coverageM2PerL">Rendimiento del producto</label><div class="input-wrap"><input id="coverageM2PerL" name="coverageM2PerL" inputmode="decimal"/><span>m²/L·capa</span></div></div>
+    </div>
+    <div class="fields mt-5" data-kg-mode hidden>
+      <div><label for="consumptionKgM2">Consumo del producto</label><div class="input-wrap"><input id="consumptionKgM2" name="consumptionKgM2" inputmode="decimal"/><span>kg/m²</span></div></div>
+      <div><label for="kgBasis">Significado del consumo</label><select id="kgBasis" name="kgBasis"><option value="">Selecciona…</option><option value="per-coat">kg/m² por cada capa</option><option value="total">kg/m² total del sistema</option></select></div>
+    </div>
+    <div class="fields mt-5">
+      <div><label for="containerSize">Tamaño de envase (opcional)</label><div class="input-wrap"><input id="containerSize" name="containerSize" inputmode="decimal"/><span data-container-unit>unidad</span></div></div>
+      <div><label for="containerPrice">Precio por envase (opcional)</label><div class="input-wrap"><input id="containerPrice" name="containerPrice" inputmode="decimal"/><span>€</span></div></div>
+    </div>
+    <p class="help mt-5">El rendimiento debe proceder de la ficha técnica del producto. No mezcles L y kg: selecciona el modo que coincida con la unidad declarada por el fabricante.</p>
+    <p class="error" data-form-error aria-live="polite"></p>
+    <div class="actions"><button class="button" type="submit">Calcular producto</button><button class="button secondary" type="reset">Restablecer</button></div>
+  </form>
+  <section class="card result"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Impermeabilizante necesario</h2><div data-result aria-live="polite"><p>Selecciona la unidad de rendimiento de tu producto.</p></div></section>
+</div>
+<script>import '../lib/waterproofing-ui.mjs';</script>

@@ -1,0 +1,11 @@
+import {calculateWaterTank} from './calculators/water-tank.mjs';
+const nf=new Intl.NumberFormat('es-ES',{maximumFractionDigits:2});
+const root=document.querySelector('[data-water-tank]');
+if(root){
+ const form=root.querySelector('form'),result=root.querySelector('[data-result]'),error=root.querySelector('[data-form-error]'),mode=form.elements.mode;
+ const sync=()=>{const people=mode.value==='persons';root.querySelector('[data-manual-demand]').hidden=people;root.querySelector('[data-person-demand]').hidden=!people;};
+ const line=(label,value)=>{const p=document.createElement('p');const s=document.createElement('strong');s.textContent=label+': ';p.append(s,document.createTextNode(value));return p;};
+ mode.addEventListener('change',sync);sync();
+ form.addEventListener('submit',e=>{e.preventDefault();error.textContent='';try{const r=calculateWaterTank(Object.fromEntries(new FormData(form)));const nodes=[Object.assign(document.createElement('p'),{className:'amount',textContent:nf.format(r.nominalCapacityLitres)+' L'}),line('Demanda diaria usada',nf.format(r.dailyDemandLitres)+' L/día'),line('Demanda para la autonomía',nf.format(r.baseDemandLitres)+' L'),line('Litros útiles con reserva',nf.format(r.usefulTargetLitres)+' L'),line('Capacidad nominal',nf.format(r.nominalCapacityLitres)+' L · '+nf.format(r.nominalCapacityM3)+' m³')];if(r.usableFractionPercent!==null)nodes.push(line('Fracción utilizable',nf.format(r.usableFractionPercent)+' %'));if(r.tanks!==null)nodes.push(line('Depósitos comerciales',nf.format(r.tanks)),line('Capacidad instalada',nf.format(r.installedCapacityLitres)+' L'));nodes.push(Object.assign(document.createElement('p'),{className:'notice',textContent:'Dimensionamiento volumétrico orientativo. No verifica CTE HS 4, bombas, presiones, antirretornos, calidad/potabilización, legionela, PCI, captación pluvial ni otros requisitos sanitarios o de instalación.'}));result.replaceChildren(...nodes);}catch(err){error.textContent=err instanceof Error?err.message:'Revisa los datos.';}});
+ form.addEventListener('reset',()=>queueMicrotask(()=>{sync();error.textContent='';result.replaceChildren(Object.assign(document.createElement('p'),{textContent:'Valores restablecidos. Introduce demanda y autonomía.'}));}));
+}

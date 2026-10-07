@@ -1,7 +1,8 @@
 import {numberIn} from './common.mjs';
 
 export function calculateWaterproofing(raw){
-  const mode=raw.mode==='kg'?'kg':'litres';
+  if(!['litres','kg'].includes(raw.mode)) throw Object.assign(new RangeError('mode: selecciona si el rendimiento está expresado en m²/L o en kg/m².'),{field:'mode'});
+  const mode=raw.mode;
   const areaM2=numberIn(raw.areaM2,{name:'areaM2',min:0,max:100000});
   const coats=numberIn(raw.coats,{name:'coats',min:1,max:20,integer:true});
   const marginPercent=numberIn(raw.marginPercent,{name:'marginPercent',min:0,max:200});
@@ -15,7 +16,8 @@ export function calculateWaterproofing(raw){
     theoreticalQuantity=areaM2*coats/rate;
   }else{
     rate=numberIn(raw.consumptionKgM2,{name:'consumptionKgM2',min:0.001,max:100000});
-    basis=raw.kgBasis==='total'?'total':'per-coat';
+    if(!['per-coat','total'].includes(raw.kgBasis)) throw Object.assign(new RangeError('kgBasis: indica si el consumo kg/m² es por capa o total del sistema.'),{field:'kgBasis'});
+    basis=raw.kgBasis;
     unit='kg';
     theoreticalQuantity=areaM2*rate*(basis==='per-coat'?coats:1);
   }
