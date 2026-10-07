@@ -7,6 +7,7 @@ import FAQ from '../components/FAQ.astro';
 import RelatedTools from '../components/RelatedTools.astro';
 import AdSlot from '../components/AdSlot.astro';
 const {tool}=Astro.props;
+const reviewedAt=tool.reviewedAt||'05/10/2026';
 const url=Astro.site?new URL('/'+tool.path+'/',Astro.site).href:undefined;
 const categoryUrl=Astro.site?new URL('/'+tool.categorySlug+'/',Astro.site).href:undefined;
 const schema=url?{'@context':'https://schema.org','@graph':[
@@ -25,7 +26,7 @@ const schema=url?{'@context':'https://schema.org','@graph':[
       <span class="badge">Sin registro</span>
       <span class="badge">{tool.kind==='solar'?'PVGIS bajo acción del usuario':'Cálculo local'}</span>
       <span class="badge">Metodología {tool.methodology}</span>
-      <span class="badge">Revisión {tool.reviewedAt||'05/10/2026'}</span>
+      <span class="badge">Revisión {reviewedAt}</span>
     </div>
   </header>
   <slot/>
@@ -33,7 +34,7 @@ const schema=url?{'@context':'https://schema.org','@graph':[
   <article class="article">
     <Methodology tool={tool}/>
     <AdSlot position="after-methodology"/>
-    <Sources sources={tool.sources} methodology={tool.methodology}/>
+    <Sources sources={tool.sources} methodology={tool.methodology} reviewedAt={reviewedAt}/>
     <FAQ items={tool.faqs}/>
   </article>
   <RelatedTools paths={tool.related}/>

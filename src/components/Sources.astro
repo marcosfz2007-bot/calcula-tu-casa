@@ -1,9 +1,9 @@
 ---
-const {sources=[],methodology='1.0'}=Astro.props;
+const {sources=[],methodology='1.0',reviewedAt}=Astro.props;
 ---
 <section>
   <p class="eyebrow">TRAZABILIDAD</p>
   <h2>Fuentes e hipótesis</h2>
   <ul class="source-list">{sources.map(([label,url])=><li class="source-item"><div><span class="source-tag">Fuente</span><br/><a href={url}>{label}</a></div><span aria-hidden="true">↗</span></li>)}</ul>
-  <p class="help">Metodología {methodology} · Última revisión: 5 de octubre de 2026. Las hipótesis propias se identifican expresamente en la metodología y en cada resultado.</p>
+  <p class="help">Metodología {methodology} · Última revisión: {reviewedAt}. Las hipótesis propias se identifican expresamente en la metodología y en cada resultado.</p>
 </section>

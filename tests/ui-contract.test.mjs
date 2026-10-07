@@ -51,3 +51,14 @@ test('Rediseño UI v2 · relacionadas aparecen después del contenido explicativ
  const layout=read('src/layouts/CalculatorLayout.astro');
  assert.ok(layout.indexOf('<RelatedTools')>layout.indexOf('<FAQ'));
 });
+
+
+test('Fuentes usa la fecha de revisión de cada herramienta y no una fecha global fija',()=>{
+ const sources=read('src/components/Sources.astro');
+ const layout=read('src/layouts/CalculatorLayout.astro');
+ assert.match(sources,/reviewedAt/);
+ assert.match(sources,/Última revisión: \{reviewedAt\}/);
+ assert.doesNotMatch(sources,/5 de octubre de 2026|05\/10\/2026|2026-10-05/);
+ assert.match(layout,/const reviewedAt=tool\.reviewedAt\|\|'05\/10\/2026'/);
+ assert.match(layout,/<Sources[^>]*reviewedAt=\{reviewedAt\}/);
+});
