@@ -3,8 +3,85 @@ import '../styles/global.css';
 const {title,description,noindex=false,schema}=Astro.props;
 const canonical=Astro.site?new URL(Astro.url.pathname,Astro.site).href:undefined;
 const privatePage=noindex||!Astro.site;
+const categoryLinks=[['energia','Energía'],['climatizacion','Climatización'],['aislamiento','Aislamiento'],['solar','Solar'],['reformas','Reformas']];
+const projectLinks=[['calculadoras','Todas las calculadoras'],['metodologia','Metodología'],['fuentes','Fuentes'],['sobre-nosotros','Sobre el proyecto'],['contacto','Contacto']];
+const legalLinks=[['aviso-legal','Aviso legal'],['privacidad','Privacidad'],['cookies','Configurar privacidad y cookies'],['politica-editorial','Política editorial']];
 ---
-<!doctype html><html lang="es"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>{title} | Calcula tu casa</title><meta name="description" content={description}/><meta name="theme-color" content="#244d3b"/><meta name="google-adsense-account" content="ca-pub-2485158097356751"/>{canonical&&<link rel="canonical" href={canonical}/>} {privatePage&&<meta name="robots" content="noindex, follow"/>}<meta property="og:title" content={title}/><meta property="og:description" content={description}/><meta property="og:type" content="website"/>{canonical&&<meta property="og:url" content={canonical}/>}<link rel="icon" href="/favicon.svg"/>{Astro.site&&<link rel="sitemap" href="/sitemap-index.xml"/>}{schema&&<script type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g,'\u003c')}/>}</head><body><a href="#contenido" class="skip">Saltar al contenido</a><header class="header"><div class="wrap header-row"><a class="brand" href="/">⌂ calcula<span>tu</span>casa<span>.</span></a><button class="menu-button" type="button" aria-expanded="false" aria-controls="main-nav"><span aria-hidden="true">☰</span><span class="sr-only">Abrir menú</span></button><nav class="nav" id="main-nav" aria-label="Principal"><a href="/calculadoras/">Calculadoras</a><a href="/energia/">Energía</a><a href="/climatizacion/">Climatización</a><a href="/aislamiento/">Aislamiento</a><a href="/solar/">Solar</a><a href="/reformas/">Reformas</a></nav></div></header><main id="contenido" class="wrap"><slot/></main><footer class="footer"><div class="wrap"><a class="brand" href="/">Calcula tu casa.</a><p>Calcula primero. Decide después.</p><div class="footer-links">{[['sobre-nosotros','Sobre el proyecto'],['metodologia','Metodología'],['fuentes','Fuentes'],['politica-editorial','Política editorial'],['contacto','Contacto'],['aviso-legal','Aviso legal'],['privacidad','Privacidad'],['cookies','Configurar privacidad y cookies']].map(([path,label])=><a href={`/${path}/`}>{label}</a>)}</div><p>Herramientas orientativas · Cálculos locales · Metodologías y limitaciones visibles</p></div></footer><script is:inline>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>{title} | Calcula tu casa</title>
+  <meta name="description" content={description}/>
+  <meta name="theme-color" content="#1f6b50"/>
+  <meta name="google-adsense-account" content="ca-pub-2485158097356751"/>
+  {canonical&&<link rel="canonical" href={canonical}/>}
+  {privatePage&&<meta name="robots" content="noindex, follow"/>}
+  <meta property="og:title" content={title}/>
+  <meta property="og:description" content={description}/>
+  <meta property="og:type" content="website"/>
+  {canonical&&<meta property="og:url" content={canonical}/>}
+  <link rel="icon" href="/favicon.svg"/>
+  {Astro.site&&<link rel="sitemap" href="/sitemap-index.xml"/>}
+  {schema&&<script type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g,'\u003c')}/>}
+</head>
+<body>
+  <a href="#contenido" class="skip">Saltar al contenido</a>
+  <header class="header">
+    <div class="wrap header-row">
+      <a class="brand" href="/" aria-label="Calcula tu Casa, inicio">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 11.2 12 4l9 7.2"/>
+            <path d="M5.7 10.3V20h12.6v-9.7"/>
+            <path d="M9.2 20v-5.5h5.6V20"/>
+          </svg>
+        </span>
+        <span class="brand-word">calcula<span>tu</span>casa<span>.</span></span>
+      </a>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-nav"><span aria-hidden="true">☰</span><span class="sr-only">Abrir menú</span></button>
+      <nav class="nav" id="main-nav" aria-label="Principal">
+        <a class="nav-primary" href="/calculadoras/">Calculadoras</a>
+        <a href="/energia/">Energía</a>
+        <a href="/climatizacion/">Climatización</a>
+        <a href="/aislamiento/">Aislamiento</a>
+        <a href="/solar/">Solar</a>
+        <a href="/reformas/">Reformas</a>
+      </nav>
+    </div>
+  </header>
+  <main id="contenido" class="wrap"><slot/></main>
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="/">
+            <span class="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.2 12 4l9 7.2"/><path d="M5.7 10.3V20h12.6v-9.7"/><path d="M9.2 20v-5.5h5.6V20"/></svg>
+            </span>
+            <span class="brand-word">Calcula tu casa.</span>
+          </a>
+          <p>Calcula primero. Decide después. Herramientas gratuitas con fórmulas, fuentes y limitaciones visibles.</p>
+        </div>
+        <div class="footer-group">
+          <strong>Herramientas</strong>
+          <div class="footer-links">{categoryLinks.map(([path,label])=><a href={'/'+path+'/'}>{label}</a>)}</div>
+        </div>
+        <div class="footer-group">
+          <strong>Proyecto</strong>
+          <div class="footer-links">{projectLinks.map(([path,label])=><a href={'/'+path+'/'}>{label}</a>)}</div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>Herramientas orientativas · Cálculos transparentes</span>
+        <span>{legalLinks.map(([path,label],index)=><>{index>0&&' · '}<a href={'/'+path+'/'}>{label}</a></>)}</span>
+      </div>
+    </div>
+  </footer>
+  <script is:inline>
 const button=document.querySelector('.menu-button'),nav=document.querySelector('#main-nav'),label=button?.querySelector('.sr-only');
 if(button&&nav){const setState=(open)=>{button.setAttribute('aria-expanded',String(open));nav.classList.toggle('open',open);if(label)label.textContent=open?'Cerrar menú':'Abrir menú';};const close=(restoreFocus=false)=>{const wasOpen=button.getAttribute('aria-expanded')==='true';setState(false);if(restoreFocus&&wasOpen)button.focus();};button.addEventListener('click',()=>setState(button.getAttribute('aria-expanded')!=='true'));nav.addEventListener('click',e=>{if(e.target.closest('a'))close(false);});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&button.getAttribute('aria-expanded')==='true')close(true);});}
-</script></body></html>
+  </script>
+</body>
+</html>

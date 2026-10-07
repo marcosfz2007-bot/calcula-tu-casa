@@ -3,4 +3,14 @@ import Base from '../../layouts/Base.astro';
 import SearchTools from '../../components/SearchTools.astro';
 import {tools,categories} from '../../lib/catalog.mjs';
 ---
-<Base title="Todas las calculadoras" description="Calculadoras gratuitas para hogar, energía, climatización, solar, aislamiento y reformas, con metodología, fuentes y tratamiento transparente de los datos."><section class="hero"><p class="eyebrow">DIRECTORIO DE HERRAMIENTAS</p><h1>Calculadoras para tomar decisiones con números.</h1><p class="lead">Busca por nombre, categoría o problema. Las {tools.length} herramientas publicadas funcionan sin registro. La mayoría procesa los valores íntegramente en tu navegador; Solar solo comunica sus parámetros al JRC/PVGIS cuando decides abrir voluntariamente la consulta oficial.</p><div class="hub-links">{categories.map(c=><a href={`/${c.slug}/`}>{c.name}</a>)}</div></section><SearchTools tools={tools}/></Base>
+<Base title="Todas las calculadoras" description="Calculadoras gratuitas para hogar, energía, climatización, solar, aislamiento y reformas, con metodología, fuentes y tratamiento transparente de los datos.">
+  <section class="hero hub-hero">
+    <p class="eyebrow">DIRECTORIO DE HERRAMIENTAS</p>
+    <h1>Encuentra la calculadora que necesitas.</h1>
+    <p class="lead">Las {tools.length} herramientas publicadas funcionan sin registro. Busca por nombre, categoría o problema y entra directamente a calcular.</p>
+    <div class="hub-links">{categories.map(c=><a href={'/'+c.slug+'/'}>{c.name}</a>)}</div>
+  </section>
+  <section class="section">
+    <SearchTools tools={tools}/>
+  </section>
+</Base>
