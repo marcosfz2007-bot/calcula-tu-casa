@@ -1,4 +1,4 @@
-import {numberIn} from './common.mjs';
+import {numberIn,round} from './common.mjs';
 
 export function calculateConcrete(raw){
   if(!Array.isArray(raw.zones)||raw.zones.length===0) throw Object.assign(new RangeError('zones: añade al menos una zona.'),{field:'zones'});
@@ -20,8 +20,8 @@ export function calculateConcrete(raw){
   if(pricePerBag!==null&&yieldLitresPerBag===null) throw Object.assign(new RangeError('yieldLitresPerBag: para calcular coste por saco debes indicar el rendimiento real en litros por saco.'),{field:'yieldLitresPerBag'});
   const theoreticalM3=zones.reduce((sum,z)=>sum+z.volumeM3,0);
   const purchaseM3=theoreticalM3*(1+marginPercent/100);
-  const theoreticalLitres=theoreticalM3*1000;
-  const purchaseLitres=purchaseM3*1000;
+  const theoreticalLitres=round(theoreticalM3*1000,9);
+  const purchaseLitres=round(purchaseM3*1000,9);
   const bags=yieldLitresPerBag===null?null:(purchaseLitres===0?0:Math.ceil(purchaseLitres/yieldLitresPerBag));
   const cost=pricePerM3!==null?purchaseM3*pricePerM3:pricePerBag!==null?bags*pricePerBag:null;
   return {zones,marginPercent,yieldLitresPerBag,pricePerM3,pricePerBag,theoreticalM3,purchaseM3,theoreticalLitres,purchaseLitres,bags,cost};

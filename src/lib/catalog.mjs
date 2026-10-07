@@ -292,7 +292,7 @@ export const tools=[
   example:'Una baldosa de 30 × 60 cm cubre 0,18 m². Para 10 m², sin desperdicio, hacen falta 56 piezas por redondeo; las cajas dependen de su contenido real.',
   methodologyDetails:['Marazzi incluye el porcentaje de residuo como entrada de su calculadora de colocación, lo que confirma que es un parámetro del proyecto, no una constante universal.','Modo piezas/caja y modo m²/caja son alternativos para no duplicar información ni generar inconsistencias.','El coste solo se calcula si introduces precio por caja.'],
   sources:[['Marazzi · calculadora de colocación: superficie, formato y porcentaje de residuo','https://www.marazzi.es/colocacion/calculadora-de-colocacion/']],
-  related:['reformas/reforma-bano','reformas/reforma-cocina','reformas/calculadora-impermeabilizacion','reformas/calculadora-rodapie']
+  related:['reformas/reforma-bano','reformas/reforma-cocina','reformas/calculadora-impermeabilizacion','reformas/calculadora-rodapie'],
   faqs:[['¿Qué desperdicio debo poner?','El que corresponda a tu patrón, formato y geometría; la herramienta no impone uno.'],['¿Piezas por caja o m² por caja?','Usa el dato que indique tu producto. Son modos alternativos.'],['¿Por qué redondea hacia arriba?','Porque no puedes comprar una fracción de pieza o caja.'],['¿El sobrante incluye el desperdicio?','Muestra la superficie comprada menos la superficie real a cubrir.'],['¿Calcula adhesivo o junta?','No. Solo piezas/cajas y coste opcional.'],...commonFaq]
  },
  {
