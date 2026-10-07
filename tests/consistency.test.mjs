@@ -35,11 +35,19 @@ const expected=[
  'energia/ahorro-bombillas-led',
  'energia/consumo-standby',
  'energia/recarga-coche-electrico',
- 'solar/bateria-solar'
+ 'solar/bateria-solar',
+ 'aislamiento/perdida-termica-vivienda',
+ 'energia/consumo-deshumidificador',
+ 'aislamiento/ahorro-cambio-ventanas',
+ 'reformas/hormigon-necesario',
+ 'reformas/mortero-necesario',
+ 'reformas/ladrillos-bloques-necesarios',
+ 'reformas/calculadora-impermeabilizacion',
+ 'reformas/tamano-deposito-agua'
 ];
 
-test('Catálogo contiene exactamente las treinta y una rutas canónicas',()=>{
- assert.equal(tools.length,31);
+test('Catálogo contiene exactamente las treinta y nueve rutas canónicas',()=>{
+ assert.equal(tools.length,39);
  assert.deepEqual(new Set(tools.map(t=>t.path)),new Set(expected));
 });
 test('No hay rutas duplicadas',()=>assert.equal(new Set(tools.map(t=>t.path)).size,tools.length));
@@ -103,4 +111,9 @@ test('Reformas y Solar están indexables y fuera de exclusiones del sitemap',()=
  assert.equal(categories.find(c=>c.slug==='solar')?.indexable,true);
  assert.ok(!SITEMAP_EXCLUDED_PATHS.includes('/reformas/'));
  assert.ok(!SITEMAP_EXCLUDED_PATHS.includes('/solar/'));
+});
+
+test('Regresión expansión 04 · el catálogo no puede volver accidentalmente a 31 herramientas',()=>{
+ assert.notEqual(tools.length,31);
+ assert.equal(tools.length,39);
 });
