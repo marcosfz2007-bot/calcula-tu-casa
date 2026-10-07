@@ -106,6 +106,24 @@ No se modifican deliberadamente:
 
 Las regresiones existentes siguen comprobando estos contratos.
 
-## Pendiente de cierre
+## Cierre de rama y Pull Request
 
-Antes de abrir el PR se debe volver a obtener el HEAD de `main`, sincronizar si ha cambiado, comparar archivos añadidos/modificados/eliminados y ejecutar la validación final sobre el HEAD resultante. La preview de Cloudflare se revisará si el flujo la expone públicamente; cualquier limitación de revisión visual se documentará de forma explícita.
+Antes de abrir el PR se volvió a consultar `main`: continuaba en `15713b3a683e6dc48c9fedd495efe8207f74d5f1`, por lo que la rama estaba 0 commits por detrás y no requirió sincronización adicional.
+
+Comparación `main` → `expansion-calculadoras-04`:
+
+- 17 archivos añadidos;
+- 8 archivos modificados;
+- 0 archivos eliminados.
+
+Se verificó byte a byte que permanecen idénticos a `main`: `.env.example`, `astro.config.mjs`, `public/ads.txt`, verificación de Search Console, `src/layouts/Base.astro`, `src/lib/seo.mjs`, `src/pages/[info].astro`, `src/pages/robots.txt.ts`, `src/styles/global.css` y `docs/ui-redesign-v2.md`.
+
+PR abierto: **#6 — feat: ampliar Calcula tu Casa con herramientas de aislamiento y obra**.
+
+La CI del evento `pull_request` terminó correctamente. GitHub marca el PR como mergeable y no se ha fusionado.
+
+### Cloudflare Preview
+
+La integración disponible no publicó una URL de preview en estados ni comentarios de GitHub y el alias de rama esperado no resolvió públicamente durante la comprobación. Por tanto no se inventa una URL de preview ni se afirma una revisión visual que no haya podido realizarse.
+
+La estructura responsive sí queda protegida por UI V2 y por tests de contrato, pero la comprobación visual real a 360 px y escritorio de la preview queda como revisión humana previa al merge.
