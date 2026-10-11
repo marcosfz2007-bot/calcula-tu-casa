@@ -1,0 +1,23 @@
+---
+import PrototypeV2Layout from '../../layouts/PrototypeV2Layout.astro';
+import PrototypeCalculatorShell from '../../components/prototype-v2/PrototypeCalculatorShell.astro';
+---
+<PrototypeV2Layout title="Reforma integral · Prototipo V2" active="reforma">
+<PrototypeCalculatorShell category="Reformas" categoryClass="reformas" title="Presupuesto orientativo de reforma integral" description="Construye un rango de presupuesto a partir de la superficie y las partidas que quieras incluir, manteniendo visibles las hipótesis de coste." nextTitle="¿Quieres estudiar una mejora energética dentro de la reforma?" nextHref="/prototipo-v2/" nextText="Volver a la galería">
+  <Fragment slot="form">
+    <div class="pv2-group"><div class="pv2-group-title"><span>01</span>Vivienda</div><div class="pv2-fields"><div class="pv2-field"><label>Superficie útil</label><div class="pv2-input"><input value="90"/><span>m²</span></div></div><div class="pv2-field"><label>Calidad</label><div class="pv2-segment" style="--cols:3"><label><input name="cal" type="radio"/><span>Económica</span></label><label><input name="cal" type="radio" checked/><span>Media</span></label><label><input name="cal" type="radio"/><span>Alta</span></label></div></div></div></div>
+    <div class="pv2-group"><div class="pv2-group-title"><span>02</span>Partidas incluidas</div>
+      <div class="pv2-dynamic-list">
+        <div class="pv2-dynamic-row"><div class="pv2-dynamic-head"><strong>Demoliciones y albañilería</strong><span class="pv2-badge">Incluida</span></div><div class="pv2-fields"><div class="pv2-field"><label>Cantidad</label><div class="pv2-input"><input value="90"/><span>m²</span></div></div><div class="pv2-field"><label>Ajuste</label><div class="pv2-input"><input value="0"/><span>%</span></div></div></div></div>
+        <div class="pv2-dynamic-row"><div class="pv2-dynamic-head"><strong>Instalaciones</strong><span class="pv2-badge">Incluida</span></div><div class="pv2-fields"><div class="pv2-field"><label>Cantidad</label><div class="pv2-input"><input value="90"/><span>m²</span></div></div><div class="pv2-field"><label>Ajuste</label><div class="pv2-input"><input value="0"/><span>%</span></div></div></div></div>
+      </div>
+    </div>
+  </Fragment>
+  <Fragment slot="result">
+    <div class="pv2-result-main"><div class="pv2-amount">61.800 <small style="font-size:.42em">€</small></div><p class="pv2-sub">Escenario central del presupuesto orientativo</p></div>
+    <div class="pv2-scenarios"><div class="pv2-scenario"><span>Bajo</span><strong>49.500 €</strong></div><div class="pv2-scenario primary"><span>Central</span><strong>61.800 €</strong></div><div class="pv2-scenario"><span>Alto</span><strong>76.400 €</strong></div></div>
+    <div class="pv2-budget-list"><div class="pv2-budget-item"><span>Demoliciones y albañilería</span><strong>14.300 €</strong></div><div class="pv2-budget-item"><span>Instalaciones</span><strong>19.700 €</strong></div><div class="pv2-budget-item"><span>Acabados</span><strong>17.200 €</strong></div><div class="pv2-budget-item"><span>Resto de partidas</span><strong>10.600 €</strong></div></div>
+    <p class="pv2-note">Aquí el rango y las partidas importan más que una gráfica decorativa; por eso el resultado usa escenarios y desglose.</p>
+  </Fragment>
+</PrototypeCalculatorShell>
+</PrototypeV2Layout>

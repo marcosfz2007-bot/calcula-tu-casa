@@ -1,0 +1,27 @@
+---
+import PrototypeV2Layout from '../../layouts/PrototypeV2Layout.astro';
+import PrototypeCalculatorShell from '../../components/prototype-v2/PrototypeCalculatorShell.astro';
+---
+<PrototypeV2Layout title="Frigorías · Prototipo V2" active="frigorias">
+<PrototypeCalculatorShell category="Climatización" categoryClass="climatizacion" title="Calculadora de frigorías y potencia de aire acondicionado" description="Estima un rango de potencia de refrigeración según superficie, altura, clima, orientación, aislamiento, acristalamiento, personas y cargas internas." nextTitle="¿Cuánto te costaría utilizar este aire acondicionado?" nextHref="/prototipo-v2/factura-electrica/" nextText="Ver siguiente diseño">
+  <Fragment slot="form">
+    <div class="pv2-group"><div class="pv2-group-title"><span>01</span>Datos de la estancia</div><div class="pv2-fields">
+      <div class="pv2-field"><label>Superficie</label><div class="pv2-input"><input value="30" inputmode="decimal"/><span>m²</span></div></div>
+      <div class="pv2-field"><label>Altura</label><div class="pv2-input"><input value="2,5" inputmode="decimal"/><span>m</span></div></div>
+      <div class="pv2-field"><label>Personas habituales</label><div class="pv2-input"><input value="2" inputmode="numeric"/><span>pers.</span></div></div>
+      <div class="pv2-field"><label>Cargas internas</label><div class="pv2-input"><input value="500" inputmode="decimal"/><span>W</span></div></div>
+    </div></div>
+    <div class="pv2-group"><div class="pv2-group-title"><span>02</span>Características térmicas</div>
+      <div class="pv2-field"><span>Clima</span><div class="pv2-segment" style="--cols:3"><label><input type="radio" name="clima"/><span>Suave</span></label><label><input type="radio" name="clima" checked/><span>Cálido</span></label><label><input type="radio" name="clima"/><span>Muy cálido</span></label></div></div>
+      <div class="pv2-field" style="margin-top:12px"><span>Orientación principal</span><div class="pv2-segment" style="--cols:4"><label><input type="radio" name="ori"/><span>Norte</span></label><label><input type="radio" name="ori"/><span>Este</span></label><label><input type="radio" name="ori" checked/><span>Sur</span></label><label><input type="radio" name="ori"/><span>Oeste</span></label></div></div>
+      <div class="pv2-field" style="margin-top:12px"><span>Aislamiento</span><div class="pv2-segment" style="--cols:3"><label><input type="radio" name="ais"/><span>Bueno</span></label><label><input type="radio" name="ais" checked/><span>Medio</span></label><label><input type="radio" name="ais"/><span>Deficiente</span></label></div></div>
+    </div>
+  </Fragment>
+  <Fragment slot="result">
+    <div class="pv2-result-main"><div class="pv2-amount">4,74–6,46 <small style="font-size:.42em">kW</small></div><p class="pv2-sub">Rango orientativo de potencia de refrigeración</p></div>
+    <div class="pv2-range"><div class="pv2-range-rail"><span class="pv2-range-dot"></span></div><div class="pv2-range-labels"><span>4,74 kW</span><strong>5,60 kW</strong><span>6,46 kW</span></div></div>
+    <div class="pv2-metrics"><div class="pv2-metric"><span>Central</span><strong>5,60 kW</strong></div><div class="pv2-metric"><span>Frigorías/h</span><strong>4.816</strong></div><div class="pv2-metric"><span>BTU/h</span><strong>19.107</strong></div></div>
+    <p class="pv2-note">La barra representa únicamente mínimo, escenario central y máximo del rango calculado; no añade incertidumbre estadística.</p>
+  </Fragment>
+</PrototypeCalculatorShell>
+</PrototypeV2Layout>

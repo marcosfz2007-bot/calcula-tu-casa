@@ -1,0 +1,64 @@
+---
+import HouseVisual from './HouseVisual.astro';
+const {mobilePreview=false}=Astro.props;
+const cats=[
+ ['energy','Energía','13 herramientas'],
+ ['climate','Climatización','4 herramientas'],
+ ['insulation','Aislamiento','4 herramientas'],
+ ['solar','Solar','4 herramientas'],
+ ['reform','Reformas','14 herramientas']
+];
+---
+<div class={mobilePreview?'pv2-home pv2-mobile-preview':'pv2-home'}>
+<section class="pv2-hero">
+  <div>
+    <p class="pv2-eyebrow">TU HOGAR, CON LAS CUENTAS CLARAS</p>
+    <h1>Calcula primero.<br/>Decide después.</h1>
+    <p class="pv2-lead">Descubre cuánto necesitas, cuánto gastas y cuánto puedes ahorrar en tu casa. Calculadoras gratuitas, inmediatas y sin registro.</p>
+    <div class="pv2-searchbox">
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="6.8"/><path d="m16.2 16.2 4.2 4.2"/></svg>
+      <input data-pv2-search type="search" placeholder="¿Qué quieres calcular? Ej.: frigorías, factura…"/>
+      <button class="pv2-search-action" type="button">Buscar</button>
+    </div>
+    <div class="pv2-search-suggestions" data-pv2-suggestions hidden>
+      <a class="pv2-suggestion" href="/prototipo-v2/frigorias/" data-name="frigorias aire acondicionado climatizacion"><strong>¿Qué aire acondicionado necesito?</strong><span>Frigorías →</span></a>
+      <a class="pv2-suggestion" href="/prototipo-v2/factura-electrica/" data-name="factura electricidad energia"><strong>¿Cuánto pagaré de electricidad?</strong><span>Factura →</span></a>
+      <a class="pv2-suggestion" href="/prototipo-v2/reforma-integral/" data-name="reforma integral presupuesto obras"><strong>¿Cuánto puede costar una reforma?</strong><span>Reforma →</span></a>
+      <a class="pv2-suggestion" href="/prototipo-v2/amortizacion-solar/" data-name="solar placas amortizacion fotovoltaica"><strong>¿Cuándo recuperaré mi inversión solar?</strong><span>Solar →</span></a>
+    </div>
+    <div class="pv2-quick"><a href="/prototipo-v2/frigorias/">Frigorías</a><a href="/prototipo-v2/factura-electrica/">Factura eléctrica</a><a href="/prototipo-v2/reforma-integral/">Reforma integral</a><a href="/prototipo-v2/amortizacion-solar/">Placas solares</a></div>
+    <div class="pv2-trust"><span>Gratis</span><span>Sin registro</span><span>Resultado inmediato</span><span>Metodología visible</span></div>
+  </div>
+  <HouseVisual/>
+</section>
+
+<section class="pv2-section">
+  <div class="pv2-section-head"><div><p class="pv2-eyebrow">EMPIEZA POR UNA DECISIÓN</p><h2>¿Qué quieres resolver hoy?</h2></div><p>Las herramientas se presentan por el problema que ayudan a resolver y por el resultado que obtendrás.</p></div>
+  <div class="pv2-feature-grid">
+    <a class="pv2-tool" data-cat="clima" href="/prototipo-v2/frigorias/"><span class="pv2-tool-label">Climatización</span><h3>¿Qué aire acondicionado necesito?</h3><p>Calcula la potencia según superficie, clima, orientación y aislamiento.</p><span class="pv2-tool-result"><strong>Obtendrás:</strong> kW, frigorías y BTU/h</span><span class="pv2-tool-cta">Calcular →</span></a>
+    <a class="pv2-tool" data-cat="energy" href="/prototipo-v2/factura-electrica/"><span class="pv2-tool-label">Energía</span><h3>¿Cuánto pagaré de electricidad?</h3><p>Desglosa energía, potencia, impuestos y otros conceptos de tu factura.</p><span class="pv2-tool-result"><strong>Obtendrás:</strong> total y desglose en €</span><span class="pv2-tool-cta">Simular →</span></a>
+    <a class="pv2-tool" data-cat="solar" href="/prototipo-v2/amortizacion-solar/"><span class="pv2-tool-label">Solar</span><h3>¿Cuándo recuperaré mi inversión?</h3><p>Compara inversión, ahorro anual y horizonte económico de tus placas.</p><span class="pv2-tool-result"><strong>Obtendrás:</strong> payback, ahorro y VAN</span><span class="pv2-tool-cta">Estimar →</span></a>
+    <a class="pv2-tool" data-cat="reform" href="/prototipo-v2/reforma-integral/"><span class="pv2-tool-label">Reformas</span><h3>¿Cuánto puede costar una reforma?</h3><p>Visualiza un rango bajo, central y alto a partir de tus partidas.</p><span class="pv2-tool-result"><strong>Obtendrás:</strong> escenarios y desglose</span><span class="pv2-tool-cta">Presupuestar →</span></a>
+  </div>
+</section>
+
+<section class="pv2-section">
+  <div class="pv2-section-head"><div><p class="pv2-eyebrow">EXPLORA POR TEMA</p><h2>Cinco áreas, una misma identidad</h2></div><p>El color orienta, pero la marca sigue siendo verde, clara y reconocible.</p></div>
+  <div class="pv2-cat-grid">{cats.map(([cls,name,count])=><a class={'pv2-cat '+cls} href="#">
+    <span class="pv2-cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d={cls==='solar'?'M12 4v2M12 18v2M4 12h2M18 12h2M16.2 7.8l1.4-1.4M6.4 17.6l1.4-1.4M16.2 16.2l1.4 1.4M6.4 6.4l1.4 1.4M15.5 12a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z':cls==='climate'?'M12 3v18M5 7l14 10M19 7 5 17':cls==='insulation'?'M4 6h16v4H4zM4 14h16v4H4z':cls==='reform'?'M15 5a4 4 0 0 0-5-3l2 3-3 3-3-2a4 4 0 0 0 5 5l-7 7 3 3 7-7a4 4 0 0 0 1-9Z':'M13 2 6 13h6l-1 9 7-11h-6z'}/></svg></span>
+    <strong>{name}</strong><span>{count} →</span>
+  </a>)}</div>
+</section>
+</div>
+<script>
+document.querySelectorAll('[data-pv2-search]').forEach(input=>{
+ const box=input.closest('.pv2-home')?.querySelector('[data-pv2-suggestions]');
+ const items=box?[...box.querySelectorAll('[data-name]')]:[];
+ input.addEventListener('input',()=>{
+   const q=input.value.trim().toLowerCase();
+   if(!box)return;
+   box.hidden=!q;
+   items.forEach(item=>item.hidden=q&&!item.dataset.name.includes(q));
+ });
+});
+</script>

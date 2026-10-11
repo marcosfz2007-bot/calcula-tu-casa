@@ -1,0 +1,33 @@
+---
+import PrototypeV2Layout from '../../layouts/PrototypeV2Layout.astro';
+import PrototypeCalculatorShell from '../../components/prototype-v2/PrototypeCalculatorShell.astro';
+---
+<PrototypeV2Layout title="Factura eléctrica · Prototipo V2" active="factura">
+<PrototypeCalculatorShell category="Energía" categoryClass="energia" title="Simulador de factura eléctrica" description="Reproduce la estructura de una factura a partir de tus consumos, potencias, precios, impuestos y otros conceptos." nextTitle="¿Qué consumos de tu casa pesan más en la factura?" nextHref="/prototipo-v2/electrodomesticos/" nextText="Ver consumo">
+  <Fragment slot="form">
+    <div class="pv2-group"><div class="pv2-group-title"><span>01</span>Consumo y energía</div><div class="pv2-fields">
+      <div class="pv2-field"><label>Consumo del periodo</label><div class="pv2-input"><input value="280"/><span>kWh</span></div></div>
+      <div class="pv2-field"><label>Precio energía</label><div class="pv2-input"><input value="0,145"/><span>€/kWh</span></div></div>
+    </div></div>
+    <div class="pv2-group"><div class="pv2-group-title"><span>02</span>Potencia contratada</div><div class="pv2-fields">
+      <div class="pv2-field"><label>Potencia punta</label><div class="pv2-input"><input value="4,6"/><span>kW</span></div></div>
+      <div class="pv2-field"><label>Potencia valle</label><div class="pv2-input"><input value="4,6"/><span>kW</span></div></div>
+    </div></div>
+    <div class="pv2-group"><div class="pv2-group-title"><span>03</span>Impuestos y otros</div><div class="pv2-fields">
+      <div class="pv2-field"><label>Alquiler / equipo</label><div class="pv2-input"><input value="0,81"/><span>€</span></div></div>
+      <div class="pv2-field"><label>Otros conceptos</label><div class="pv2-input"><input value="0"/><span>€</span></div></div>
+    </div><p class="pv2-help">Los tipos y precios se conservarían como datos editables exactamente igual que en la calculadora actual.</p></div>
+  </Fragment>
+  <Fragment slot="result">
+    <div class="pv2-result-main"><div class="pv2-amount">67,42 <small style="font-size:.42em">€</small></div><p class="pv2-sub">Total estimado del periodo</p></div>
+    <div class="pv2-stack" aria-label="Desglose visual del total"><span style="width:55%"></span><span style="width:25%"></span><span style="width:17%"></span><span style="width:3%"></span></div>
+    <div class="pv2-breakdown">
+      <div class="pv2-breakdown-row"><span>⚡ Energía consumida</span><strong>37,64 €</strong></div>
+      <div class="pv2-breakdown-row"><span>▥ Potencia</span><strong>17,10 €</strong></div>
+      <div class="pv2-breakdown-row"><span>% Impuestos</span><strong>11,87 €</strong></div>
+      <div class="pv2-breakdown-row"><span>· Alquiler / otros</span><strong>0,81 €</strong></div>
+    </div>
+    <p class="pv2-note">El total sigue siendo la información principal; la barra solo ayuda a entender qué componente pesa más.</p>
+  </Fragment>
+</PrototypeCalculatorShell>
+</PrototypeV2Layout>

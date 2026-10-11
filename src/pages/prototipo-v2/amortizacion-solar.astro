@@ -1,0 +1,20 @@
+---
+import PrototypeV2Layout from '../../layouts/PrototypeV2Layout.astro';
+import PrototypeCalculatorShell from '../../components/prototype-v2/PrototypeCalculatorShell.astro';
+---
+<PrototypeV2Layout title="Amortización solar · Prototipo V2" active="solar">
+<PrototypeCalculatorShell category="Solar" categoryClass="solar" title="Calculadora de amortización de placas solares" description="Estima cuándo se recupera la inversión y cómo evoluciona el ahorro económico con los datos y horizonte que introduzcas." nextTitle="¿Qué capacidad de batería encajaría con tu energía desplazable?" nextHref="/prototipo-v2/" nextText="Volver a la galería">
+  <Fragment slot="form">
+    <div class="pv2-group"><div class="pv2-group-title"><span>01</span>Inversión</div><div class="pv2-fields"><div class="pv2-field"><label>Coste instalación</label><div class="pv2-input"><input value="7.500"/><span>€</span></div></div><div class="pv2-field"><label>Ayudas / deducciones</label><div class="pv2-input"><input value="1.000"/><span>€</span></div></div></div></div>
+    <div class="pv2-group"><div class="pv2-group-title"><span>02</span>Producción y ahorro</div><div class="pv2-fields"><div class="pv2-field"><label>Producción anual</label><div class="pv2-input"><input value="5.200"/><span>kWh</span></div></div><div class="pv2-field"><label>Autoconsumo</label><div class="pv2-input"><input value="65"/><span>%</span></div></div><div class="pv2-field"><label>Precio electricidad</label><div class="pv2-input"><input value="0,20"/><span>€/kWh</span></div></div><div class="pv2-field"><label>Compensación excedente</label><div class="pv2-input"><input value="0,07"/><span>€/kWh</span></div></div></div></div>
+    <div class="pv2-group"><div class="pv2-group-title"><span>03</span>Horizonte</div><div class="pv2-fields"><div class="pv2-field"><label>Años</label><div class="pv2-input"><input value="25"/><span>años</span></div></div><div class="pv2-field"><label>Tasa de descuento</label><div class="pv2-input"><input value="3"/><span>%</span></div></div></div></div>
+  </Fragment>
+  <Fragment slot="result">
+    <div class="pv2-payback"><div class="pv2-payback-ring"><strong>8,4</strong></div><div class="pv2-payback-copy"><span class="pv2-panel-kicker">PLAZO DE RECUPERACIÓN</span><strong>8,4 años</strong><span class="pv2-sub">Con las hipótesis introducidas</span></div></div>
+    <div class="pv2-metrics"><div class="pv2-metric"><span>Inversión neta</span><strong>6.500 €</strong></div><div class="pv2-metric"><span>Ahorro año 1</span><strong>774 €</strong></div><div class="pv2-metric"><span>VAN horizonte</span><strong>7.960 €</strong></div></div>
+    <div class="pv2-timeline" aria-label="Ejemplo visual de ahorro acumulado"><span style="height:12%"></span><span style="height:26%"></span><span style="height:42%"></span><span style="height:61%"></span><span style="height:80%"></span><span style="height:100%"></span></div>
+    <div class="pv2-timeline-labels"><span>Año 1</span><span>5</span><span>10</span><span>15</span><span>20</span><span>25</span></div>
+    <p class="pv2-note">En el desarrollo real la evolución se alimentaría únicamente de la serie anual ya calculada por el motor existente.</p>
+  </Fragment>
+</PrototypeCalculatorShell>
+</PrototypeV2Layout>
