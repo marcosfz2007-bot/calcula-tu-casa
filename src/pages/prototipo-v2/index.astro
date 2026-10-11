@@ -1,0 +1,18 @@
+---
+import PrototypeV2Layout from '../../layouts/PrototypeV2Layout.astro';
+const cards=[
+ ['Nueva Home','Hero, buscador protagonista, ilustración, herramientas y categorías.','/prototipo-v2/home/'],
+ ['Home · vista móvil','La misma dirección visual dentro de un marco de 390 px para revisarla desde escritorio.','/prototipo-v2/home-movil/'],
+ ['Frigorías','Formulario con controles segmentados y resultado con rango real.','/prototipo-v2/frigorias/'],
+ ['Factura eléctrica','Resultado económico con total protagonista y desglose visual.','/prototipo-v2/factura-electrica/'],
+ ['Reforma integral','Escenarios bajo/central/alto y desglose de partidas.','/prototipo-v2/reforma-integral/'],
+ ['Amortización solar','Payback, ahorro, VAN y evolución temporal.','/prototipo-v2/amortizacion-solar/'],
+ ['Electrodomésticos','Ejemplo de formulario con filas dinámicas y resultado de consumo.','/prototipo-v2/electrodomesticos/']
+];
+---
+<PrototypeV2Layout title="Galería de prototipos · Calcula tu Casa 2.0">
+<div class="pv2-wrap">
+<section class="pv2-gallery-hero"><p class="pv2-eyebrow">VALIDACIÓN VISUAL · FASE 0</p><h1>Calcula tu Casa 2.0</h1><p>Prototipos aislados para decidir la dirección estética antes de desarrollar el sistema definitivo. Ninguna de estas rutas sustituye todavía a las 39 calculadoras actuales.</p></section>
+<div class="pv2-gallery">{cards.map(([title,desc,href])=><a class="pv2-gallery-card" href={href}><p class="pv2-eyebrow">PROTOTIPO</p><h2>{title}</h2><p>{desc}</p><span>Abrir pantalla →</span></a>)}</div>
+</div>
+</PrototypeV2Layout>

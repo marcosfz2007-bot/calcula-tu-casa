@@ -1,0 +1,25 @@
+---
+const {category='Energía',categoryClass='energia',title,description,nextTitle='Continúa con otra herramienta relacionada',nextHref='/prototipo-v2/',nextText='Ver prototipos'}=Astro.props;
+---
+<div class="pv2-wrap">
+  <div class="pv2-breadcrumbs"><a href="/prototipo-v2/">Prototipos</a><span>›</span><span>{category}</span><span>›</span><strong>{title}</strong></div>
+  <header class="pv2-calc-title">
+    <p class="pv2-eyebrow">{category} · HERRAMIENTA GRATUITA</p>
+    <h1>{title}</h1>
+    <p class="pv2-lead">{description}</p>
+    <div class="pv2-badges"><span class="pv2-badge">Sin registro</span><span class="pv2-badge">Cálculo local</span><span class="pv2-badge">Metodología visible</span><span class="pv2-badge">Prototipo visual</span></div>
+  </header>
+  <div class={'pv2-calc '+categoryClass}>
+    <form class="pv2-form" onsubmit="return false">
+      <p class="pv2-panel-kicker">TUS DATOS</p><h2>Introduce tus datos</h2>
+      <slot name="form"/>
+      <div class="pv2-actions"><button class="pv2-btn primary" type="button">Calcular</button><button class="pv2-btn secondary" type="reset">Restablecer</button></div>
+    </form>
+    <section class="pv2-result" aria-label="Ejemplo visual de resultado">
+      <p class="pv2-panel-kicker">TU ESTIMACIÓN</p><h2>Resultado</h2>
+      <slot name="result"/>
+    </section>
+  </div>
+  <div class="pv2-next"><span class="pv2-next-icon" aria-hidden="true">→</span><div><span>Siguiente decisión</span><strong>{nextTitle}</strong></div><a href={nextHref}>{nextText} →</a></div>
+  <p class="pv2-note"><strong>Importante:</strong> esta ruta sirve únicamente para validar diseño, jerarquía e interacción. Los valores de resultado son ejemplos visuales y no sustituyen al motor real de la calculadora.</p>
+</div>

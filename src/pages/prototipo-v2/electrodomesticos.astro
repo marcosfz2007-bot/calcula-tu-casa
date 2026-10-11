@@ -1,0 +1,37 @@
+---
+import PrototypeV2Layout from '../../layouts/PrototypeV2Layout.astro';
+import PrototypeCalculatorShell from '../../components/prototype-v2/PrototypeCalculatorShell.astro';
+---
+<PrototypeV2Layout title="Campos dinámicos · Prototipo V2" active="dynamic">
+<PrototypeCalculatorShell category="Energía" categoryClass="energia" title="Calculadora de consumo de electrodomésticos" description="Añade aparatos y compara su consumo anual manteniendo un formulario flexible, compacto y fácil de editar." nextTitle="¿Quieres trasladar este consumo a una factura eléctrica?" nextHref="/prototipo-v2/factura-electrica/" nextText="Ver factura">
+  <Fragment slot="form">
+    <div class="pv2-group"><div class="pv2-group-title"><span>01</span>Precio de energía</div><div class="pv2-field"><label>Precio electricidad</label><div class="pv2-input"><input value="0,20"/><span>€/kWh</span></div></div></div>
+    <div class="pv2-group"><div class="pv2-group-title"><span>02</span>Electrodomésticos</div>
+      <div class="pv2-dynamic-list" data-proto-items>
+        <div class="pv2-dynamic-row" data-proto-row><div class="pv2-dynamic-head"><strong>Frigorífico</strong><button class="pv2-remove" type="button" data-remove>Eliminar</button></div><div class="pv2-dynamic-fields"><div class="pv2-field"><label>Nombre</label><div class="pv2-input"><input value="Frigorífico"/></div></div><div class="pv2-field"><label>Potencia</label><div class="pv2-input"><input value="120"/><span>W</span></div></div><div class="pv2-field"><label>Horas/día</label><div class="pv2-input"><input value="8"/><span>h</span></div></div></div></div>
+        <div class="pv2-dynamic-row" data-proto-row><div class="pv2-dynamic-head"><strong>Televisor</strong><button class="pv2-remove" type="button" data-remove>Eliminar</button></div><div class="pv2-dynamic-fields"><div class="pv2-field"><label>Nombre</label><div class="pv2-input"><input value="Televisor"/></div></div><div class="pv2-field"><label>Potencia</label><div class="pv2-input"><input value="90"/><span>W</span></div></div><div class="pv2-field"><label>Horas/día</label><div class="pv2-input"><input value="4"/><span>h</span></div></div></div></div>
+      </div>
+      <button class="pv2-add" type="button" data-add>+ Añadir electrodoméstico</button>
+    </div>
+  </Fragment>
+  <Fragment slot="result">
+    <div class="pv2-result-main"><div class="pv2-amount">238 <small style="font-size:.42em">kWh/mes</small></div><p class="pv2-sub">Consumo mensual estimado del conjunto</p></div>
+    <div class="pv2-breakdown"><div class="pv2-breakdown-row"><span>Frigorífico</span><strong>46 %</strong></div><div class="pv2-breakdown-row"><span>Televisor</span><strong>21 %</strong></div><div class="pv2-breakdown-row"><span>Otros aparatos</span><strong>33 %</strong></div><div class="pv2-breakdown-row"><span>Coste anual estimado</span><strong>571 €</strong></div></div>
+    <p class="pv2-note">La complejidad queda en las filas editables; el resultado sigue siendo directo y legible.</p>
+  </Fragment>
+</PrototypeCalculatorShell>
+<script>
+const list=document.querySelector('[data-proto-items]');
+const add=document.querySelector('[data-add]');
+if(list&&add){
+ const wire=()=>list.querySelectorAll('[data-remove]').forEach(btn=>btn.onclick=()=>{if(list.querySelectorAll('[data-proto-row]').length>1)btn.closest('[data-proto-row]')?.remove();});
+ wire();
+ add.addEventListener('click',()=>{
+   const row=document.createElement('div');
+   row.className='pv2-dynamic-row';row.dataset.protoRow='';
+   row.innerHTML='<div class="pv2-dynamic-head"><strong>Nuevo aparato</strong><button class="pv2-remove" type="button" data-remove>Eliminar</button></div><div class="pv2-dynamic-fields"><div class="pv2-field"><label>Nombre</label><div class="pv2-input"><input value="Nuevo aparato"/></div></div><div class="pv2-field"><label>Potencia</label><div class="pv2-input"><input value="100"/><span>W</span></div></div><div class="pv2-field"><label>Horas/día</label><div class="pv2-input"><input value="2"/><span>h</span></div></div></div>';
+   list.append(row);wire();
+ });
+}
+</script>
+</PrototypeV2Layout>

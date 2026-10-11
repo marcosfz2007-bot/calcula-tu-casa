@@ -1,0 +1,38 @@
+---
+import '../styles/prototype-v2.css';
+const {title='Prototipo Calcula tu Casa 2.0',active=''}=Astro.props;
+const links=[
+ ['home','Home','/prototipo-v2/home/'],
+ ['frigorias','Frigorías','/prototipo-v2/frigorias/'],
+ ['factura','Factura','/prototipo-v2/factura-electrica/'],
+ ['reforma','Reforma','/prototipo-v2/reforma-integral/'],
+ ['solar','Amortización','/prototipo-v2/amortizacion-solar/'],
+ ['dynamic','Dinámica','/prototipo-v2/electrodomesticos/']
+];
+---
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>{title}</title>
+<meta name="robots" content="noindex,nofollow"/>
+<meta name="theme-color" content="#1f6b50"/>
+<link rel="icon" href="/favicon.svg"/>
+</head>
+<body class="pv2-body">
+<header class="pv2-header">
+  <div class="pv2-wrap pv2-header-row">
+    <a class="pv2-brand" href="/prototipo-v2/">
+      <span class="pv2-brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11.2 12 4l9 7.2"/><path d="M5.7 10.3V20h12.6v-9.7"/><path d="M9.2 20v-5.5h5.6V20"/></svg></span>
+      <span>calculatucasa.</span>
+      <span class="pv2-proto">Prototipo V2</span>
+    </a>
+    <nav class="pv2-nav" aria-label="Prototipos">
+      {links.map(([key,label,href])=><a href={href} aria-current={active===key?'page':undefined}>{label}</a>)}
+    </nav>
+  </div>
+</header>
+<main class="pv2-main"><slot/></main>
+</body>
+</html>
