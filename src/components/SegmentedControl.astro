@@ -1,0 +1,9 @@
+---
+const {name,legend,options=[],selected,columns=options.length}=Astro.props;
+---
+<fieldset class="segmented-field">
+  <legend>{legend}</legend>
+  <div class="segmented-control" style={'--segment-columns:'+columns}>
+    {options.map(([value,label])=><label><input type="radio" name={name} value={value} checked={value===selected}/><span>{label}</span></label>)}
+  </div>
+</fieldset>
