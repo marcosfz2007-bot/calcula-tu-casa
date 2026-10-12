@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 const {title,description,noindex=false,schema}=Astro.props;
-const canonical=Astro.site?new URL(Astro.url.pathname,Astro.site).href:undefined;
+const canonical=Astro.site?new URL(Astro.url.pathname,Astro.site).href:undefined;\nconst currentPath=Astro.url.pathname;
 const privatePage=noindex||!Astro.site;
 const categoryLinks=[['energia','Energía'],['climatizacion','Climatización'],['aislamiento','Aislamiento'],['solar','Solar'],['reformas','Reformas']];
 const projectLinks=[['calculadoras','Todas las calculadoras'],['metodologia','Metodología'],['fuentes','Fuentes'],['sobre-nosotros','Sobre el proyecto'],['contacto','Contacto']];
@@ -40,14 +40,14 @@ const legalLinks=[['aviso-legal','Aviso legal'],['privacidad','Privacidad'],['co
         </span>
         <span class="brand-word">calcula<span>tu</span>casa<span>.</span></span>
       </a>
-      <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-nav"><span aria-hidden="true">☰</span><span class="sr-only">Abrir menú</span></button>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-nav"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span class="sr-only">Abrir menú</span></button>
       <nav class="nav" id="main-nav" aria-label="Principal">
-        <a class="nav-primary" href="/calculadoras/">Calculadoras</a>
-        <a href="/energia/">Energía</a>
-        <a href="/climatizacion/">Climatización</a>
-        <a href="/aislamiento/">Aislamiento</a>
-        <a href="/solar/">Solar</a>
-        <a href="/reformas/">Reformas</a>
+        <a class="nav-primary" href="/calculadoras/" aria-current={currentPath.startsWith('/calculadoras/')?'page':undefined}>Calculadoras</a>
+        <a href="/energia/" aria-current={currentPath.startsWith('/energia/')?'page':undefined}>Energía</a>
+        <a href="/climatizacion/" aria-current={currentPath.startsWith('/climatizacion/')?'page':undefined}>Climatización</a>
+        <a href="/aislamiento/" aria-current={currentPath.startsWith('/aislamiento/')?'page':undefined}>Aislamiento</a>
+        <a href="/solar/" aria-current={currentPath.startsWith('/solar/')?'page':undefined}>Solar</a>
+        <a href="/reformas/" aria-current={currentPath.startsWith('/reformas/')?'page':undefined}>Reformas</a>
       </nav>
     </div>
   </header>
