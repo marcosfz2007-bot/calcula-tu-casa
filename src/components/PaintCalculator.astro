@@ -2,7 +2,7 @@
 ---
 <noscript><p class="no-js">Activa JavaScript para utilizar la calculadora.</p></noscript>
 <div class="calculator" data-paint>
-<form class="card" novalidate>
+<form class="card calc-form" novalidate>
 <h2>Superficies y pintura</h2>
 <div class="fields">
 <div><label for="paintLength">Longitud habitación</label><div class="input-wrap"><input id="paintLength" name="length" value="5" inputmode="decimal"/><span>m</span></div></div>
@@ -22,6 +22,6 @@
 <p class="error" data-form-error aria-live="polite"></p>
 <div class="actions"><button class="button" type="submit">Calcular pintura</button><button class="button secondary" type="reset">Restablecer</button></div>
 </form>
-<section class="card result"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Pintura necesaria</h2><div data-result aria-live="polite"><p>Introduce el rendimiento de tu pintura y calcula.</p></div></section>
+<section class="card result result-kind-paint"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Pintura necesaria</h2><div data-result aria-live="polite"><p>Introduce el rendimiento de tu pintura y calcula.</p></div></section>
 </div>
 <script>import '../lib/paint-ui.mjs';</script>

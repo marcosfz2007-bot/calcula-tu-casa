@@ -2,7 +2,7 @@
 ---
 <noscript><p class="no-js">Activa JavaScript para utilizar la calculadora y procesar un JSON de PVGIS.</p></noscript>
 <div class="calculator" data-solar-sizing>
-  <form class="card" novalidate>
+  <form class="card calc-form" novalidate>
     <h2>Demanda y paneles</h2>
     <div class="fields">
       <div><label for="annualConsumptionKwh">Consumo anual</label><div class="input-wrap"><input id="annualConsumptionKwh" name="annualConsumptionKwh" value="5000" inputmode="decimal"/><span>kWh/año</span></div></div>
@@ -17,6 +17,6 @@
     <p class="error" data-form-error aria-live="polite"></p>
     <div class="actions"><button class="button" type="submit">Calcular paneles</button><button class="button secondary" type="reset">Restablecer</button></div>
   </form>
-  <section class="card result"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Número de paneles</h2><div data-result aria-live="polite"><p>Introduce una producción específica y pulsa «Calcular paneles».</p></div></section>
+  <section class="card result result-kind-solar-sizing"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Número de paneles</h2><div data-result aria-live="polite"><p>Introduce una producción específica y pulsa «Calcular paneles».</p></div></section>
 </div>
 <script>import '../lib/solar-sizing-ui.mjs';</script>
