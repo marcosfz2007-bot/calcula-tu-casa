@@ -40,6 +40,6 @@ const schema=url?{'@context':'https://schema.org','@graph':[
       <Sources sources={tool.sources} methodology={tool.methodology} reviewedAt={reviewedAt}/>
       <FAQ items={tool.faqs}/>
     </article>
-    <RelatedTools paths={tool.related}/>
+    <RelatedTools paths={tool.related} currentPath={tool.path}/>
   </div>
 </Base>
