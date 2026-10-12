@@ -1,0 +1,10 @@
+---
+const {title='Resultado',eyebrow='TU ESTIMACIÓN',id}=Astro.props;
+---
+<section class="card result result-panel" aria-labelledby={id}>
+  <div class="result-panel-heading">
+    <p class="eyebrow">{eyebrow}</p>
+    <h2 id={id}>{title}</h2>
+  </div>
+  <slot/>
+</section>

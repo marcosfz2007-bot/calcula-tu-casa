@@ -1,0 +1,12 @@
+---
+const {name,label,options=[],value,idPrefix=name}=Astro.props;
+---
+<fieldset class="segmented-field">
+  <legend>{label}</legend>
+  <div class="segmented-control" style={'--segment-count:'+options.length}>
+    {options.map(([optionValue,optionLabel])=><label>
+      <input id={idPrefix+'-'+optionValue} type="radio" name={name} value={optionValue} checked={optionValue===value}/>
+      <span>{optionLabel}</span>
+    </label>)}
+  </div>
+</fieldset>

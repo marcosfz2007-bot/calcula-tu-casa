@@ -1,0 +1,19 @@
+---
+import CategoryIcon from './CategoryIcon.astro';
+import {toolByPath} from '../lib/catalog.mjs';
+import {getNextDecision,getToolPresentation} from '../lib/presentation.mjs';
+const {tool}=Astro.props;
+const decision=getNextDecision(tool);
+const target=decision?toolByPath.get(decision.path):null;
+const targetPresentation=target?getToolPresentation(target):null;
+---
+{decision&&target&&<section class={'next-decision category-'+target.categorySlug} aria-labelledby="next-decision-title">
+  <span class="next-decision-icon"><CategoryIcon slug={target.categorySlug}/></span>
+  <div class="next-decision-copy">
+    <p class="eyebrow">SIGUIENTE DECISIÓN</p>
+    <h2 id="next-decision-title">{decision.question}</h2>
+    <p>{decision.text}</p>
+    <span class="next-decision-result">Siguiente resultado: <strong>{targetPresentation.result}</strong></span>
+  </div>
+  <a class="button next-decision-cta" href={'/'+target.path+'/'}>Continuar <span aria-hidden="true">→</span></a>
+</section>}

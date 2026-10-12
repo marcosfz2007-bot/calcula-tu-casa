@@ -6,8 +6,12 @@ import Sources from '../components/Sources.astro';
 import FAQ from '../components/FAQ.astro';
 import RelatedTools from '../components/RelatedTools.astro';
 import AdSlot from '../components/AdSlot.astro';
+import NextDecision from '../components/NextDecision.astro';
+import CategoryIcon from '../components/CategoryIcon.astro';
+import {getToolPresentation} from '../lib/presentation.mjs';
 const {tool}=Astro.props;
 const reviewedAt=tool.reviewedAt||'05/10/2026';
+const presentation=getToolPresentation(tool);
 const url=Astro.site?new URL('/'+tool.path+'/',Astro.site).href:undefined;
 const categoryUrl=Astro.site?new URL('/'+tool.categorySlug+'/',Astro.site).href:undefined;
 const schema=url?{'@context':'https://schema.org','@graph':[
@@ -17,19 +21,21 @@ const schema=url?{'@context':'https://schema.org','@graph':[
 ]}:undefined;
 ---
 <Base title={tool.title} description={tool.description} schema={schema}>
+<div class={'calculator-page category-'+tool.categorySlug} data-result-variant={presentation.variant}>
   <Breadcrumbs items={[{label:'Inicio',href:'/'},{label:tool.category,href:'/'+tool.categorySlug+'/'},{label:tool.short}]}/>
   <header class="calc-heading">
-    <p class="eyebrow">{tool.category} · HERRAMIENTA GRATUITA</p>
-    <h1>{tool.title}</h1>
-    <p class="lead">{tool.description}</p>
-    <div aria-label="Características de la herramienta">
-      <span class="badge">Sin registro</span>
-      <span class="badge">{tool.kind==='solar'?'PVGIS bajo acción del usuario':'Cálculo local'}</span>
-      <span class="badge">Metodología {tool.methodology}</span>
-      <span class="badge">Revisión {reviewedAt}</span>
+    <div class="calc-heading-icon"><CategoryIcon slug={tool.categorySlug}/></div>
+    <div class="calc-heading-copy">
+      <p class="eyebrow">{tool.category} · HERRAMIENTA GRATUITA</p>
+      <h1>{tool.title}</h1>
+      <p class="lead">{tool.description}</p>
+      <div class="calc-heading-meta" aria-label="Características de la herramienta">
+        <span class="badge">Sin registro</span><span class="badge">{tool.kind==='solar'?'PVGIS bajo acción del usuario':'Cálculo local'}</span><span class="badge">Metodología {tool.methodology}</span><span class="badge">Revisión {reviewedAt}</span>
+      </div>
     </div>
   </header>
   <slot/>
+  <NextDecision tool={tool}/>
   <AdSlot position="after-result"/>
   <article class="article">
     <Methodology tool={tool}/>
@@ -38,4 +44,5 @@ const schema=url?{'@context':'https://schema.org','@graph':[
     <FAQ items={tool.faqs}/>
   </article>
   <RelatedTools paths={tool.related}/>
+</div>
 </Base>

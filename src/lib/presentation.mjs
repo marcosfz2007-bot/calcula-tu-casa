@@ -85,3 +85,104 @@ export const NEXT_DECISIONS={
 };
 
 export const getNextDecision=(tool)=>NEXT_DECISIONS[tool.path]||null;
+
+
+const FORM_GROUPS={
+'climatizacion/consumo-aire-acondicionado':[
+ {title:'Equipo y uso',keys:['watts','units','hours','days','factor','months']},
+ {title:'Coste de energía',keys:['price']}
+],
+'energia/consumo-radiador-electrico':[
+ {title:'Radiadores y uso',keys:['watts','units','hours','days','factor','months']},
+ {title:'Coste de energía',keys:['price']}
+],
+'energia/termo-electrico':[
+ {title:'Demanda de agua caliente',keys:['persons','showers','litresPerShower']},
+ {title:'Temperaturas',keys:['cold','showerTemp','target']},
+ {title:'Equipo y coste',keys:['powerW','volume','price']}
+],
+'aislamiento/punto-de-rocio-moho':[
+ {title:'Ambiente interior',keys:['temperature','humidity']},
+ {title:'Superficies y exterior',keys:['surface','exterior']}
+],
+'energia/simulador-factura-electrica':[
+ {title:'Consumo y energía',keys:['consumptionKwh','energyPrice','days']},
+ {title:'Potencia contratada',keys:['powerKw','powerPriceKwDay']},
+ {title:'Impuestos',keys:['electricityTaxPercent','electricityTaxMinimumEuroPerMwh','vatPercent']},
+ {title:'Otros conceptos',keys:['meterRental','otherBeforeVat','otherAfterVat']}
+],
+'climatizacion/potencia-radiadores-elementos':[
+ {title:'Estancia y demanda',keys:['area','height','thermalFactor']},
+ {title:'Emisor y margen',keys:['elementPowerW','correctionFactor','marginPercent']}
+],
+'energia/comparador-coste-calefaccion':[
+ {title:'Demanda y electricidad',keys:['usefulHeatKwh','electricityPrice','resistanceFixed']},
+ {title:'Bomba de calor',keys:['scop','heatPumpFixed']},
+ {title:'Gas',keys:['gasPrice','gasEfficiencyPercent','gasFixed']},
+ {title:'Pellet',keys:['pelletPriceKg','pelletPciKwhKg','pelletEfficiencyPercent','pelletFixed']}
+],
+'solar/amortizacion-placas-solares':[
+ {title:'Inversión',keys:['installationCost','aid']},
+ {title:'Producción y autoconsumo',keys:['annualProductionKwh','annualConsumptionKwh','selfConsumptionPercent']},
+ {title:'Valor de la energía',keys:['avoidedPrice','surplusCompensation','annualMaintenance']},
+ {title:'Horizonte financiero',keys:['degradationPercent','horizonYears','energyPriceGrowthPercent','discountRatePercent']}
+],
+'energia/rentabilidad-aerotermia':[
+ {title:'Sistema actual',keys:['usefulHeatKwh','currentFuelPrice','currentEfficiencyPercent','currentMaintenance']},
+ {title:'Aerotermia',keys:['scop','electricityPrice','aerothermalMaintenance','sensitivityPercent']},
+ {title:'Inversión',keys:['investment','aid']}
+],
+'reformas/calculadora-rodapie':[
+ {title:'Geometría de la estancia',keys:['length','width','openingsM','marginPercent']},
+ {title:'Formato de compra',keys:['pieceLengthM','piecesPerPack']},
+ {title:'Precio opcional',keys:['pricePerPiece','pricePerPack']}
+],
+'reformas/calculadora-papel-pintado':[
+ {title:'Pared',keys:['wallWidthM','heightM']},
+ {title:'Rollo y patrón',keys:['rollWidthM','rollLengthM','repeatM']},
+ {title:'Margen',keys:['trimMarginM','extraPercent']}
+],
+'energia/calculadora-iluminacion-lux':[
+ {title:'Espacio y objetivo',keys:['areaM2','targetLux']},
+ {title:'Luminaria y factores',keys:['lumensPerFixture','utilizationFactor','maintenanceFactor']}
+],
+'energia/ahorro-bombillas-led':[
+ {title:'Instalación actual y LED',keys:['bulbs','currentWatts','ledWatts']},
+ {title:'Uso y energía',keys:['hoursPerDay','daysPerYear','price']},
+ {title:'Inversión opcional',keys:['investment']}
+],
+'solar/bateria-solar':[
+ {title:'Energía objetivo',keys:['dailyShiftKwh','autonomyDays']},
+ {title:'Batería',keys:['usableFractionPercent','roundTripEfficiencyPercent','moduleCapacityKwh']},
+ {title:'Comprobaciones opcionales',keys:['dailySurplusKwh','requiredPowerKw']}
+],
+'energia/consumo-deshumidificador':[
+ {title:'Uso y consumo',keys:['powerW','hoursPerDay','daysPerMonth','daysPerYear','price']},
+ {title:'Dato nominal opcional',keys:['nominalLitresPerDay']}
+],
+'aislamiento/ahorro-cambio-ventanas':[
+ {title:'Ventanas actual y nueva',keys:['areaM2','currentU','newU']},
+ {title:'Escenario térmico',keys:['interiorTempC','exteriorTempC','equivalentHours','performance']},
+ {title:'Economía',keys:['energyPrice','replacementCost']}
+],
+'reformas/mortero-necesario':[
+ {title:'Geometría',keys:['areaM2','thicknessMm','marginPercent']},
+ {title:'Producto y coste',keys:['yieldLitresPerBag','pricePerBag']}
+],
+'reformas/ladrillos-bloques-necesarios':[
+ {title:'Pared y huecos',keys:['wallWidthM','wallHeightM','openingsAreaM2']},
+ {title:'Pieza y juntas',keys:['pieceLengthCm','pieceHeightCm','horizontalJointMm','verticalJointMm','wastePercent']},
+ {title:'Compra opcional',keys:['piecesPerPack','pricePerPiece','pricePerPack']}
+]
+};
+
+export const getFormGroups=(tool)=>{
+ const requested=FORM_GROUPS[tool.path];
+ if(!requested)return [{title:'Variables del cálculo',keys:tool.fields.map(([key])=>key)}];
+ const known=new Set(tool.fields.map(([key])=>key));
+ const groups=requested.map(group=>({...group,keys:group.keys.filter(key=>known.has(key))})).filter(group=>group.keys.length);
+ const assigned=new Set(groups.flatMap(group=>group.keys));
+ const remaining=tool.fields.map(([key])=>key).filter(key=>!assigned.has(key));
+ if(remaining.length)groups.push({title:'Otros datos',keys:remaining});
+ return groups;
+};

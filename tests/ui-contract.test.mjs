@@ -75,3 +75,30 @@ test('Expansión 04 · calculadoras especializadas reutilizan patrones UI v2',()
   assert.match(source,/aria-live="polite"/);
  }
 });
+
+
+test('Calcula tu Casa 2.0 · controles segmentados conservan radios nativos',()=>{
+ const segmented=read('src/components/SegmentedControl.astro');
+ assert.match(segmented,/type="radio"/);
+ assert.match(segmented,/name=\{name\}/);
+ assert.match(segmented,/value=\{optionValue\}/);
+});
+
+test('Calcula tu Casa 2.0 · siguiente decisión solo usa rutas del catálogo',async()=>{
+ const {NEXT_DECISIONS}=await import('../src/lib/presentation.mjs');
+ const {toolByPath}=await import('../src/lib/catalog.mjs');
+ for(const [source,decision] of Object.entries(NEXT_DECISIONS)){
+  assert.ok(toolByPath.has(source),'Origen inexistente: '+source);
+  assert.ok(toolByPath.has(decision.path),'Destino inexistente: '+decision.path);
+ }
+});
+
+test('Calcula tu Casa 2.0 · formularios agrupados conservan todos los campos',async()=>{
+ const {tools}=await import('../src/lib/catalog.mjs');
+ const {getFormGroups}=await import('../src/lib/presentation.mjs');
+ for(const tool of tools.filter(tool=>tool.fields?.length)){
+  const grouped=getFormGroups(tool).flatMap(group=>group.keys);
+  assert.deepEqual(new Set(grouped),new Set(tool.fields.map(([key])=>key)),tool.path);
+  assert.equal(grouped.length,new Set(grouped).size,'Campo duplicado en '+tool.path);
+ }
+});
