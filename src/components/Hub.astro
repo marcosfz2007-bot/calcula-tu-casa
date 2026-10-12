@@ -1,21 +1,24 @@
 ---
 import Base from '../layouts/Base.astro';
 import ToolCard from './ToolCard.astro';
+import CategoryIcon from './CategoryIcon.astro';
 import {tools,categories} from '../lib/catalog.mjs';
 const {category}=Astro.props;
 const current=tools.filter(t=>t.categorySlug===category.slug);
 ---
 <Base title={'Calculadoras de '+category.name.toLowerCase()} description={category.description} noindex={category.indexable===false}>
-  <section class="hero hub-hero">
-    <p class="eyebrow">CALCULADORAS · {category.name}</p>
-    <h1>{category.name}</h1>
+  <section class={'hero hub-hero hub-hero-v2 category-'+category.slug}>
+    <div class="hub-title-row">
+      <span class="hub-category-icon"><CategoryIcon slug={category.slug} size={30}/></span>
+      <div><p class="eyebrow">CALCULADORAS · {category.name}</p><h1>{category.name}</h1></div>
+    </div>
     <p class="lead">{category.description}</p>
     <div class="hub-links">{categories.map(c=><a href={'/'+c.slug+'/'} aria-current={c.slug===category.slug?'page':undefined}>{c.name}</a>)}</div>
   </section>
   {current.length>0?
-    <section class="section">
-      <div class="section-head"><div><p class="eyebrow">COLECCIÓN DE HERRAMIENTAS</p><h2>{current.length} calculadoras de {category.name.toLowerCase()}</h2></div><p class="muted">Elige la herramienta que responda a tu siguiente decisión. Todas muestran metodología, fuentes y limitaciones.</p></div>
-      <div class="grid">{current.map(tool=><ToolCard tool={tool}/>)}</div>
+    <section class="section section-v2">
+      <div class="section-head"><div><p class="eyebrow">COLECCIÓN DE HERRAMIENTAS</p><h2>{current.length} calculadoras de {category.name.toLowerCase()}</h2></div><p class="muted">Elige la pregunta que quieres resolver. Todas muestran metodología, fuentes, hipótesis y limitaciones.</p></div>
+      <div class="grid tool-directory-grid">{current.map(tool=><ToolCard tool={tool}/>)}</div>
     </section>
     :<section class="card"><h2>Herramientas en preparación</h2><p>Esta categoría forma parte de la arquitectura V1, pero todavía no publica una calculadora sin metodología suficientemente verificada.</p></section>}
   {category.future.length>0&&<section class="section"><div class="card future-card"><h2>En estudio</h2><ul>{category.future.map(item=><li>{item}</li>)}</ul><p class="muted">Se muestran como futuras; no enlazamos rutas que todavía no existen.</p></div></section>}

@@ -2,7 +2,7 @@
 ---
 <noscript><p class="no-js">Activa JavaScript para utilizar la calculadora.</p></noscript>
 <div class="calculator" data-ev-charging>
-<form class="card" novalidate>
+<form class="card calc-form" novalidate>
 <h2>Energía y carga</h2>
 <div><label for="evMode">Cómo defines la energía</label><select id="evMode" name="mode"><option value="battery">Por batería y SOC</option><option value="manual">Energía manual</option></select></div>
 <div class="fields mt-5" data-battery-mode>
@@ -24,6 +24,6 @@
 <p class="error" data-form-error aria-live="polite"></p>
 <div class="actions"><button class="button" type="submit">Calcular recarga</button><button class="button secondary" type="reset">Restablecer</button></div>
 </form>
-<section class="card result"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Recarga del vehículo</h2><div data-result aria-live="polite"><p>Introduce los datos reales de tu vehículo y cargador.</p></div></section>
+<section class="card result result-kind-ev-charging"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Recarga del vehículo</h2><div data-result aria-live="polite"><p>Introduce los datos reales de tu vehículo y cargador.</p></div></section>
 </div>
 <script>import '../lib/ev-charging-ui.mjs';</script>

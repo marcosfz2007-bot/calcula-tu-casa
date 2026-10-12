@@ -17,7 +17,10 @@ document.querySelectorAll('[data-reform-budget]').forEach(root=>{
    const area=form.elements.area?.value;
    const r=calculateRangeBudget({surface:area,rows});
    const amount=document.createElement('p');amount.className='amount';amount.textContent=money.format(r.total.central);
-   const nodes=[amount,line('Escenario bajo',money.format(r.total.low)),line('Escenario central',money.format(r.total.central)),line('Escenario alto',money.format(r.total.high)),line('Central por m² útil',nf.format(r.perM2.central)+' €/m²')];
+   const caption=document.createElement('p');caption.className='result-caption';caption.textContent='Escenario central del presupuesto orientativo';
+   const scenarios=document.createElement('div');scenarios.className='result-scenarios-v2';
+   [['Bajo',r.total.low,false],['Central',r.total.central,true],['Alto',r.total.high,false]].forEach(([label,value,primary])=>{const item=document.createElement('div');item.className='result-scenario-v2'+(primary?' is-primary':'');const l=document.createElement('span');l.textContent=label;const v=document.createElement('strong');v.textContent=money.format(value);item.append(l,v);scenarios.append(item);});
+   const nodes=[amount,caption,scenarios,line('Central por m² útil',nf.format(r.perM2.central)+' €/m²')];
    const wrap=document.createElement('div');wrap.className='table-wrap';const table=document.createElement('table');table.className='data-table';table.innerHTML='<thead><tr><th>Partida</th><th>Cantidad</th><th>Bajo</th><th>Central</th><th>Alto</th></tr></thead>';const body=document.createElement('tbody');r.rows.forEach(row=>{const tr=document.createElement('tr');[row.label,nf.format(row.quantity)+' '+row.unit,money.format(row.low),money.format(row.central),money.format(row.high)].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.append(td);});body.append(tr);});table.append(body);wrap.append(table);nodes.push(wrap);
    const note=document.createElement('p');note.className='notice';note.textContent='El rango depende íntegramente de los precios unitarios que has introducido. No es una tarifa nacional ni incorpora un factor provincial oculto.';nodes.push(note);result.replaceChildren(...nodes);
  }catch(err){error.textContent=err instanceof Error?err.message:'Revisa los precios de las partidas.';}});

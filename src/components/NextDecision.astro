@@ -1,0 +1,13 @@
+---
+import {toolByPath} from '../lib/catalog.mjs';
+import {getNextDecision} from '../lib/presentation.mjs';
+import CategoryIcon from './CategoryIcon.astro';
+const {tool}=Astro.props;
+const decision=getNextDecision(tool.path);
+const target=decision?toolByPath.get(decision[0]):null;
+---
+{decision&&target&&<aside class={'next-decision category-'+target.categorySlug} aria-labelledby="next-decision-title">
+  <span class="next-decision-icon"><CategoryIcon slug={target.categorySlug} size={24}/></span>
+  <div><p class="eyebrow">SIGUIENTE DECISIÓN</p><h2 id="next-decision-title">{decision[1]}</h2><p>Continúa con una herramienta relacionada usando una ruta que ya existe en Calcula tu Casa.</p></div>
+  <a class="button next-decision-cta" href={'/'+target.path+'/'}>{decision[2]} <span aria-hidden="true">→</span></a>
+</aside>}

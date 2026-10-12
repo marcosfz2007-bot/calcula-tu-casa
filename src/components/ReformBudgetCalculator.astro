@@ -5,7 +5,7 @@ const preset=REFORM_PRESETS[tool.kind];
 ---
 <noscript><p class="no-js">Activa JavaScript para utilizar la calculadora. La metodología y las fuentes permanecen visibles.</p></noscript>
 <div class="calculator wide-calculator" data-reform-budget data-kind={tool.kind}>
-  <form class="card" novalidate>
+  <form class="card calc-form" novalidate>
     <h2>{preset.title}</h2>
     <div class="fields">
       {preset.globals.map(g=><div><label for={g.key}>{g.label}</label><div class="input-wrap"><input id={g.key} name={g.key} value={g.value} inputmode="decimal"/><span>{g.unit}</span></div></div>)}
@@ -27,6 +27,6 @@ const preset=REFORM_PRESETS[tool.kind];
     <p class="error" data-form-error aria-live="polite"></p>
     <div class="actions"><button class="button" type="submit">Calcular rango</button><button class="button secondary" type="reset">Restablecer</button></div>
   </form>
-  <section class="card result"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Rango de presupuesto</h2><div data-result aria-live="polite"><p>Selecciona partidas e introduce sus precios unitarios.</p></div></section>
+  <section class="card result result-kind-reform-budget"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Rango de presupuesto</h2><div data-result aria-live="polite"><p>Selecciona partidas e introduce sus precios unitarios.</p></div></section>
 </div>
 <script>import '../lib/reform-budget-ui.mjs';</script>

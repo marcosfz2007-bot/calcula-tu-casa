@@ -2,7 +2,7 @@
 ---
 <noscript><p class="no-js">Activa JavaScript para utilizar la calculadora.</p></noscript>
 <div class="calculator" data-waterproofing>
-  <form class="card" novalidate>
+  <form class="card calc-form" novalidate>
     <h2>Producto y superficie</h2>
     <div class="fields">
       <div><label for="waterproofMode">Unidad de rendimiento</label><select id="waterproofMode" name="mode"><option value="">Selecciona…</option><option value="litres">m²/L por capa</option><option value="kg">kg/m²</option></select></div>
@@ -25,6 +25,6 @@
     <p class="error" data-form-error aria-live="polite"></p>
     <div class="actions"><button class="button" type="submit">Calcular producto</button><button class="button secondary" type="reset">Restablecer</button></div>
   </form>
-  <section class="card result"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Impermeabilizante necesario</h2><div data-result aria-live="polite"><p>Selecciona la unidad de rendimiento de tu producto.</p></div></section>
+  <section class="card result result-kind-waterproofing"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Impermeabilizante necesario</h2><div data-result aria-live="polite"><p>Selecciona la unidad de rendimiento de tu producto.</p></div></section>
 </div>
 <script>import '../lib/waterproofing-ui.mjs';</script>

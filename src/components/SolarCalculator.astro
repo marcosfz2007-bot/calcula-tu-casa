@@ -2,7 +2,7 @@
 ---
 <noscript><p class="no-js">Activa JavaScript para preparar la consulta y procesar el resultado de PVGIS. La metodología permanece visible sin JavaScript.</p></noscript>
 <div class="calculator" data-solar-pvgis>
-  <form class="card" novalidate>
+  <form class="card calc-form" novalidate>
     <h2>Datos para PVGIS</h2>
     <div class="fields">
       <div><label for="latitude">Latitud</label><div class="input-wrap"><input id="latitude" name="latitude" inputmode="decimal" value="40,63"/><span>°</span></div></div>
@@ -26,6 +26,6 @@
       <button class="button secondary" type="button" data-process-json>Procesar JSON pegado</button>
     </div>
   </form>
-  <section class="card result"><p class="eyebrow">PVGIS · JRC</p><h2>Producción fotovoltaica</h2><div data-solar-result aria-live="polite"><p>Prepara la consulta y procesa el JSON oficial de PVGIS.</p></div></section>
+  <section class="card result result-kind-solar"><p class="eyebrow">PVGIS · JRC</p><h2>Producción fotovoltaica</h2><div data-solar-result aria-live="polite"><p>Prepara la consulta y procesa el JSON oficial de PVGIS.</p></div></section>
 </div>
 <script>import '../lib/solar-pvgis-ui.mjs';</script>

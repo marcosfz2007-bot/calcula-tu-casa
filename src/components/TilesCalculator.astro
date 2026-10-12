@@ -2,7 +2,7 @@
 ---
 <noscript><p class="no-js">Activa JavaScript para utilizar la calculadora.</p></noscript>
 <div class="calculator" data-tiles>
-<form class="card" novalidate>
+<form class="card calc-form" novalidate>
 <h2>Superficie, pieza y caja</h2>
 <div class="fields">
 <div><label for="tileSurface">Superficie a cubrir</label><div class="input-wrap"><input id="tileSurface" name="surfaceM2" value="10" inputmode="decimal"/><span>m²</span></div></div>
@@ -18,6 +18,6 @@
 <p class="error" data-form-error aria-live="polite"></p>
 <div class="actions"><button class="button" type="submit">Calcular piezas</button><button class="button secondary" type="reset">Restablecer</button></div>
 </form>
-<section class="card result"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Azulejos / baldosas</h2><div data-result aria-live="polite"><p>Introduce los datos de la caja y calcula.</p></div></section>
+<section class="card result result-kind-tiles"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Azulejos / baldosas</h2><div data-result aria-live="polite"><p>Introduce los datos de la caja y calcula.</p></div></section>
 </div>
 <script>import '../lib/tiles-ui.mjs';</script>

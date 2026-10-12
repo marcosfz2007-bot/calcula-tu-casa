@@ -37,7 +37,9 @@ test('Rediseño UI v2 · respeta reduced motion y tamaños de interacción',()=>
 
 test('Rediseño UI v2 · usa iconografía SVG ligera en tarjetas',()=>{
  const card=read('src/components/ToolCard.astro');
- assert.match(card,/<svg/);
+ const icon=read('src/components/CategoryIcon.astro');
+ assert.match(card,/CategoryIcon/);
+ assert.match(icon,/<svg/);
  assert.doesNotMatch(card,/\{tool\.icon\}/);
 });
 
@@ -68,7 +70,7 @@ test('Expansión 04 · calculadoras especializadas reutilizan patrones UI v2',()
   const source=read(path);
   assert.match(source,/class="calculator/);
   assert.match(source,/class="card/);
-  assert.match(source,/class="card result"/);
+  assert.match(source,/class="card result/);
   assert.match(source,/class="button/);
   assert.match(source,/aria-live="polite"/);
  }

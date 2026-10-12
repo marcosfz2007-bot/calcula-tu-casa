@@ -2,7 +2,7 @@
 ---
 <noscript><p class="no-js">Activa JavaScript para utilizar la calculadora.</p></noscript>
 <div class="calculator" data-water-tank>
-  <form class="card" novalidate>
+  <form class="card calc-form" novalidate>
     <h2>Demanda de almacenamiento</h2>
     <div><label for="tankMode">Cómo defines la demanda diaria</label><select id="tankMode" name="mode"><option value="manual">Litros/día manuales</option><option value="persons">Personas × L/persona/día</option></select></div>
     <div class="fields mt-5" data-manual-demand>
@@ -22,6 +22,6 @@
     <p class="error" data-form-error aria-live="polite"></p>
     <div class="actions"><button class="button" type="submit">Calcular depósito</button><button class="button secondary" type="reset">Restablecer</button></div>
   </form>
-  <section class="card result"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Capacidad orientativa</h2><div data-result aria-live="polite"><p>Introduce demanda y autonomía.</p></div></section>
+  <section class="card result result-kind-water-tank"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Capacidad orientativa</h2><div data-result aria-live="polite"><p>Introduce demanda y autonomía.</p></div></section>
 </div>
 <script>import '../lib/water-tank-ui.mjs';</script>
