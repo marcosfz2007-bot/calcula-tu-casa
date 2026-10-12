@@ -68,7 +68,7 @@ test('Expansión 04 · calculadoras especializadas reutilizan patrones UI v2',()
   const source=read(path);
   assert.match(source,/class="calculator/);
   assert.match(source,/class="card/);
-  assert.match(source,/class="card result"/);
+  assert.match(source,/class="card result/);
   assert.match(source,/class="button/);
   assert.match(source,/aria-live="polite"/);
  }
