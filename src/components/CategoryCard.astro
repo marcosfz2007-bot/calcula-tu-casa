@@ -1,0 +1,9 @@
+---
+import CategoryIcon from './CategoryIcon.astro';
+const {category,count=0}=Astro.props;
+---
+<a class={'category-card category-'+category.slug} href={'/'+category.slug+'/'}>
+  <span class="category-icon"><CategoryIcon slug={category.slug}/></span>
+  <span class="category-copy"><strong>{category.name}</strong><span>{category.description}</span></span>
+  <span class="category-count">{count} herramienta{count===1?'':'s'} <span aria-hidden="true">→</span></span>
+</a>

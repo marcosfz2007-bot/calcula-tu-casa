@@ -1,53 +1,41 @@
 ---
 import Base from '../layouts/Base.astro';
-import SearchTools from '../components/SearchTools.astro';
+import HeroSearch from '../components/HeroSearch.astro';
+import HomeHeroVisual from '../components/HomeHeroVisual.astro';
 import ToolCard from '../components/ToolCard.astro';
+import CategoryCard from '../components/CategoryCard.astro';
 import {tools,categories,toolByPath} from '../lib/catalog.mjs';
 const featuredPaths=['climatizacion/calculadora-frigorias','energia/simulador-factura-electrica','solar/numero-placas-solares','reformas/presupuesto-reforma-integral'];
 const featured=featuredPaths.map(path=>toolByPath.get(path)).filter(Boolean);
 ---
 <Base title="Calculadoras para hogar, energía, climatización y aislamiento" description="Calcula primero y decide después: herramientas gratuitas, sin registro, con fórmulas, fuentes y procesamiento transparente.">
-  <section class="home-hero">
-    <div>
+  <section class="home-hero-v2">
+    <div class="home-hero-copy">
       <p class="eyebrow">TU HOGAR, CON LAS CUENTAS CLARAS</p>
       <h1>Calcula primero.<br/>Decide después.</h1>
-      <p class="lead">Calculadoras gratuitas para tomar mejores decisiones sobre tu casa, energía y reformas. Sin registro, sin llamadas y con la metodología visible.</p>
-      <div class="hero-actions"><a class="button" href="#buscar">Buscar una calculadora</a><a class="button secondary" href="/calculadoras/">Ver todas</a></div>
-      <div class="mt-6"><span class="badge">Sin registro</span><span class="badge">Fórmula visible</span><span class="badge">Datos privados</span></div>
+      <p class="lead">Descubre cuánto necesitas, cuánto gastas y cuánto puedes ahorrar en tu casa. Calculadoras gratuitas, inmediatas y sin registro.</p>
+      <HeroSearch tools={tools}/>
+      <div class="home-trust"><span>Gratis</span><span>Sin registro</span><span>Resultado inmediato</span><span>Metodología y fuentes visibles</span></div>
     </div>
-    <aside class="hero-proof" aria-label="Principios de Calcula tu Casa">
-      <p class="proof-kicker">Herramientas publicadas</p>
-      <p class="proof-number">{tools.length}</p>
-      <ul class="proof-list"><li>Resultado inmediato y gratuito</li><li>Hipótesis y limitaciones visibles</li><li>Fuentes identificadas y metodología trazable</li></ul>
-    </aside>
+    <HomeHeroVisual/>
   </section>
 
-  <section id="buscar" class="section">
-    <SearchTools tools={tools} compact />
-  </section>
-
-  <section class="section">
-    <div class="section-head"><div><p class="eyebrow">EMPIEZA POR AQUÍ</p><h2>Herramientas principales</h2></div><p class="muted">Una selección transversal para empezar a calcular climatización, factura, solar y reformas sin inventar rankings de popularidad.</p></div>
+  <section class="section home-featured">
+    <div class="section-head"><div><p class="eyebrow">EMPIEZA POR UNA DECISIÓN</p><h2>¿Qué quieres resolver hoy?</h2></div><p class="muted">Las herramientas se presentan por el problema que ayudan a resolver y por el resultado que obtendrás.</p></div>
     <div class="grid featured-grid">{featured.map(tool=><ToolCard tool={tool}/>)}</div>
   </section>
 
   <section class="section">
-    <div class="section-head"><div><p class="eyebrow">EXPLORA POR TEMA</p><h2>Cinco áreas, una misma forma de decidir</h2></div><p class="muted">Encuentra rápidamente las herramientas relacionadas con el problema que quieres resolver.</p></div>
-    <div class="category-grid">{categories.map(category=>{
-      const count=tools.filter(tool=>tool.categorySlug===category.slug).length;
-      return <a class="category-card" href={'/'+category.slug+'/'}>
-        <strong>{category.name}</strong>
-        <span>{category.description}</span>
-        <span class="category-count">{count} herramienta{count===1?'':'s'} →</span>
-      </a>;
-    })}</div>
+    <div class="section-head"><div><p class="eyebrow">EXPLORA POR TEMA</p><h2>Cinco áreas, una misma forma de decidir</h2></div><p class="muted">El color te ayuda a orientarte sin romper la identidad común de Calcula tu Casa.</p></div>
+    <div class="category-grid">{categories.map(category=><CategoryCard category={category} count={tools.filter(tool=>tool.categorySlug===category.slug).length}/>)}</div>
   </section>
 
-  <section class="how">
+  <section class="home-how">
+    <div class="home-how-intro"><p class="eyebrow">TRANSPARENCIA ANTES QUE PROMESAS</p><h2>Un resultado útil porque puedes entender de dónde sale.</h2></div>
     <div class="steps">
-      <div><strong>01 · Introduce tus datos</strong><p class="muted">Usa la etiqueta de tus equipos o las medidas de tu vivienda cuando proceda.</p></div>
-      <div><strong>02 · Revisa las hipótesis</strong><p class="muted">Los factores orientativos se identifican y no se presentan como datos universales.</p></div>
-      <div><strong>03 · Sigue el siguiente cálculo</strong><p class="muted">Las herramientas se enlazan según la siguiente decisión natural.</p></div>
+      <div><span>01</span><strong>Introduce tus datos</strong><p class="muted">Utiliza medidas, potencias, precios o datos de producto cuando proceda.</p></div>
+      <div><span>02</span><strong>Entiende el resultado</strong><p class="muted">La cifra principal se acompaña de desglose, hipótesis y límites cuando aportan contexto.</p></div>
+      <div><span>03</span><strong>Resuelve la siguiente decisión</strong><p class="muted">Continúa con otra calculadora únicamente cuando exista una relación lógica.</p></div>
     </div>
   </section>
 </Base>

@@ -1,16 +1,20 @@
 ---
 import Base from '../../layouts/Base.astro';
 import SearchTools from '../../components/SearchTools.astro';
+import CategoryCard from '../../components/CategoryCard.astro';
 import {tools,categories} from '../../lib/catalog.mjs';
 ---
 <Base title="Todas las calculadoras" description="Calculadoras gratuitas para hogar, energía, climatización, solar, aislamiento y reformas, con metodología, fuentes y tratamiento transparente de los datos.">
-  <section class="hero hub-hero">
+  <section class="hero directory-hero">
     <p class="eyebrow">DIRECTORIO DE HERRAMIENTAS</p>
-    <h1>Encuentra la calculadora que necesitas.</h1>
-    <p class="lead">Las {tools.length} herramientas publicadas funcionan sin registro. Busca por nombre, categoría o problema y entra directamente a calcular.</p>
-    <div class="hub-links">{categories.map(c=><a href={'/'+c.slug+'/'}>{c.name}</a>)}</div>
+    <h1>Encuentra la calculadora que responde a tu pregunta.</h1>
+    <p class="lead">Las {tools.length} herramientas publicadas funcionan sin registro. Busca por problema, categoría, unidad o nombre técnico y entra directamente a calcular.</p>
+    <div class="directory-proof"><span><strong>{tools.length}</strong> herramientas</span><span>5 categorías</span><span>Fórmulas y fuentes visibles</span></div>
   </section>
-  <section class="section">
+  <section class="section directory-categories">
+    <div class="category-grid">{categories.map(category=><CategoryCard category={category} count={tools.filter(tool=>tool.categorySlug===category.slug).length}/>)}</div>
+  </section>
+  <section class="section directory-search">
     <SearchTools tools={tools}/>
   </section>
 </Base>
