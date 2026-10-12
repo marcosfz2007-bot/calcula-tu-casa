@@ -2,7 +2,7 @@
 ---
 <noscript><p class="no-js">Activa JavaScript para utilizar la calculadora. La metodología permanece visible.</p></noscript>
 <div class="calculator wide-calculator" data-thermal-loss>
-  <form class="card" novalidate>
+  <form class="card calc-form" novalidate>
     <h2>Temperaturas del escenario</h2>
     <div class="fields">
       <div><label for="interiorTempC">Temperatura interior</label><div class="input-wrap"><input id="interiorTempC" name="interiorTempC" inputmode="decimal" autocomplete="off"/><span>°C</span></div></div>
@@ -22,6 +22,6 @@
     <p class="error" data-form-error aria-live="polite"></p>
     <div class="actions"><button class="button" type="submit">Calcular pérdida</button><button class="button secondary" type="reset">Restablecer</button></div>
   </form>
-  <section class="card result"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Pérdida por transmisión</h2><div data-result aria-live="polite"><p>Introduce temperaturas, superficies y valores U.</p></div></section>
+  <section class="card result result-kind-thermal-loss"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Pérdida por transmisión</h2><div data-result aria-live="polite"><p>Introduce temperaturas, superficies y valores U.</p></div></section>
 </div>
 <script>import '../lib/thermal-loss-ui.mjs';</script>

@@ -2,7 +2,7 @@
 ---
 <noscript><p class="no-js">Activa JavaScript para utilizar la calculadora.</p></noscript>
 <div class="calculator wide-calculator" data-standby>
-<form class="card" novalidate>
+<form class="card calc-form" novalidate>
 <h2>Equipos en standby</h2>
 <div class="dynamic-list" data-standby-items>
 <div class="standby-row" data-item>
@@ -25,6 +25,6 @@
 <p class="error" data-form-error aria-live="polite"></p>
 <div class="actions"><button class="button" type="submit">Calcular standby</button><button class="button secondary" type="reset">Restablecer</button></div>
 </form>
-<section class="card result"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Consumo fantasma anual</h2><div data-result aria-live="polite"><p>Añade equipos y calcula.</p></div></section>
+<section class="card result result-kind-standby"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Consumo fantasma anual</h2><div data-result aria-live="polite"><p>Añade equipos y calcula.</p></div></section>
 </div>
 <script>import '../lib/standby-ui.mjs';</script>

@@ -2,7 +2,7 @@
 ---
 <noscript><p class="no-js">Activa JavaScript para utilizar la calculadora.</p></noscript>
 <div class="calculator wide-calculator" data-concrete>
-  <form class="card" novalidate>
+  <form class="card calc-form" novalidate>
     <h2>Zonas de hormigón</h2>
     <div class="dynamic-list" data-concrete-zones>
       <fieldset class="reform-row" data-zone>
@@ -27,6 +27,6 @@
     <p class="error" data-form-error aria-live="polite"></p>
     <div class="actions"><button class="button" type="submit">Calcular hormigón</button><button class="button secondary" type="reset">Restablecer</button></div>
   </form>
-  <section class="card result"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Hormigón necesario</h2><div data-result aria-live="polite"><p>Añade las dimensiones de cada zona.</p></div></section>
+  <section class="card result result-kind-concrete"><p class="eyebrow">TU ESTIMACIÓN</p><h2>Hormigón necesario</h2><div data-result aria-live="polite"><p>Añade las dimensiones de cada zona.</p></div></section>
 </div>
 <script>import '../lib/concrete-ui.mjs';</script>
