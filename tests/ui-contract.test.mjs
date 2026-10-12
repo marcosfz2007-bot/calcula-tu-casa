@@ -102,3 +102,17 @@ test('Calcula tu Casa 2.0 · formularios agrupados conservan todos los campos',a
   assert.equal(grouped.length,new Set(grouped).size,'Campo duplicado en '+tool.path);
  }
 });
+
+
+test('Calcula tu Casa 2.0 · las 39 herramientas tienen variante visual definida',async()=>{
+ const {tools}=await import('../src/lib/catalog.mjs');
+ const {getToolPresentation}=await import('../src/lib/presentation.mjs');
+ assert.equal(tools.length,39);
+ for(const tool of tools)assert.notEqual(getToolPresentation(tool).variant,'default',tool.path);
+});
+
+test('Calcula tu Casa 2.0 · visualizaciones de resultado son CSS y DOM nativos',()=>{
+ const ui=read('src/lib/result-ui.mjs');
+ assert.doesNotMatch(ui,/chart\.js|d3\.|echarts|highcharts/i);
+ for(const helper of ['createRangeVisual','createBreakdownBar','createScenarioCards','createComparisonBars','createRankingBars','createMonthlyBars','createTimelineBars'])assert.ok(ui.includes(helper),helper);
+});
