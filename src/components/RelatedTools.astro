@@ -1,10 +1,12 @@
 ---
 import ToolCard from './ToolCard.astro';
 import {toolByPath} from '../lib/catalog.mjs';
-const {paths=[]}=Astro.props;
-const selected=paths.map(p=>toolByPath.get(p)).filter(Boolean);
+import {getNextDecision} from '../lib/presentation.mjs';
+const {paths=[],currentPath}=Astro.props;
+const primary=currentPath?getNextDecision(currentPath)?.[0]:null;
+const selected=paths.filter(path=>path!==primary).map(p=>toolByPath.get(p)).filter(Boolean);
 ---
-<section class="section related-tools">
-  <div class="section-head"><div><p class="eyebrow">SIGUIENTE PASO</p><h2>También puede interesarte</h2></div><p class="muted">Continúa con una herramienta relacionada cuando responda a la siguiente decisión que quieres tomar.</p></div>
+{selected.length>0&&<section class="section related-tools">
+  <div class="section-head"><div><p class="eyebrow">OTRAS HERRAMIENTAS</p><h2>También puede interesarte</h2></div><p class="muted">Opciones relacionadas distintas de la siguiente decisión principal.</p></div>
   <div class="grid">{selected.map(tool=><ToolCard tool={tool}/>)}</div>
-</section>
+</section>}
