@@ -2,40 +2,42 @@
 import Base from '../layouts/Base.astro';
 import SearchTools from '../components/SearchTools.astro';
 import ToolCard from '../components/ToolCard.astro';
+import HomeHeroVisual from '../components/HomeHeroVisual.astro';
+import CategoryIcon from '../components/CategoryIcon.astro';
 import {tools,categories,toolByPath} from '../lib/catalog.mjs';
 const featuredPaths=['climatizacion/calculadora-frigorias','energia/simulador-factura-electrica','solar/numero-placas-solares','reformas/presupuesto-reforma-integral'];
 const featured=featuredPaths.map(path=>toolByPath.get(path)).filter(Boolean);
+const quick=[
+ ['climatizacion/calculadora-frigorias','Frigorías'],
+ ['energia/simulador-factura-electrica','Factura eléctrica'],
+ ['reformas/presupuesto-reforma-integral','Reforma integral'],
+ ['solar/numero-placas-solares','Placas solares']
+];
 ---
 <Base title="Calculadoras para hogar, energía, climatización y aislamiento" description="Calcula primero y decide después: herramientas gratuitas, sin registro, con fórmulas, fuentes y procesamiento transparente.">
-  <section class="home-hero">
-    <div>
+  <section class="home-hero home-hero-v2">
+    <div class="home-hero-copy">
       <p class="eyebrow">TU HOGAR, CON LAS CUENTAS CLARAS</p>
       <h1>Calcula primero.<br/>Decide después.</h1>
-      <p class="lead">Calculadoras gratuitas para tomar mejores decisiones sobre tu casa, energía y reformas. Sin registro, sin llamadas y con la metodología visible.</p>
-      <div class="hero-actions"><a class="button" href="#buscar">Buscar una calculadora</a><a class="button secondary" href="/calculadoras/">Ver todas</a></div>
-      <div class="mt-6"><span class="badge">Sin registro</span><span class="badge">Fórmula visible</span><span class="badge">Datos privados</span></div>
+      <p class="lead">Descubre cuánto necesitas, cuánto gastas y cuánto puedes ahorrar en tu casa. Calculadoras gratuitas, inmediatas y sin registro.</p>
+      <div id="buscar" class="hero-search"><SearchTools tools={tools} compact hero /></div>
+      <div class="quick-links" aria-label="Accesos rápidos">{quick.map(([path,label])=><a href={'/'+path+'/'}>{label}</a>)}</div>
+      <div class="home-trust"><span>Gratis</span><span>Sin registro</span><span>Resultado inmediato</span><span>Metodología visible</span><span>Fuentes identificadas</span></div>
     </div>
-    <aside class="hero-proof" aria-label="Principios de Calcula tu Casa">
-      <p class="proof-kicker">Herramientas publicadas</p>
-      <p class="proof-number">{tools.length}</p>
-      <ul class="proof-list"><li>Resultado inmediato y gratuito</li><li>Hipótesis y limitaciones visibles</li><li>Fuentes identificadas y metodología trazable</li></ul>
-    </aside>
+    <HomeHeroVisual/>
   </section>
 
-  <section id="buscar" class="section">
-    <SearchTools tools={tools} compact />
-  </section>
-
-  <section class="section">
-    <div class="section-head"><div><p class="eyebrow">EMPIEZA POR AQUÍ</p><h2>Herramientas principales</h2></div><p class="muted">Una selección transversal para empezar a calcular climatización, factura, solar y reformas sin inventar rankings de popularidad.</p></div>
+  <section class="section section-v2">
+    <div class="section-head"><div><p class="eyebrow">EMPIEZA POR UNA DECISIÓN</p><h2>¿Qué quieres resolver hoy?</h2></div><p class="muted">Elige por el problema que quieres resolver y sabrás desde el principio qué tipo de resultado obtendrás.</p></div>
     <div class="grid featured-grid">{featured.map(tool=><ToolCard tool={tool}/>)}</div>
   </section>
 
-  <section class="section">
-    <div class="section-head"><div><p class="eyebrow">EXPLORA POR TEMA</p><h2>Cinco áreas, una misma forma de decidir</h2></div><p class="muted">Encuentra rápidamente las herramientas relacionadas con el problema que quieres resolver.</p></div>
+  <section class="section section-v2">
+    <div class="section-head"><div><p class="eyebrow">EXPLORA POR TEMA</p><h2>Cinco áreas, una misma identidad</h2></div><p class="muted">El color ayuda a orientarte sin romper la identidad común de Calcula tu Casa.</p></div>
     <div class="category-grid">{categories.map(category=>{
       const count=tools.filter(tool=>tool.categorySlug===category.slug).length;
-      return <a class="category-card" href={'/'+category.slug+'/'}>
+      return <a class={'category-card category-'+category.slug} href={'/'+category.slug+'/'}>
+        <span class="category-card-icon"><CategoryIcon slug={category.slug} size={26}/></span>
         <strong>{category.name}</strong>
         <span>{category.description}</span>
         <span class="category-count">{count} herramienta{count===1?'':'s'} →</span>
@@ -43,11 +45,12 @@ const featured=featuredPaths.map(path=>toolByPath.get(path)).filter(Boolean);
     })}</div>
   </section>
 
-  <section class="how">
+  <section class="how how-v2">
+    <div class="section-head"><div><p class="eyebrow">CÁLCULOS TRANSPARENTES</p><h2>De tus datos a una decisión comprensible</h2></div></div>
     <div class="steps">
-      <div><strong>01 · Introduce tus datos</strong><p class="muted">Usa la etiqueta de tus equipos o las medidas de tu vivienda cuando proceda.</p></div>
-      <div><strong>02 · Revisa las hipótesis</strong><p class="muted">Los factores orientativos se identifican y no se presentan como datos universales.</p></div>
-      <div><strong>03 · Sigue el siguiente cálculo</strong><p class="muted">Las herramientas se enlazan según la siguiente decisión natural.</p></div>
+      <div><span class="step-number">01</span><strong>Introduce tus datos</strong><p class="muted">Usa las medidas de tu vivienda, tus consumos o la etiqueta de tus equipos.</p></div>
+      <div><span class="step-number">02</span><strong>Entiende el resultado</strong><p class="muted">La cifra principal, el rango o la comparación cambian según lo que estés calculando.</p></div>
+      <div><span class="step-number">03</span><strong>Sigue la siguiente decisión</strong><p class="muted">Cuando exista una relación útil, te proponemos otra calculadora real del catálogo.</p></div>
     </div>
   </section>
 </Base>
