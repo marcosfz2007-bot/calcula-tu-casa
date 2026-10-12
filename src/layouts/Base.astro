@@ -1,7 +1,8 @@
 ---
 import '../styles/global.css';
 const {title,description,noindex=false,schema}=Astro.props;
-const canonical=Astro.site?new URL(Astro.url.pathname,Astro.site).href:undefined;\nconst currentPath=Astro.url.pathname;
+const canonical=Astro.site?new URL(Astro.url.pathname,Astro.site).href:undefined;
+const currentPath=Astro.url.pathname;
 const privatePage=noindex||!Astro.site;
 const categoryLinks=[['energia','Energía'],['climatizacion','Climatización'],['aislamiento','Aislamiento'],['solar','Solar'],['reformas','Reformas']];
 const projectLinks=[['calculadoras','Todas las calculadoras'],['metodologia','Metodología'],['fuentes','Fuentes'],['sobre-nosotros','Sobre el proyecto'],['contacto','Contacto']];
