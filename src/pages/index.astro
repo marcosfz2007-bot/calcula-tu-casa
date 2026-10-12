@@ -7,6 +7,7 @@ import CategoryCard from '../components/CategoryCard.astro';
 import {tools,categories,toolByPath} from '../lib/catalog.mjs';
 const featuredPaths=['climatizacion/calculadora-frigorias','energia/simulador-factura-electrica','solar/numero-placas-solares','reformas/presupuesto-reforma-integral'];
 const featured=featuredPaths.map(path=>toolByPath.get(path)).filter(Boolean);
+const publishedCount=tools.length;
 ---
 <Base title="Calculadoras para hogar, energía, climatización y aislamiento" description="Calcula primero y decide después: herramientas gratuitas, sin registro, con fórmulas, fuentes y procesamiento transparente.">
   <section class="home-hero-v2">
@@ -15,6 +16,7 @@ const featured=featuredPaths.map(path=>toolByPath.get(path)).filter(Boolean);
       <h1>Calcula primero.<br/>Decide después.</h1>
       <p class="lead">Descubre cuánto necesitas, cuánto gastas y cuánto puedes ahorrar en tu casa. Calculadoras gratuitas, inmediatas y sin registro.</p>
       <HeroSearch tools={tools}/>
+      <span class="sr-only">{publishedCount} calculadoras publicadas.</span>
       <div class="home-trust"><span>Gratis</span><span>Sin registro</span><span>Resultado inmediato</span><span>Metodología y fuentes visibles</span></div>
     </div>
     <HomeHeroVisual/>

@@ -35,9 +35,11 @@ test('Rediseño UI v2 · respeta reduced motion y tamaños de interacción',()=>
  assert.match(css,/font-size:16px/);
 });
 
-test('Rediseño UI v2 · usa iconografía SVG ligera en tarjetas',()=>{
+test('Rediseño UI v2 · usa iconografía SVG ligera reutilizable en tarjetas',()=>{
  const card=read('src/components/ToolCard.astro');
- assert.match(card,/<svg/);
+ const icon=read('src/components/CategoryIcon.astro');
+ assert.match(card,/CategoryIcon/);
+ assert.match(icon,/<svg/);
  assert.doesNotMatch(card,/\{tool\.icon\}/);
 });
 
